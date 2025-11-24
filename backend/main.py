@@ -10,12 +10,14 @@ import os
 import shutil
 from dotenv import load_dotenv
 from google import genai
+import requests
 
 # Load environment variables
 load_dotenv()
 
 # Configure Gemini
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 if GOOGLE_API_KEY:
     client = genai.Client(api_key=GOOGLE_API_KEY)
 
@@ -456,6 +458,32 @@ async def play_video(room_id: str, video: VideoItem):
         room.history.pop()
         
     return get_room_response(room)
+
+@app.get("/api/youtube/search")
+async def search_youtube(q: str):
+    if not YOUTUBE_API_KEY:
+        raise HTTPException(status_code=500, detail="YouTube API Key not configured")
+    
+    try:
+        url = "https://www.googleapis.com/youtube/v3/search"
+        params = {
+            "part": "snippet",
+            "maxResults": 12,
+            "q": q,
+            "type": "video",
+            "key": YOUTUBE_API_KEY
+        }
+        response = requests.get(url, params=params)
+        if response.status_code != 200:
+             error_msg = response.json().get("error", {}).get("message", "YouTube API Error")
+             raise HTTPException(status_code=response.status_code, detail=error_msg)
+        
+        return response.json()
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        print(f"YouTube Search Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/asr")
 async def asr(file: UploadFile = File(...)):

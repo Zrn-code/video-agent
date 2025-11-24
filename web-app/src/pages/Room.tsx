@@ -23,7 +23,6 @@ const Room = () => {
   const playerRef = useRef<any>(null);
   const urlInputRef = useRef<HTMLInputElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const apiKeyInputRef = useRef<HTMLInputElement | null>(null);
 
   const [userId] = useState<string>(() => {
     const stored = localStorage.getItem('video_agent_userid');
@@ -318,9 +317,6 @@ const Room = () => {
   };
 
   const [state, setState] = useState<PlayerState>(initialState);
-  const [apiKey, setApiKey] = useState<string>(() => {
-    return localStorage.getItem('youtube_api_key') || '';
-  });
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string>('');
@@ -334,14 +330,14 @@ const Room = () => {
       if (!roomId) return;
       try {
         // Fetch room details first
-        const roomRes = await fetch(`http://localhost:8000/api/rooms/${roomId}`);
+        const roomRes = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}`);
         if (!roomRes.ok) throw new Error('Room not found');
         const roomData = await roomRes.json();
         
         setRoomName(roomData.name || 'Unknown Room');
 
         // Join room
-        await fetch(`http://localhost:8000/api/rooms/${roomId}/join`, { 
+        await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/join`, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, username, avatar })
@@ -374,7 +370,7 @@ const Room = () => {
     return () => {
       // Cleanup/Leave room
       if (roomId) {
-        fetch(`http://localhost:8000/api/rooms/${roomId}/leave`, { 
+        fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/leave`, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId })
@@ -389,7 +385,7 @@ const Room = () => {
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/rooms/${roomId}/heartbeat`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/heartbeat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, username, avatar, emotion: emotionRef.current, isFocused: isFocusedRef.current })
@@ -416,7 +412,7 @@ const Room = () => {
   const syncToRoom = async () => {
     if (!roomId) return;
     try {
-      const res = await fetch(`http://localhost:8000/api/rooms/${roomId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}`);
       if (res.ok) {
         const data = await res.json();
         const serverState = data.videoState;
@@ -447,7 +443,7 @@ const Room = () => {
     if (!roomId) return;
     
     try {
-      await fetch(`http://localhost:8000/api/rooms/${roomId}/state`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/state`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -462,12 +458,6 @@ const Room = () => {
     }
   };
 
-  // 儲存 API Key 到 localStorage
-  const handleApiKeyChange = (key: string) => {
-    setApiKey(key);
-    localStorage.setItem('youtube_api_key', key);
-  };
-
   // YouTube 搜尋功能
   const performSearch = async (queryOverride?: string) => {
     const query = queryOverride || searchInputRef.current?.value.trim();
@@ -477,10 +467,8 @@ const Room = () => {
       return;
     }
 
-    if (!apiKey) {
-      setSearchError('請先輸入您的 YouTube API Key！');
-      return;
-    }
+    // API Key is now handled by backend
+    // if (!apiKey) { ... }
 
     setIsSearching(true);
     setSearchError('');
@@ -489,17 +477,12 @@ const Room = () => {
 
     try {
       const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?` +
-        `part=snippet&` +
-        `maxResults=12&` +
-        `q=${encodeURIComponent(query)}&` +
-        `type=video&` +
-        `key=${apiKey}`
+        `${import.meta.env.VITE_API_URL}/api/youtube/search?q=${encodeURIComponent(query)}`
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error?.message || '搜尋失敗');
+        throw new Error(errorData.detail || '搜尋失敗');
       }
 
       const data = await response.json();
@@ -526,7 +509,7 @@ const Room = () => {
   const addToQueue = async (video: VideoItem) => {
     if (!roomId) return;
     try {
-      await fetch(`http://localhost:8000/api/rooms/${roomId}/queue`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/queue`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(video)
@@ -543,7 +526,7 @@ const Room = () => {
   const removeFromQueue = async (index: number) => {
     if (!roomId) return;
     try {
-      await fetch(`http://localhost:8000/api/rooms/${roomId}/queue/${index}`, { method: 'DELETE' });
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/queue/${index}`, { method: 'DELETE' });
       syncToRoom();
     } catch (error) {
       console.error('Failed to remove from queue:', error);
@@ -553,7 +536,7 @@ const Room = () => {
   const playVideo = async (video: VideoItem) => {
     if (!roomId) return;
     try {
-      await fetch(`http://localhost:8000/api/rooms/${roomId}/play`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/play`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(video)
@@ -632,7 +615,7 @@ const Room = () => {
   const handleLogin = async () => {
     setAuthError('');
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accountId, password: authPassword })
@@ -668,7 +651,7 @@ const Room = () => {
     }
     
     try {
-      const response = await fetch('http://localhost:8000/api/auth/register', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -714,7 +697,7 @@ const Room = () => {
     setMessages(prev => [...prev, newMessage]);
 
     try {
-      await fetch(`http://localhost:8000/api/rooms/${roomId}/chat`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, username, content })
@@ -975,17 +958,6 @@ const Room = () => {
                     <div>duration: {duration}</div>
                   </div>
                   <div className="divider my-1"></div>
-                  <div className="form-control w-full mb-2">
-                    <label className="label py-0"><span className="label-text text-xs text-gray-500">YouTube API Key</span></label>
-                    <input
-                      ref={apiKeyInputRef}
-                      type="password"
-                      placeholder="API Key"
-                      className="input input-bordered input-xs bg-black/50 w-full"
-                      value={apiKey}
-                      onChange={(e) => handleApiKeyChange(e.target.value)}
-                    />
-                  </div>
                   <div className="join w-full">
                     <input
                       ref={urlInputRef}

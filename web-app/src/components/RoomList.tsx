@@ -27,7 +27,7 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
 
   const fetchRooms = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/rooms');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`);
       if (response.ok) {
         const data = await response.json();
         setRooms(data);
@@ -50,7 +50,7 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
     if (!newRoomName.trim()) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/rooms', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
