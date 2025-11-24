@@ -98,7 +98,7 @@ const Lobby = () => {
   // Fetch rooms
   const fetchRooms = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/rooms');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`);
       if (response.ok) {
         const data = await response.json();
         setRooms(data);
@@ -125,7 +125,7 @@ const Lobby = () => {
     if (!newRoomName.trim()) return;
 
     try {
-      const response = await fetch('http://localhost:8000/api/rooms', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newRoomName }),
@@ -144,7 +144,7 @@ const Lobby = () => {
   const handleLogin = async () => {
     setAuthError('');
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accountId, password: authPassword })
@@ -178,7 +178,7 @@ const Lobby = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8000/api/auth/register', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accountId, password: authPassword, nickname: authNickname })
