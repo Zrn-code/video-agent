@@ -4,10 +4,6 @@ import { useNavigate } from 'react-router-dom';
 interface HeaderProps {
   roomName?: string;
   userCount?: number;
-  isLoggedIn?: boolean;
-  userInfo?: { accountId: string; nickname: string; avatar: string };
-  onLoginClick?: () => void;
-  onLogout?: () => void;
   onPlaylistClick?: () => void;
   onChatClick?: () => void;
   onShareClick?: () => void;
@@ -20,10 +16,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ 
   roomName, 
   userCount, 
-  isLoggedIn = false, 
-  userInfo, 
-  onLoginClick, 
-  onLogout,
   onPlaylistClick,
   onChatClick,
   onShareClick,
@@ -136,50 +128,7 @@ const Header: React.FC<HeaderProps> = ({
           </>
         )}
 
-        {isLoggedIn && userInfo ? (
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-              <div className="w-9 h-9 rounded-full ring ring-primary/50 ring-offset-base-100 ring-offset-2 hover:ring-primary transition-all">
-                <img src={userInfo.avatar} alt={userInfo.nickname} />
-              </div>
-            </div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow-xl bg-[#1a1a1a] rounded-xl w-56 border border-white/10 mt-4">
-              <li className="menu-title px-4 py-3 border-b border-white/5 mb-2">
-                <div className="flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="w-10 rounded-full">
-                      <img src={userInfo.avatar} alt={userInfo.nickname} />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-white text-sm">{userInfo.nickname}</p>
-                    <p className="text-xs text-gray-500">@{userInfo.accountId}</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <button onClick={onLogout} className="text-red-400 hover:bg-red-500/10 hover:text-red-300 py-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                    <path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z" clipRule="evenodd" />
-                    <path fillRule="evenodd" d="M19 10a.75.75 0 0 0-.75-.75H8.704l1.048-.943a.75.75 0 1 0-1.004-1.114l-2.5 2.25a.75.75 0 0 0 0 1.114l2.5 2.25a.75.75 0 1 0 1.004-1.114l-1.048-.943h9.546A.75.75 0 0 0 19 10Z" clipRule="evenodd" />
-                  </svg>
-                  登出帳號
-                </button>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <button 
-            onClick={onLoginClick} 
-            className="btn btn-sm bg-white text-black hover:bg-gray-200 border-none gap-2 rounded-full px-5 font-medium"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-              <path fillRule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z" clipRule="evenodd" />
-              <path fillRule="evenodd" d="M6 10a.75.75 0 0 1 .75-.75h9.546l-1.048-.943a.75.75 0 1 1 1.004-1.114l2.5 2.25a.75.75 0 0 1 0 1.114l-2.5 2.25a.75.75 0 1 1-1.004-1.114l1.048-.943H6.75A.75.75 0 0 1 6 10Z" clipRule="evenodd" />
-            </svg>
-            登入 / 註冊
-          </button>
-        )}
+
       </div>
     </div>
   );

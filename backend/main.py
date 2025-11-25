@@ -11,6 +11,8 @@ import shutil
 from dotenv import load_dotenv
 from google import genai
 import requests
+import random
+import asyncio
 
 # Load environment variables
 load_dotenv()
@@ -34,11 +36,17 @@ app.add_middleware(
 
 # Models
 class VideoState(BaseModel):
-    url: str = "https://www.youtube.com/watch?v=oUFJJNQGwhk"
+    url: str = ""
     playing: bool = False
     played: float = 0.0
     playbackRate: float = 1.0
     lastUpdated: float = 0.0
+
+class CurrentVideo(BaseModel):
+    videoId: str
+    title: str
+    channelTitle: str
+    thumbnailUrl: str
 
 class VideoItem(BaseModel):
     videoId: str
@@ -67,6 +75,7 @@ class Room(BaseModel):
     userCount: int = 0
     users: List[User] = []
     videoState: VideoState
+    currentVideo: Optional[CurrentVideo] = None
     queue: List[VideoItem] = []
     history: List[VideoItem] = []
     messages: List[Message] = []
@@ -76,6 +85,7 @@ class RoomInternal:
         self.id = id
         self.name = name
         self.videoState = videoState
+        self.currentVideo: Optional[CurrentVideo] = None
         self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp}
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []
@@ -106,73 +116,106 @@ class HeartbeatRequest(BaseModel):
     avatar: Optional[str] = None
     emotion: Optional[str] = None
 
-class RegisterRequest(BaseModel):
-    accountId: str  # Fixed account ID
-    password: str
-    nickname: str
-    avatar: Optional[str] = None
-
-class LoginRequest(BaseModel):
-    accountId: str
-    password: str
-
-class UpdateProfileRequest(BaseModel):
-    userId: str
-    nickname: str
-    avatar: str
-
-class AuthResponse(BaseModel):
-    success: bool
-    message: str
-    userId: Optional[str] = None
-    accountId: Optional[str] = None
-    nickname: Optional[str] = None
-    avatar: Optional[str] = None
-
 # In-memory storage
 rooms: Dict[str, RoomInternal] = {}
 
-# Initialize some demo rooms
+# Initialize some demo rooms with mock users
 demo_rooms = [
-    {"name": "Action Movies 🎬", "url": "https://www.youtube.com/watch?v=oUFJJNQGwhk"},
-    {"name": "Chill Vibes 🎵", "url": "https://www.youtube.com/watch?v=jfKfPfyJRdk"},
-    {"name": "Tech Talk 💻", "url": "https://www.youtube.com/watch?v=jNgP6d9HraI"}
+    {
+        "name": "Action Movies 🎬", 
+        "url": "https://www.youtube.com/watch?v=oUFJJNQGwhk",
+        "currentVideo": {
+            "videoId": "oUFJJNQGwhk",
+            "title": "Top Gun: Maverick Official Trailer",
+            "channelTitle": "Paramount Pictures",
+            "thumbnailUrl": "https://img.youtube.com/vi/oUFJJNQGwhk/mqdefault.jpg"
+        },
+        "mockUsers": [
+            {"id": "mock-user-1", "username": "MovieFan123", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=MovieFan123"},
+            {"id": "mock-user-2", "username": "ActionLover", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ActionLover"},
+            {"id": "mock-user-3", "username": "CinemaKing", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=CinemaKing"},
+        ]
+    },
+    {
+        "name": "Chill Vibes 🎵", 
+        "url": "https://www.youtube.com/watch?v=jfKfPfyJRdk",
+        "currentVideo": {
+            "videoId": "jfKfPfyJRdk",
+            "title": "Lofi Hip Hop Radio - Beats to Relax/Study",
+            "channelTitle": "Lofi Girl",
+            "thumbnailUrl": "https://img.youtube.com/vi/jfKfPfyJRdk/mqdefault.jpg"
+        },
+        "mockUsers": [
+            {"id": "mock-user-4", "username": "ChillVibes", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ChillVibes"},
+            {"id": "mock-user-5", "username": "StudyBuddy", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=StudyBuddy"},
+            {"id": "mock-user-6", "username": "RelaxMode", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=RelaxMode"},
+            {"id": "mock-user-7", "username": "LofiLover", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=LofiLover"},
+        ]
+    },
+    {
+        "name": "Tech Talk 💻", 
+        "url": "https://www.youtube.com/watch?v=jNgP6d9HraI",
+        "currentVideo": {
+            "videoId": "jNgP6d9HraI",
+            "title": "The Future of AI and Technology",
+            "channelTitle": "Tech Channel",
+            "thumbnailUrl": "https://img.youtube.com/vi/jNgP6d9HraI/mqdefault.jpg"
+        },
+        "mockUsers": [
+            {"id": "mock-user-8", "username": "TechGuru", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=TechGuru"},
+            {"id": "mock-user-9", "username": "CodeMaster", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=CodeMaster"},
+            {"id": "mock-user-10", "username": "DevPro", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=DevPro"},
+        ]
+    }
 ]
 
 for demo in demo_rooms:
     room_id = str(uuid.uuid4())
-    rooms[room_id] = RoomInternal(
+    new_room = RoomInternal(
         id=room_id,
         name=demo["name"],
         videoState=VideoState(url=demo["url"])
     )
+    
+    # Set current video
+    if "currentVideo" in demo:
+        new_room.currentVideo = CurrentVideo(**demo["currentVideo"])
+    
+    # Add mock users with random emotions
+    now = datetime.now().timestamp()
+    emotions = ['Happy', 'Neutral', 'Sad', 'Surprise', 'Excited']
+    for mock_user in demo.get("mockUsers", []):
+        new_room.users[mock_user["id"]] = {
+            "username": mock_user["username"],
+            "avatar": mock_user["avatar"],
+            "lastSeen": now,
+            "emotion": random.choice(emotions)
+        }
+    
+    rooms[room_id] = new_room
 
-# User database file
-USERS_DB_FILE = "users_db.json"
-
-def load_users_db():
-    if not os.path.exists(USERS_DB_FILE):
-        return {"users": {}}
-    try:
-        with open(USERS_DB_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except:
-        return {"users": {}}
-
-def save_users_db(db):
-    with open(USERS_DB_FILE, 'w', encoding='utf-8') as f:
-        json.dump(db, f, indent=2, ensure_ascii=False)
-
-def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def verify_password(password: str, hashed: str) -> bool:
-    return hash_password(password) == hashed
+# Background task to update mock user emotions
+async def update_mock_emotions():
+    """Update mock user emotions every 3-8 seconds"""
+    emotions = ['Happy', 'Neutral', 'Sad', 'Surprise', 'Excited', 'Thinking', 'Laughing']
+    while True:
+        await asyncio.sleep(random.uniform(3, 8))
+        for room in rooms.values():
+            for user_id, user_info in room.users.items():
+                if user_id.startswith('mock-user-'):
+                    # Randomly change emotion
+                    if random.random() < 0.4:  # 40% chance to change
+                        user_info['emotion'] = random.choice(emotions)
+                        user_info['lastSeen'] = datetime.now().timestamp()
 
 def cleanup_users(room: RoomInternal):
     now = datetime.now().timestamp()
-    # Remove users inactive for more than 10 seconds
-    room.users = {uid: info for uid, info in room.users.items() if now - info['lastSeen'] < 10}
+    # Remove users inactive for more than 10 seconds (but keep mock users)
+    room.users = {
+        uid: info 
+        for uid, info in room.users.items() 
+        if (now - info['lastSeen'] < 10) or uid.startswith('mock-user-')
+    }
     # Remove messages older than 15 seconds
     room.messages = [m for m in room.messages if now - m.timestamp < 15]
 
@@ -194,6 +237,7 @@ def get_room_response(room: RoomInternal) -> Room:
         userCount=len(room.users),
         users=users_list,
         videoState=room.videoState,
+        currentVideo=room.currentVideo,
         queue=room.queue,
         history=room.history,
         messages=room.messages
@@ -298,109 +342,6 @@ async def leave_room(room_id: str, request: HeartbeatRequest):
         
     return {"message": "Left room"}
 
-@app.post("/api/users/profile")
-async def update_user_profile(profile: UserProfile):
-    # Store in localStorage on client side, just return success
-    return {"status": "ok", "profile": profile}
-
-@app.post("/api/auth/register", response_model=AuthResponse)
-async def register(request: RegisterRequest):
-    db = load_users_db()
-    
-    # Check if account ID already exists
-    if request.accountId in db["users"]:
-        return AuthResponse(
-            success=False,
-            message="此帳號 ID 已被註冊"
-        )
-    
-    # Validate account ID (alphanumeric and underscores only)
-    if not request.accountId.replace('_', '').isalnum():
-        return AuthResponse(
-            success=False,
-            message="帳號 ID 只能包含英文、數字和底線"
-        )
-    
-    # Create new user
-    user_id = str(uuid.uuid4())
-    avatar = request.avatar or f"https://api.dicebear.com/7.x/avataaars/svg?seed={request.accountId}"
-    
-    db["users"][request.accountId] = {
-        "userId": user_id,
-        "accountId": request.accountId,
-        "password": hash_password(request.password),
-        "nickname": request.nickname,
-        "avatar": avatar,
-        "createdAt": datetime.now().isoformat()
-    }
-    
-    save_users_db(db)
-    
-    return AuthResponse(
-        success=True,
-        message="註冊成功",
-        userId=user_id,
-        accountId=request.accountId,
-        nickname=request.nickname,
-        avatar=avatar
-    )
-
-@app.post("/api/auth/login", response_model=AuthResponse)
-async def login(request: LoginRequest):
-    db = load_users_db()
-    
-    # Check if account exists
-    if request.accountId not in db["users"]:
-        return AuthResponse(
-            success=False,
-            message="帳號或密碼錯誤"
-        )
-    
-    user = db["users"][request.accountId]
-    
-    # Verify password
-    if not verify_password(request.password, user["password"]):
-        return AuthResponse(
-            success=False,
-            message="帳號或密碼錯誤"
-        )
-    
-    return AuthResponse(
-        success=True,
-        message="登入成功",
-        userId=user["userId"],
-        accountId=user["accountId"],
-        nickname=user["nickname"],
-        avatar=user["avatar"]
-    )
-
-@app.post("/api/auth/update-profile")
-async def update_profile(request: UpdateProfileRequest):
-    db = load_users_db()
-    
-    # Find user by userId
-    user_account = None
-    for account_id, user_data in db["users"].items():
-        if user_data["userId"] == request.userId:
-            user_account = account_id
-            break
-    
-    if not user_account:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # Update profile
-    db["users"][user_account]["nickname"] = request.nickname
-    db["users"][user_account]["avatar"] = request.avatar
-    
-    save_users_db(db)
-    
-    return {
-        "success": True,
-        "message": "個人資料已更新",
-        "nickname": request.nickname,
-        "avatar": request.avatar
-    }
-
 @app.put("/api/rooms/{room_id}/state")
 async def update_room_state(room_id: str, state: UpdateStateRequest):
     if room_id not in rooms:
@@ -450,6 +391,14 @@ async def play_video(room_id: str, video: VideoItem):
     room.videoState.playing = True
     room.videoState.played = 0
     room.videoState.lastUpdated = datetime.now().timestamp()
+    
+    # Update current video
+    room.currentVideo = CurrentVideo(
+        videoId=video.videoId,
+        title=video.title,
+        channelTitle=video.channelTitle,
+        thumbnailUrl=video.thumbnailUrl
+    )
     
     # Add to history (avoid duplicates at the top of the stack if possible, or just push)
     # Let's just push for now
@@ -525,4 +474,12 @@ async def asr(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
+    # Start background task for mock emotions
+    import threading
+    def run_async_task():
+        asyncio.run(update_mock_emotions())
+    
+    emotion_thread = threading.Thread(target=run_async_task, daemon=True)
+    emotion_thread.start()
+    
     uvicorn.run(app, host="0.0.0.0", port=8000)

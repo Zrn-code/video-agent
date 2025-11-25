@@ -43,13 +43,6 @@ const Room = () => {
   const [roomUsers, setRoomUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [roomName, setRoomName] = useState<string>('');
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accountId, setAccountId] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
-  const [authNickname, setAuthNickname] = useState('');
-  const [authError, setAuthError] = useState('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<'chat' | 'playlist'>('chat');
 
@@ -287,14 +280,7 @@ const Room = () => {
     };
   }, [webcamRunning, faceLandmarker]);
 
-  // Check if user is logged in
-  useEffect(() => {
-    const storedAccountId = localStorage.getItem('video_agent_account_id');
-    const storedUserId = localStorage.getItem('video_agent_userid');
-    if (storedAccountId && storedUserId) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+
 
   const initialState = {
     src: undefined,
@@ -606,82 +592,7 @@ const Room = () => {
     navigate('/');
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('video_agent_account_id');
-    setIsLoggedIn(false);
-    // Keep userId and guest profile
-  };
 
-  const handleLogin = async () => {
-    setAuthError('');
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accountId, password: authPassword })
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        localStorage.setItem('video_agent_userid', data.userId);
-        localStorage.setItem('video_agent_account_id', data.accountId);
-        localStorage.setItem('video_agent_username', data.nickname);
-        localStorage.setItem('video_agent_avatar', data.avatar);
-        
-        setUsername(data.nickname);
-        setAvatar(data.avatar);
-        setIsLoggedIn(true);
-        setShowAuthModal(false);
-        setAuthPassword('');
-      } else {
-        setAuthError(data.message);
-      }
-    } catch (error) {
-      setAuthError('登入失敗，請稍後再試');
-    }
-  };
-
-  const handleRegister = async () => {
-    setAuthError('');
-    
-    if (!accountId || !authPassword || !authNickname) {
-      setAuthError('請填寫所有欄位');
-      return;
-    }
-    
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          accountId, 
-          password: authPassword, 
-          nickname: authNickname 
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        localStorage.setItem('video_agent_userid', data.userId);
-        localStorage.setItem('video_agent_account_id', data.accountId);
-        localStorage.setItem('video_agent_username', data.nickname);
-        localStorage.setItem('video_agent_avatar', data.avatar);
-        
-        setUsername(data.nickname);
-        setAvatar(data.avatar);
-        setIsLoggedIn(true);
-        setShowAuthModal(false);
-        setAuthPassword('');
-        setAuthNickname('');
-      } else {
-        setAuthError(data.message);
-      }
-    } catch (error) {
-      setAuthError('註冊失敗，請稍後再試');
-    }
-  };
 
   const handleSendMessage = async (content: string) => {
     if (!roomId) return;
@@ -706,6 +617,14 @@ const Room = () => {
       // But for better UX we could optimistically add it
     } catch (error) {
       console.error('Failed to send message:', error);
+    }
+  };
+
+  const handleStartRoom = async () => {
+    if (queue.length > 0) {
+      await playVideo(queue[0]);
+    } else {
+      setSearchError('請至少選擇一個影片');
     }
   };
 
@@ -739,10 +658,6 @@ const Room = () => {
       <Header 
         roomName={roomName}
         userCount={roomUsers.length}
-        isLoggedIn={isLoggedIn}
-        userInfo={isLoggedIn ? { accountId: localStorage.getItem('video_agent_account_id') || '', nickname: username, avatar } : undefined}
-        onLoginClick={() => setShowAuthModal(true)}
-        onLogout={handleLogout}
         onPlaylistClick={() => {
           setSidebarTab('playlist');
           setShowSidebar(true);
@@ -778,37 +693,119 @@ const Room = () => {
           <div className="flex-1 flex flex-col relative min-w-0 transition-all duration-300">
             
             {/* Main Stage - Video Area */}
-            <div className="flex-1 flex flex-col items-center justify-center min-h-0 pb-40 transition-all duration-300">
+            <div className="flex-1 flex flex-col items-center justify-center min-h-0 pb-20 pt-4 transition-all duration-300">
             
               {/* Video Container */}
               <div className="w-full max-w-[95%] aspect-video max-h-[95%] relative shadow-2xl bg-black rounded-xl overflow-hidden ring-1 ring-white/10 group">
               {!src ? (
-                 // Hero Section
-                 <div className="relative w-full h-full flex items-center justify-center">
-                    <div className="absolute inset-0">
-                       <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2525&auto=format&fit=crop" className="w-full h-full object-cover opacity-40" alt="Background" />
-                       <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/90 to-transparent"></div>
-                       <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent"></div>
-                    </div>
-                    <div className="relative z-10 flex flex-col justify-center px-16 max-w-4xl">
-                       <h1 className="text-5xl font-bold mb-6 leading-tight tracking-tight">
-                          Watch YouTube <br/>
-                          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Together</span>
-                       </h1>
-                       <p className="text-xl text-gray-400 mb-10 font-light max-w-xl">
-                          Experience movies, music, and videos with friends in real-time. No sign-up required.
-                       </p>
-                       <div className="flex items-center gap-4">
-                         <button 
-                            onClick={() => {
-                              setSidebarTab('playlist');
-                              setShowSidebar(true);
-                            }}
-                            className="btn btn-lg btn-primary w-fit gap-3 px-8 rounded-full shadow-lg transition-all hover:scale-105"
-                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M8 5v14l11-7z" /></svg>
-                            Start Watching
-                         </button>
+                 // Setup View (Empty Room)
+                 <div className="relative w-full h-full flex flex-col bg-[#0f0f0f] p-8 overflow-hidden">
+                    <div className="max-w-5xl w-full mx-auto flex flex-col h-full">
+                       <h1 className="text-3xl font-bold mb-2 text-white">開始你的房間</h1>
+                       <p className="text-gray-400 mb-6">搜尋並加入影片到播放清單，完成後點擊「開始播放」</p>
+                       
+                       {/* Search Bar */}
+                       <div className="flex gap-2 mb-6">
+                          <div className="relative flex-1">
+                             <input
+                                ref={searchInputRef}
+                                type="text"
+                                placeholder="搜尋 YouTube 影片..."
+                                className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-3 pl-10 text-white focus:outline-none focus:border-primary transition-colors"
+                                onKeyDown={(e) => e.key === 'Enter' && performSearch()}
+                             />
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 absolute left-3 top-3.5 text-gray-500">
+                               <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
+                             </svg>
+                          </div>
+                          <button 
+                             onClick={() => performSearch()}
+                             className="btn btn-primary px-6"
+                             disabled={isSearching}
+                          >
+                             {isSearching ? <span className="loading loading-spinner loading-sm"></span> : '搜尋'}
+                          </button>
+                       </div>
+
+                       <div className="flex-1 flex gap-6 min-h-0">
+                          {/* Search Results */}
+                          <div className="flex-1 bg-[#1a1a1a] rounded-xl border border-white/5 flex flex-col overflow-hidden">
+                             <div className="p-4 border-b border-white/5 font-medium text-gray-300">搜尋結果</div>
+                             <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                                {searchResults.length > 0 ? (
+                                   searchResults.map((item, index) => (
+                                      <div key={`${item.id.videoId}-${index}`} className="flex gap-3 p-2 rounded-lg hover:bg-white/5 group">
+                                         <div className="w-32 aspect-video bg-black rounded overflow-hidden flex-shrink-0 relative">
+                                            <img src={item.snippet.thumbnails.medium?.url} alt={item.snippet.title} className="w-full h-full object-cover" />
+                                         </div>
+                                         <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                            <h3 className="text-sm font-medium text-white line-clamp-2" title={item.snippet.title}>{item.snippet.title}</h3>
+                                            <div className="flex justify-between items-end">
+                                               <span className="text-xs text-gray-500">{item.snippet.channelTitle}</span>
+                                               <button 
+                                                  onClick={() => addToQueue({
+                                                     videoId: item.id.videoId,
+                                                     title: item.snippet.title,
+                                                     channelTitle: item.snippet.channelTitle,
+                                                     thumbnailUrl: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default.url,
+                                                     addedBy: username
+                                                  })}
+                                                  className="btn btn-xs btn-ghost text-primary hover:bg-primary/10"
+                                               >
+                                                  + 加入清單
+                                               </button>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   ))
+                                ) : (
+                                   <div className="h-full flex flex-col items-center justify-center text-gray-500">
+                                      <p>輸入關鍵字搜尋影片</p>
+                                   </div>
+                                )}
+                             </div>
+                          </div>
+
+                          {/* Queue Preview */}
+                          <div className="w-80 bg-[#1a1a1a] rounded-xl border border-white/5 flex flex-col overflow-hidden">
+                             <div className="p-4 border-b border-white/5 font-medium text-gray-300 flex justify-between items-center">
+                                <span>待播清單</span>
+                                <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">{queue.length}</span>
+                             </div>
+                             <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                                {queue.length > 0 ? (
+                                   queue.map((item, index) => (
+                                      <div key={`${item.videoId}-${index}`} className="flex gap-3 p-2 rounded-lg bg-white/5">
+                                         <div className="w-20 aspect-video bg-black rounded overflow-hidden flex-shrink-0">
+                                            <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
+                                         </div>
+                                         <div className="flex-1 min-w-0">
+                                            <h3 className="text-xs font-medium text-white line-clamp-2 mb-1">{item.title}</h3>
+                                            <button 
+                                               onClick={() => removeFromQueue(index)}
+                                               className="text-[10px] text-red-400 hover:text-red-300"
+                                            >
+                                               移除
+                                            </button>
+                                         </div>
+                                      </div>
+                                   ))
+                                ) : (
+                                   <div className="h-full flex flex-col items-center justify-center text-gray-500 text-sm">
+                                      <p>清單是空的</p>
+                                   </div>
+                                )}
+                             </div>
+                             <div className="p-4 border-t border-white/5">
+                                <button 
+                                   onClick={handleStartRoom}
+                                   className="btn btn-primary w-full shadow-lg shadow-primary/20"
+                                   disabled={queue.length === 0}
+                                >
+                                   開始播放 ({queue.length})
+                                </button>
+                             </div>
+                          </div>
                        </div>
                     </div>
                  </div>
@@ -995,96 +992,7 @@ const Room = () => {
         </div>
       )}
 
-      {/* Login/Register Modal */}
-      {showAuthModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-[#1a1a1a] p-8 rounded-2xl w-full max-w-md border border-white/10 shadow-2xl">
-            <h3 className="text-2xl font-bold mb-6 text-white">
-              {authMode === 'login' ? '登入帳號' : '註冊帳號'}
-            </h3>
-            
-            {authError && (
-              <div className="alert alert-error mb-4 text-sm">
-                <span>{authError}</span>
-              </div>
-            )}
 
-            <div className="space-y-4">
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text text-gray-300">帳號 ID</span>
-                </label>
-                <input 
-                  type="text" 
-                  placeholder="英文、數字和底線" 
-                  className="input input-bordered bg-black/50 border-white/20 focus:border-primary w-full text-white"
-                  value={accountId}
-                  onChange={(e) => setAccountId(e.target.value)}
-                  disabled={authMode === 'login' && isLoggedIn}
-                />
-              </div>
-
-              {authMode === 'register' && (
-                <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text text-gray-300">暱稱</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    placeholder="輸入暱稱" 
-                    className="input input-bordered bg-black/50 border-white/20 focus:border-primary w-full text-white"
-                    value={authNickname}
-                    onChange={(e) => setAuthNickname(e.target.value)}
-                  />
-                </div>
-              )}
-
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text text-gray-300">密碼</span>
-                </label>
-                <input 
-                  type="password" 
-                  placeholder="輸入密碼" 
-                  className="input input-bordered bg-black/50 border-white/20 focus:border-primary w-full text-white"
-                  value={authPassword}
-                  onChange={(e) => setAuthPassword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center mt-6">
-              <button 
-                onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-                className="text-sm text-primary hover:underline"
-              >
-                {authMode === 'login' ? '還沒有帳號？註冊' : '已有帳號？登入'}
-              </button>
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => {
-                    setShowAuthModal(false);
-                    setAuthError('');
-                    setAuthPassword('');
-                    setAuthNickname('');
-                    setAccountId('');
-                  }}
-                  className="btn btn-ghost hover:bg-white/10"
-                >
-                  取消
-                </button>
-                <button 
-                  onClick={authMode === 'login' ? handleLogin : handleRegister}
-                  className="btn btn-primary"
-                  disabled={!accountId || !authPassword || (authMode === 'register' && !authNickname)}
-                >
-                  {authMode === 'login' ? '登入' : '註冊'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

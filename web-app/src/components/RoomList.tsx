@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import type { CurrentVideo, RoomUser } from '../types';
 
 interface Room {
   id: string;
   name: string;
   userCount: number;
+  users: RoomUser[];
   videoState: {
     url: string;
     playing: boolean;
   };
+  currentVideo?: CurrentVideo;
 }
 
 interface RoomListProps {
@@ -78,6 +81,20 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
       return null;
     }
     return null;
+  };
+
+  const getEmotionEmoji = (emotion?: string) => {
+    const emojiMap: Record<string, string> = {
+      'Happy': '😊',
+      'Sad': '😢',
+      'Angry': '😠',
+      'Surprise': '😲',
+      'Neutral': '😐',
+      'Excited': '🤩',
+      'Thinking': '🤔',
+      'Laughing': '😂'
+    };
+    return emotion ? emojiMap[emotion] || '😊' : '😊';
   };
 
   return (
@@ -154,7 +171,13 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
                 className="card bg-[#1e1e1e] shadow-lg hover:shadow-primary/20 transition-all duration-300 border border-white/5 group overflow-hidden hover:-translate-y-1 cursor-pointer"
               >
                 <figure className="relative aspect-video bg-black">
-                  {getThumbnailUrl(room.videoState.url) ? (
+                  {room.currentVideo ? (
+                    <img 
+                      src={room.currentVideo.thumbnailUrl} 
+                      alt={room.currentVideo.title}
+                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                  ) : getThumbnailUrl(room.videoState.url) ? (
                     <img 
                       src={getThumbnailUrl(room.videoState.url)!} 
                       alt="Thumbnail" 
@@ -172,6 +195,14 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
                     {room.userCount}
                   </div>
+                  {room.videoState.playing && (
+                    <div className="absolute top-2 left-2 badge badge-sm bg-red-500/80 border-none backdrop-blur-md gap-1 text-xs text-white">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                      </svg>
+                      LIVE
+                    </div>
+                  )}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
                     <div className="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center shadow-lg backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white ml-0.5" viewBox="0 0 20 20" fill="currentColor">
@@ -180,16 +211,51 @@ const RoomList: React.FC<RoomListProps> = ({ onJoinRoom, searchQuery = '' }) => 
                     </div>
                   </div>
                 </figure>
-                <div className="card-body p-4 gap-1">
+                <div className="card-body p-4 gap-2">
                   <h2 className="card-title text-sm font-bold text-white group-hover:text-primary transition-colors line-clamp-1">
                     {room.name}
                   </h2>
-                  <p className="text-xs text-gray-500 line-clamp-1 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                    </svg>
-                    {room.videoState.url || 'No video playing'}
-                  </p>
+                  {room.currentVideo ? (
+                    <div className="text-xs text-gray-400 space-y-1">
+                      <p className="line-clamp-1 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                        </svg>
+                        <span className="truncate">{room.currentVideo.title}</span>
+                      </p>
+                      <p className="text-gray-500 line-clamp-1">{room.currentVideo.channelTitle}</p>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-gray-500 line-clamp-1">沒有播放影片</p>
+                  )}
+                  {/* User avatars */}
+                  {room.users && room.users.length > 0 && (
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="flex -space-x-2">
+                        {room.users.slice(0, 4).map((user) => (
+                          <div 
+                            key={user.id}
+                            className="relative w-6 h-6 rounded-full border-2 border-[#1e1e1e] overflow-hidden bg-gray-700"
+                            title={user.username}
+                          >
+                            <img 
+                              src={user.avatar} 
+                              alt={user.username}
+                              className="w-full h-full object-cover"
+                            />
+                            {user.emotion && (
+                              <div className="absolute -bottom-0.5 -right-0.5 text-[10px] leading-none bg-black/80 rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                                {getEmotionEmoji(user.emotion)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {room.users.length > 4 && (
+                        <span className="text-xs text-gray-500">+{room.users.length - 4}</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

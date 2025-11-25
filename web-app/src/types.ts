@@ -27,3 +27,17 @@ export interface Message {
   content: string;
   timestamp: number;
 }
+
+export interface CurrentVideo {
+  videoId: string;
+  title: string;
+  channelTitle: string;
+  thumbnailUrl: string;
+}
+
+export interface RoomUser {
+  id: string;
+  username: string;
+  avatar: string;
+  emotion?: string;
+}
