@@ -8,7 +8,6 @@ const CreateRoom = () => {
   
   // Create Room State
   const [newRoomName, setNewRoomName] = useState('');
-  const [newRoomDescription, setNewRoomDescription] = useState('');
   const [playlist, setPlaylist] = useState<VideoItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
@@ -55,7 +54,6 @@ const CreateRoom = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           name: newRoomName,
-          description: newRoomDescription,
           initialPlaylist: playlist 
         }),
       });
@@ -73,10 +71,10 @@ const CreateRoom = () => {
     <div className="h-screen bg-[#050505] text-white font-sans selection:bg-purple-500/30 flex flex-col overflow-hidden">
       <Header />
 
-      <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6 min-h-0 pt-24">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6 min-h-0 pt-24">
         
         {/* Column 1: Room Info */}
-        <div className="w-full lg:w-80 flex flex-col gap-6 flex-shrink-0">
+        <div className="w-full lg:w-72 flex flex-col gap-4 flex-shrink-0">
           <div>
             <button 
               onClick={() => navigate('/')}
@@ -93,31 +91,18 @@ const CreateRoom = () => {
             </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="form-control w-full">
-              <label className="label py-1">
-                <span className="label-text text-gray-300 font-medium">房間名稱</span>
-              </label>
-              <input 
-                type="text" 
-                placeholder="例如：週五恐怖夜" 
-                className="input input-md bg-[#121212] border-white/10 focus:border-purple-500 w-full text-white rounded-xl transition-all focus:bg-black"
-                value={newRoomName}
-                onChange={(e) => setNewRoomName(e.target.value)}
-                autoFocus
-              />
-            </div>
-            <div className="form-control w-full">
-              <label className="label py-1">
-                <span className="label-text text-gray-300 font-medium">房間描述 (選填)</span>
-              </label>
-              <textarea 
-                placeholder="介紹一下這個房間..." 
-                className="textarea textarea-md bg-[#121212] border-white/10 focus:border-purple-500 w-full text-white h-32 rounded-xl transition-all focus:bg-black resize-none"
-                value={newRoomDescription}
-                onChange={(e) => setNewRoomDescription(e.target.value)}
-              />
-            </div>
+          <div className="form-control w-full">
+            <label className="label py-1">
+              <span className="label-text text-gray-300 font-medium">房間名稱</span>
+            </label>
+            <input 
+              type="text" 
+              placeholder="例如：週五恐怖夜" 
+              className="input input-md bg-[#121212] border-white/10 focus:border-purple-500 w-full text-white rounded-xl transition-all focus:bg-black"
+              value={newRoomName}
+              onChange={(e) => setNewRoomName(e.target.value)}
+              autoFocus
+            />
           </div>
 
           <div className="mt-auto">

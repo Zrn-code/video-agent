@@ -11,8 +11,50 @@ interface Room {
   videoState: {
     url: string;
     playing: boolean;
+    played: number;
+    duration: number;
+    lastUpdated: number;
+    playbackRate: number;
   };
 }
+
+const RoomTimeDisplay = ({ videoState }: { videoState: Room['videoState'] }) => {
+  const [currentTime, setCurrentTime] = useState(videoState.played);
+
+  useEffect(() => {
+    // 如果正在播放，實時更新播放時間
+    if (videoState.playing) {
+      const updateTime = () => {
+        const now = Date.now() / 1000;
+        const elapsed = now - videoState.lastUpdated;
+        const newTime = videoState.played + (elapsed * videoState.playbackRate);
+        setCurrentTime(newTime);
+      };
+
+      updateTime();
+      const interval = setInterval(updateTime, 100); // 每100ms更新一次
+      return () => clearInterval(interval);
+    } else {
+      setCurrentTime(videoState.played);
+    }
+  }, [videoState.playing, videoState.played, videoState.lastUpdated, videoState.playbackRate]);
+
+  const formatTime = (seconds: number) => {
+    if (!seconds || isNaN(seconds)) return '00:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className={`w-1.5 h-1.5 rounded-full ${videoState.playing ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`}></div>
+      <span className="text-xs font-mono text-gray-400">
+        {formatTime(currentTime)} / {formatTime(videoState.duration)}
+      </span>
+    </div>
+  );
+};
 
 const Lobby = () => {
   const navigate = useNavigate();
@@ -26,7 +68,10 @@ const Lobby = () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`);
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched rooms:', data.length, 'rooms');
         setRooms(data);
+      } else {
+        console.error('Failed to fetch rooms, status:', response.status);
       }
     } catch (error) {
       console.error('Failed to fetch rooms:', error);
@@ -37,7 +82,7 @@ const Lobby = () => {
 
   useEffect(() => {
     fetchRooms();
-    const interval = setInterval(fetchRooms, 5000);
+    const interval = setInterval(fetchRooms, 500); // 0.5秒
     return () => clearInterval(interval);
   }, []);
 
@@ -164,14 +209,12 @@ const Lobby = () => {
                        </span>
                      </div>
 
-                     <div className="absolute top-2 right-2 z-20">
-                       <span className="flex items-center gap-1 px-2 py-0.5 rounded bg-red-500/90 backdrop-blur-md text-white text-[10px] font-bold shadow-lg shadow-red-900/20">
-                         <span className="relative flex h-1.5 w-1.5">
-                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                           <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
-                         </span>
-                         LIVE
-                       </span>
+                     <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1">
+                       {room.videoState.url && (
+                          <div className="bg-black/60 backdrop-blur-md rounded-full px-3 py-1 border border-white/10">
+                            <RoomTimeDisplay videoState={room.videoState} />
+                          </div>
+                       )}
                      </div>
                      
                      {/* Play Overlay */}

@@ -11,6 +11,13 @@ interface HeaderProps {
   onToggleCamera?: () => void;
   isMicEnabled?: boolean;
   onToggleMic?: () => void;
+  serverVideoState?: {
+    played: number;
+    lastUpdated: number;
+    playing: boolean;
+    playbackRate: number;
+  };
+  currentTime?: number;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -22,9 +29,40 @@ const Header: React.FC<HeaderProps> = ({
   isCameraEnabled,
   onToggleCamera,
   isMicEnabled,
-  onToggleMic
+  onToggleMic,
+  serverVideoState,
+  currentTime
 }) => {
   const navigate = useNavigate();
+  const [serverTime, setServerTime] = React.useState<string>('00:00');
+
+  React.useEffect(() => {
+    if (!serverVideoState) return;
+
+    const updateTime = () => {
+      const now = Date.now() / 1000;
+      let current = serverVideoState.played;
+      
+      if (serverVideoState.playing) {
+        const diff = now - serverVideoState.lastUpdated;
+        current += diff * serverVideoState.playbackRate;
+      }
+      
+      const minutes = Math.floor(current / 60);
+      const seconds = Math.floor(current % 60);
+      setServerTime(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 100);
+    return () => clearInterval(interval);
+  }, [serverVideoState]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="h-16 bg-[#0f0f0f]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 fixed top-0 right-0 left-0 z-50 transition-all duration-300">
@@ -43,6 +81,12 @@ const Header: React.FC<HeaderProps> = ({
             </button>
             <div className="h-6 w-px bg-white/10 mx-2"></div>
             <h1 className="text-white font-medium text-lg">{roomName}</h1>
+            {(serverVideoState || currentTime !== undefined) && (
+              <div className="ml-4 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 flex items-center gap-2">
+                <div className={`w-1.5 h-1.5 rounded-full ${serverVideoState?.playing ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`}></div>
+                Time: {currentTime !== undefined ? formatTime(currentTime) : serverTime}
+              </div>
+            )}
           </>
         ) : (
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>

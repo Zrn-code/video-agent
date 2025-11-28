@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 
@@ -21,9 +21,19 @@ const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
 
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<HTMLVideoElement | null>(null);
   const urlInputRef = useRef<HTMLInputElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const lastSeekTimeRef = useRef<number>(0); // 記錄最近一次跳轉或狀態變化時間
+  const isUserSeekingRef = useRef<boolean>(false); // 記錄用戶是否正在操作
+  const lastAutoSyncTimeRef = useRef<number>(0); // 記錄上次自動同步時間，防止頻繁同步
+  const hasInitialSeekedRef = useRef<boolean>(false); // 記錄是否已經初始化 seek 過
+
+  const setPlayerRef = useCallback((player: HTMLVideoElement) => {
+    if (!player) return;
+    playerRef.current = player;
+  }, []);
 
   const [userId] = useState<string>(() => {
     const stored = localStorage.getItem('video_agent_userid');
@@ -63,7 +73,6 @@ const Room = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [faceLandmarker, setFaceLandmarker] = useState<FaceLandmarker | null>(null);
   const [webcamRunning, setWebcamRunning] = useState(false);
-  const [modelError, setModelError] = useState<string>('');
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -180,7 +189,7 @@ const Room = () => {
         // startWebcam(); // Manual start only
       } catch (error) {
         console.error("Error initializing MediaPipe:", error);
-        setModelError('Failed to load AI model');
+        // setModelError('Failed to load AI model');
       }
     };
     initMediaPipe();
@@ -196,7 +205,7 @@ const Room = () => {
       }
     } catch (err) {
       console.error("Error accessing webcam:", err);
-      setModelError('Camera access denied');
+      // setModelError('Camera access denied');
     }
   };
 
@@ -263,7 +272,10 @@ const Room = () => {
              finalEmotion = heldEmotionRef.current;
           }
           
-          setEmotion(finalEmotion);
+          if (finalEmotion !== emotion) {
+             setEmotion(finalEmotion);
+             // Emotion will be sent via heartbeat polling
+          }
         }
       }
     } catch (error) {
@@ -304,13 +316,27 @@ const Room = () => {
   };
 
   const [state, setState] = useState<PlayerState>(initialState);
+  const [serverVideoState, setServerVideoState] = useState<{
+    played: number;
+    lastUpdated: number;
+    playing: boolean;
+    playbackRate: number;
+  } | undefined>(undefined);
+
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string>('');
   
   const [queue, setQueue] = useState<VideoItem[]>([]);
   const [history, setHistory] = useState<VideoItem[]>([]);
-  const [currentVideo, setCurrentVideo] = useState<VideoItem | null>(null);
+
+  // 當 src 變更時，重置初始化 seek 標記
+  useEffect(() => {
+    if (state.src) {
+      hasInitialSeekedRef.current = false;
+    }
+  }, [state.src]);
+
   // Room Management
   useEffect(() => {
     const joinRoom = async () => {
@@ -323,7 +349,7 @@ const Room = () => {
         
         setRoomName(roomData.name || 'Unknown Room');
 
-        // Join room
+        // Join room via HTTP
         await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/join`, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -341,10 +367,27 @@ const Room = () => {
             ...prev,
             src: roomData.videoState.url,
             playing: roomData.videoState.playing,
-            played: roomData.videoState.played,
-            playbackRate: roomData.videoState.playbackRate
+            playedSeconds: roomData.videoState.played,
+            playbackRate: roomData.videoState.playbackRate,
+            duration: roomData.videoState.duration || 0
           }));
+          setServerVideoState({
+            played: roomData.videoState.played,
+            lastUpdated: roomData.videoState.lastUpdated,
+            playing: roomData.videoState.playing,
+            playbackRate: roomData.videoState.playbackRate
+          });
+          
+          // Seek to initial position
+          if (playerRef.current && roomData.videoState.played > 0) {
+            setTimeout(() => {
+              if (playerRef.current) {
+                playerRef.current.currentTime = roomData.videoState.played;
+              }
+            }, 500);
+          }
         }
+
       } catch (error) {
         console.error('Failed to join room:', error);
         setSearchError('Failed to join room');
@@ -366,84 +409,305 @@ const Room = () => {
     };
   }, [roomId, userId, navigate]);
 
-  // Heartbeat Loop
+  // WebSocket 連接和播放進度同步
+  useEffect(() => {
+    if (!roomId || !userId) return;
+
+    const wsUrl = `${import.meta.env.VITE_API_URL.replace('http', 'ws')}/api/ws/${roomId}/${userId}`;
+    const ws = new WebSocket(wsUrl);
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+      // 發送加入訊息
+      ws.send(JSON.stringify({
+        type: 'join',
+        user: {
+          username,
+          avatar,
+          emotion: emotionRef.current
+        }
+      }));
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('WebSocket message:', data);
+
+        if (data.type === 'video_state_update' && data.sender !== userId) {
+          // 接收其他用戶的播放狀態更新
+          const serverState = data.state;
+          
+          // 更新本地狀態
+          setState(prev => ({
+            ...prev,
+            playing: serverState.playing,
+            playedSeconds: serverState.played,
+            duration: serverState.duration || prev.duration,
+            playbackRate: serverState.playbackRate
+          }));
+
+          // 計算當前伺服器時間（只有播放中才外推，WebSocket延遲小）
+          let currentServerTime = serverState.played;
+          if (serverState.playing && serverState.lastUpdated) {
+            const now = Date.now();
+            const serverTimestamp = serverState.lastUpdated * 1000;
+            const timeSinceUpdate = (now - serverTimestamp) / 1000;
+            const playbackRate = serverState.playbackRate || 1.0;
+            
+            // WebSocket 延遲通常很小，只外推少量時間
+            if (timeSinceUpdate < 2) { // 只在2秒內外推
+              currentServerTime = serverState.played + (timeSinceUpdate * playbackRate);
+              if (serverState.duration && currentServerTime > serverState.duration) {
+                currentServerTime = serverState.duration;
+              }
+            }
+          }
+
+          // 同步播放器
+          if (playerRef.current && !isUserSeekingRef.current) {
+            const currentTime = playerRef.current.currentTime;
+            const timeDiff = Math.abs(currentTime - currentServerTime);
+            
+            // 固定容忍度：1.5 秒
+            const tolerance = 1.5;
+            
+            // 防抖動：至少間隔 2 秒才能再次自動同步
+            const timeSinceLastAutoSync = Date.now() - lastAutoSyncTimeRef.current;
+            const canAutoSync = timeSinceLastAutoSync > 2000;
+            
+            // 如果時間差超過容忍度，且允許同步，進行 seek
+            if (timeDiff > tolerance && canAutoSync) {
+              console.log(`WS Sync to ${currentServerTime.toFixed(2)}s (server: ${serverState.played.toFixed(2)}s, diff: ${timeDiff.toFixed(2)}s, tolerance: ${tolerance}s)`);
+              playerRef.current.currentTime = currentServerTime;
+              lastAutoSyncTimeRef.current = Date.now(); // 記錄自動同步時間
+              // 不重置 lastSeekTimeRef，避免連鎖反應
+            } else if (timeDiff > tolerance) {
+              console.log(`WS Sync skipped: diff=${timeDiff.toFixed(2)}s but synced ${timeSinceLastAutoSync}ms ago`);
+            }
+          }
+        } else if (data.type === 'users_update') {
+          setRoomUsers(data.users || []);
+        } else if (data.type === 'new_message') {
+          setMessages(prev => [...prev, data.message]);
+        }
+      } catch (error) {
+        console.error('Failed to parse WebSocket message:', error);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+
+    // 心跳和表情更新（每 2 秒）
+    const heartbeatInterval = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+          type: 'emotion',
+          emotion: emotionRef.current
+        }));
+      }
+    }, 2000);
+
+    // 播放進度發送（每 1 秒）
+    const progressInterval = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN && state.src && playerRef.current) {
+        try {
+          const currentTime = playerRef.current.currentTime || 0;
+          const duration = playerRef.current.duration || 0;
+          
+          ws.send(JSON.stringify({
+            type: 'video_state',
+            state: {
+              playing: state.playing,
+              played: currentTime,
+              duration: duration,
+              playbackRate: state.playbackRate
+            }
+          }));
+        } catch (error) {
+          console.error('Error sending progress:', error);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(heartbeatInterval);
+      clearInterval(progressInterval);
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
+    };
+  }, [roomId, userId, username, avatar, state.src, state.playing, state.playbackRate]);
+
+  // 定時從 server 拉取最新播放狀態（每 1 秒）
   useEffect(() => {
     if (!roomId) return;
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/heartbeat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, username, avatar, emotion: emotionRef.current, isFocused: isFocusedRef.current })
-        });
-        
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}`);
         if (res.ok) {
           const data = await res.json();
-          // Update room users list in realtime
-          if (data.users) {
-            setRoomUsers(data.users);
+          const serverState = data.videoState;
+          
+          setQueue(data.queue || []);
+          setHistory(data.history || []);
+          
+          // 更新 server 視頻狀態用於顯示
+          setServerVideoState({
+            played: serverState.played,
+            lastUpdated: serverState.lastUpdated,
+            playing: serverState.playing,
+            playbackRate: serverState.playbackRate
+          });
+
+          // 計算當前伺服器時間（只有播放中才外推）
+          let currentServerTime = serverState.played;
+          if (serverState.playing) {
+            const now = Date.now();
+            const serverTimestamp = serverState.lastUpdated * 1000;
+            const timeSinceUpdate = (now - serverTimestamp) / 1000;
+            const playbackRate = serverState.playbackRate || 1.0;
+            currentServerTime = serverState.played + (timeSinceUpdate * playbackRate);
+            if (serverState.duration && currentServerTime > serverState.duration) {
+              currentServerTime = serverState.duration;
+            }
           }
-          if (data.messages) {
-            setMessages(data.messages);
+
+          // 同步播放狀態
+          if (serverState.url && serverState.url !== state.src) {
+            setState(prev => ({
+              ...prev,
+              src: serverState.url,
+              playing: serverState.playing,
+              playbackRate: serverState.playbackRate,
+              duration: serverState.duration || prev.duration
+            }));
+          } else if (playerRef.current && !isUserSeekingRef.current) {
+            const currentTime = playerRef.current.currentTime || 0;
+            const timeDiff = Math.abs(currentTime - currentServerTime);
+            
+            // 固定容忍度：1.5 秒
+            const tolerance = 1.5;
+            
+            // 防抖動：至少間隔 2 秒才能再次自動同步
+            const timeSinceLastAutoSync = Date.now() - lastAutoSyncTimeRef.current;
+            const canAutoSync = timeSinceLastAutoSync > 2000;
+            
+            // 同步 duration 如果 server 有更新的值
+            if (serverState.duration && serverState.duration !== state.duration) {
+              setState(prev => ({ ...prev, duration: serverState.duration }));
+            }
+            
+            // 只有時間差異大於容忍度且允許同步才強制同步，避免頻繁跳動
+            if (timeDiff > tolerance && canAutoSync) {
+              console.log(`HTTP Sync: diff=${timeDiff.toFixed(2)}s, tolerance=${tolerance}s, seeking to ${currentServerTime.toFixed(2)}s`);
+              playerRef.current.currentTime = currentServerTime;
+              lastAutoSyncTimeRef.current = Date.now(); // 記錄自動同步時間
+              // 不重置 lastSeekTimeRef，避免連鎖反應
+            } else if (timeDiff > tolerance) {
+              console.log(`HTTP Sync skipped: diff=${timeDiff.toFixed(2)}s but synced ${timeSinceLastAutoSync}ms ago`);
+            }
+            
+            // 同步播放/暫停狀態
+            if (state.playing !== serverState.playing) {
+              setState(prev => ({ ...prev, playing: serverState.playing }));
+            }
           }
         }
       } catch (error) {
-        console.error('Heartbeat failed:', error);
+        console.error('Failed to sync room state:', error);
       }
-    }, 1000);
+    }, 1000); // 1秒
 
     return () => clearInterval(interval);
-  }, [roomId, userId, username, avatar]);
+  }, [roomId, state.src, state.playing]);
 
   const syncToRoom = async () => {
-    if (!roomId) return;
+    if (!roomId) {
+      console.error('syncToRoom: roomId is null');
+      return;
+    }
+    
+    console.log('syncToRoom: Starting sync...');
+    
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}`);
+      console.log('syncToRoom: Response status:', res.status);
+      
       if (res.ok) {
         const data = await res.json();
         const serverState = data.videoState;
+        
+        console.log('syncToRoom: Server state:', serverState);
+        console.log('syncToRoom: playerRef.current:', playerRef.current);
         
         setQueue(data.queue || []);
         setHistory(data.history || []);
         setRoomUsers(data.users || []);
         setMessages(data.messages || []);
 
+        // 計算當前伺服器應該的播放時間（考慮時間外推）
+        let currentServerTime = serverState.played;
+        if (serverState.playing && serverState.lastUpdated) {
+          const now = Date.now() / 1000; // 轉換為秒
+          const timeSinceUpdate = now - serverState.lastUpdated;
+          currentServerTime = serverState.played + (timeSinceUpdate * serverState.playbackRate);
+          
+          // 如果有 duration，確保不超過影片長度
+          if (serverState.duration > 0 && currentServerTime > serverState.duration) {
+            currentServerTime = serverState.duration;
+          }
+        }
+
+        console.log('syncToRoom: Calculated server time - played:', serverState.played, 'extrapolated:', currentServerTime);
+
         setState(prev => ({
           ...prev,
           src: serverState.url,
           playing: serverState.playing,
-          playbackRate: serverState.playbackRate
+          playbackRate: serverState.playbackRate,
+          duration: serverState.duration || prev.duration
         }));
         
-        if (playerRef.current && serverState.played > 0) {
-           playerRef.current.seekTo(serverState.played);
+        if (playerRef.current) {
+          console.log('syncToRoom: Seeking to', currentServerTime, 'seconds');
+          playerRef.current.currentTime = currentServerTime;
+          lastSeekTimeRef.current = Date.now(); // 記錄手動同步時間
+        } else {
+          console.error('syncToRoom: playerRef.current is null!');
         }
+      } else {
+        console.error('syncToRoom: Response not ok:', res.status);
       }
     } catch (error) {
-      console.error('Sync failed:', error);
+      console.error('syncToRoom: Failed to sync:', error);
     }
   };
 
-  // Update server state when local state changes (debounced or on specific events)
-  const updateServerState = async (updates: Partial<PlayerState>) => {
-    if (!roomId) return;
+  // 通過 WebSocket 發送播放狀態更新
+  const updateServerState = (updates: Partial<PlayerState> & { duration?: number }) => {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
     
-    try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/state`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          url: updates.src,
-          playing: updates.playing,
-          played: updates.played,
-          playbackRate: updates.playbackRate
-        })
-      });
-    } catch (error) {
-      console.error('Failed to update server state:', error);
-    }
+    wsRef.current.send(JSON.stringify({
+      type: 'video_state',
+      state: {
+        playing: updates.playing,
+        played: updates.played || 0,
+        duration: updates.duration || state.duration,
+        playbackRate: updates.playbackRate || state.playbackRate
+      }
+    }));
   };
+
+  // 播放進度同步已整合到心跳邏輯中
 
   // YouTube 搜尋功能
   const performSearch = async (queryOverride?: string) => {
@@ -501,10 +765,10 @@ const Room = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(video)
       });
-      // Optimistic update or wait for sync
-      syncToRoom();
       // Switch to queue tab to show feedback
       setSidebarTab('playlist');
+      // 立即刷新隊列
+      syncToRoom();
     } catch (error) {
       console.error('Failed to add to queue:', error);
     }
@@ -513,7 +777,10 @@ const Room = () => {
   const removeFromQueue = async (index: number) => {
     if (!roomId) return;
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/queue/${index}`, { method: 'DELETE' });
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/queue/${index}`, {
+        method: 'DELETE'
+      });
+      // 立即刷新隊列
       syncToRoom();
     } catch (error) {
       console.error('Failed to remove from queue:', error);
@@ -523,38 +790,89 @@ const Room = () => {
   const playVideo = async (video: VideoItem) => {
     if (!roomId) return;
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/play`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/play`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(video)
       });
-      setCurrentVideo(video);
-      syncToRoom();
+      if (res.ok) {
+        const data = await res.json();
+        setState(prev => ({
+          ...prev,
+          src: data.videoState.url,
+          playing: true,
+          played: 0
+        }));
+        setHistory(data.history);
+      }
     } catch (error) {
       console.error('Failed to play video:', error);
+    }
+  };
+
+  const handlePlayerReady = () => {
+    console.log('onReady');
+    // 只在初次載入且時間差距較大時 seek 到伺服器時間
+    if (!hasInitialSeekedRef.current && playerRef.current && serverVideoState?.played && serverVideoState.played > 0) {
+      const currentTime = playerRef.current.currentTime || 0;
+      const timeDiff = Math.abs(currentTime - serverVideoState.played);
+      
+      // 只有時間差 > 1.5 秒才 seek，避免無限迴圈
+      if (timeDiff > 1.5) {
+        console.log(`Initial seek: from ${currentTime.toFixed(2)}s to ${serverVideoState.played.toFixed(2)}s (diff: ${timeDiff.toFixed(2)}s)`);
+        playerRef.current.currentTime = serverVideoState.played;
+        hasInitialSeekedRef.current = true;
+        lastSeekTimeRef.current = Date.now();
+      } else {
+        console.log(`Skipping initial seek: diff ${timeDiff.toFixed(2)}s < 1.5s`);
+        hasInitialSeekedRef.current = true; // 仍然標記為已 seek，避免重複檢查
+      }
     }
   };
 
   const handlePlay = () => {
     console.log('onPlay');
     setState(prevState => ({ ...prevState, playing: true }));
-    updateServerState({ playing: true });
+    lastSeekTimeRef.current = Date.now(); // 記錄播放狀態變化時間，避免立即同步
+    // Send current time when resuming playback
+    if (playerRef.current) {
+      const currentTime = playerRef.current.currentTime || 0;
+      const duration = playerRef.current.duration || 0;
+      updateServerState({ 
+        playing: true, 
+        played: currentTime,
+        duration: duration,
+        playbackRate: state.playbackRate
+      });
+    } else {
+      updateServerState({ playing: true });
+    }
   };
 
   const handlePause = () => {
     console.log('onPause');
     setState(prevState => ({ ...prevState, playing: false }));
-    updateServerState({ playing: false });
+    lastSeekTimeRef.current = Date.now(); // 記錄暫停狀態變化時間，避免立即同步
+    // Send current time when pausing
+    if (playerRef.current) {
+      const currentTime = playerRef.current.currentTime || 0;
+      const duration = playerRef.current.duration || 0;
+      updateServerState({ 
+        playing: false, 
+        played: currentTime,
+        duration: duration,
+        playbackRate: state.playbackRate
+      });
+    } else {
+      updateServerState({ playing: false });
+    }
   };
 
-  const handleProgress = () => {
-    const player = playerRef.current;
-    if (!player || state.seeking || !player.buffered?.length) return;
-
+  const handleProgress = (progress: any) => {
+    if (state.seeking) return;
     setState(prevState => ({
       ...prevState,
-      loadedSeconds: player.buffered?.end(player.buffered?.length - 1),
-      loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
+      ...progress
     }));
   };
 
@@ -576,46 +894,67 @@ const Room = () => {
     setState(prevState => ({ ...prevState, playing: prevState.loop }));
   };
 
+  const handleSeeking = () => {
+    console.log('onSeeking');
+    setState(prevState => ({ ...prevState, seeking: true }));
+    isUserSeekingRef.current = true; // 標記用戶正在操作
+  };
+
   const handleDurationChange = () => {
     const player = playerRef.current;
     if (!player) return;
 
-    console.log('onDurationChange', player.duration);
-    setState(prevState => ({ ...prevState, duration: player.duration }));
+    const duration = player.duration || 0;
+    const currentTime = player.currentTime || 0;
+    console.log('onDurationChange', duration);
+    setState(prevState => ({ ...prevState, duration }));
+    
+    // Send duration and current state to server immediately
+    updateServerState({
+      src: state.src,
+      playing: state.playing,
+      played: currentTime,
+      duration: duration,
+      playbackRate: state.playbackRate
+    });
   };
 
-  const setPlayerRef = useCallback((player: HTMLVideoElement) => {
-    if (!player) return;
-    playerRef.current = player;
-  }, []);
-
-  const handleLeaveRoom = () => {
-    navigate('/');
+  const handleSeeked = () => {
+    console.log('onSeeked');
+    setState(prevState => ({ ...prevState, seeking: false }));
+    
+    // 記錄跳轉時間，用於後續判斷是否要放寬同步
+    lastSeekTimeRef.current = Date.now();
+    isUserSeekingRef.current = false;
+    
+    // Send current position to server immediately after seek with fresh timestamp
+    if (playerRef.current) {
+      const currentTime = playerRef.current.currentTime || 0;
+      const duration = playerRef.current.duration || 0;
+      console.log('Seek completed, sending time:', currentTime, 'duration:', duration);
+      updateServerState({ 
+        src: state.src,
+        played: currentTime,
+        playing: state.playing,
+        duration: duration,
+        playbackRate: state.playbackRate
+      });
+    }
   };
-
-
 
   const handleSendMessage = async (content: string) => {
     if (!roomId) return;
     
-    // Optimistic update
-    const newMessage: Message = {
-      id: 'temp-' + Date.now(),
-      userId,
-      username,
-      content,
-      timestamp: Date.now() / 1000
-    };
-    setMessages(prev => [...prev, newMessage]);
-
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, username, content })
+        body: JSON.stringify({
+          userId,
+          username,
+          content
+        })
       });
-      // No need to update local state immediately, heartbeat will pick it up
-      // But for better UX we could optimistically add it
     } catch (error) {
       console.error('Failed to send message:', error);
     }
@@ -640,7 +979,6 @@ const Room = () => {
     duration,
     playbackRate,
     pip,
-    playedSeconds,
   } = state;
 
   // Audio Player Ref for Review
@@ -676,6 +1014,8 @@ const Room = () => {
         onToggleCamera={toggleCamera}
         isMicEnabled={isMicEnabled}
         onToggleMic={toggleMic}
+        serverVideoState={serverVideoState}
+        currentTime={state.playedSeconds}
       />
 
       <div className="flex flex-1 pt-16 overflow-hidden relative bg-black">
@@ -825,8 +1165,11 @@ const Room = () => {
                       light={light}
                       loop={loop}
                       playbackRate={playbackRate}
+                      onReady={handlePlayerReady}
                       onPlay={handlePlay}
                       onPause={handlePause}
+                      onSeeking={handleSeeking}
+                      onSeeked={handleSeeked}
                       onEnded={handleEnded}
                       onProgress={handleProgress}
                       onDurationChange={handleDurationChange}
@@ -834,8 +1177,32 @@ const Room = () => {
                     />
                     
                     {/* Sync Button Overlay */}
-                    <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                       <button onClick={syncToRoom} className="btn btn-sm bg-black/60 border-white/10 text-white hover:btn-primary backdrop-blur-md gap-2 shadow-xl">
+                    <div className="absolute top-6 right-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                       <button 
+                         onClick={() => {
+                           if (playerRef.current) {
+                             const testTime = 30; // 30秒
+                             console.log('Test jump to:', testTime, 'duration:', playerRef.current.duration);
+                             playerRef.current.currentTime = testTime;
+                             lastSeekTimeRef.current = Date.now(); // 記錄測試跳轉時間
+                           } else {
+                             console.error('playerRef is null');
+                           }
+                         }} 
+                         className="btn btn-sm bg-black/60 border-white/10 text-white hover:bg-orange-600 backdrop-blur-md gap-2 shadow-xl"
+                       >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Jump 0:30
+                       </button>
+                       <button 
+                         onClick={() => {
+                           console.log('Sync button clicked, playerRef:', playerRef.current);
+                           syncToRoom();
+                         }} 
+                         className="btn btn-sm bg-black/60 border-white/10 text-white hover:btn-primary backdrop-blur-md gap-2 shadow-xl"
+                       >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                           </svg>
