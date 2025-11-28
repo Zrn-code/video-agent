@@ -32,6 +32,7 @@ interface SidebarProps {
   onRemoveFromQueue: (index: number) => void;
   onAddToQueue: (video: VideoItem) => void;
   onSearch: (query: string) => void;
+  hideChat?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -48,7 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   onPlay,
   onRemoveFromQueue,
   onAddToQueue,
-  onSearch
+  onSearch,
+  hideChat = false
 }) => {
   const [chatInput, setChatInput] = useState('');
   const [searchInput, setSearchInput] = useState('');
@@ -87,6 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     <div className="w-96 bg-[#1e1f22]/95 backdrop-blur-xl border-l border-white/10 flex flex-col h-full shadow-2xl rounded-l-3xl overflow-hidden my-2 mr-2">
       {/* Tabs */}
       <div className="flex border-b border-white/5 bg-[#151618]">
+        {!hideChat && (
         <button
           className={`flex-1 py-4 text-sm font-bold transition-all relative ${
             activeTab === 'chat' 
@@ -100,6 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
           )}
         </button>
+        )}
         <button
           className={`flex-1 py-4 text-sm font-bold transition-all relative ${
             activeTab === 'playlist' 

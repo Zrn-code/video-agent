@@ -72,6 +72,7 @@ class User(BaseModel):
 class Room(BaseModel):
     id: str
     name: str
+    description: Optional[str] = None
     userCount: int = 0
     users: List[User] = []
     videoState: VideoState
@@ -81,9 +82,10 @@ class Room(BaseModel):
     messages: List[Message] = []
 
 class RoomInternal:
-    def __init__(self, id, name, videoState):
+    def __init__(self, id, name, videoState, description=None):
         self.id = id
         self.name = name
+        self.description = description
         self.videoState = videoState
         self.currentVideo: Optional[CurrentVideo] = None
         self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp}
@@ -93,6 +95,8 @@ class RoomInternal:
 
 class CreateRoomRequest(BaseModel):
     name: str
+    description: Optional[str] = None
+    initialPlaylist: Optional[List[VideoItem]] = []
 
 class UpdateStateRequest(BaseModel):
     url: Optional[str] = None
@@ -200,6 +204,18 @@ async def update_mock_emotions():
     emotions = ['Happy', 'Neutral', 'Sad', 'Surprise', 'Excited', 'Thinking', 'Laughing']
     while True:
         await asyncio.sleep(random.uniform(3, 8))
+        
+        # Cleanup empty rooms (except demo rooms which might have mock users)
+        # We need to iterate over a copy of keys because we might delete items
+        for room_id in list(rooms.keys()):
+            room = rooms[room_id]
+            cleanup_users(room)
+            # If room has no users and is not a demo room (demo rooms have mock users, so they won't be empty unless we strip mock users)
+            # Actually, cleanup_users keeps mock users. So if len(users) == 0, it's truly empty.
+            if len(room.users) == 0:
+                del rooms[room_id]
+                continue
+
         for room in rooms.values():
             for user_id, user_info in room.users.items():
                 if user_id.startswith('mock-user-'):
@@ -234,6 +250,7 @@ def get_room_response(room: RoomInternal) -> Room:
     return Room(
         id=room.id,
         name=room.name,
+        description=room.description,
         userCount=len(room.users),
         users=users_list,
         videoState=room.videoState,
@@ -253,8 +270,25 @@ async def create_room(request: CreateRoomRequest):
     new_room = RoomInternal(
         id=room_id,
         name=request.name,
+        description=request.description,
         videoState=VideoState()
     )
+    
+    if request.initialPlaylist:
+        new_room.queue = request.initialPlaylist
+        # Automatically play the first video if playlist is not empty
+        if len(new_room.queue) > 0:
+            first_video = new_room.queue[0]
+            new_room.currentVideo = CurrentVideo(
+                videoId=first_video.videoId,
+                title=first_video.title,
+                channelTitle=first_video.channelTitle,
+                thumbnailUrl=first_video.thumbnailUrl
+            )
+            new_room.videoState.url = f"https://www.youtube.com/watch?v={first_video.videoId}"
+            # Remove first video from queue as it is now playing
+            new_room.queue.pop(0)
+
     rooms[room_id] = new_room
     return get_room_response(new_room)
 
@@ -339,6 +373,11 @@ async def leave_room(room_id: str, request: HeartbeatRequest):
     
     if request.userId in rooms[room_id].users:
         del rooms[room_id].users[request.userId]
+    
+    # If room is empty, delete it
+    if len(rooms[room_id].users) == 0:
+        del rooms[room_id]
+        return {"message": "Left room and room deleted"}
         
     return {"message": "Left room"}
 

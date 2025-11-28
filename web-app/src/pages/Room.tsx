@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 
@@ -20,6 +20,7 @@ interface User {
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
+
   const playerRef = useRef<any>(null);
   const urlInputRef = useRef<HTMLInputElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -931,6 +932,7 @@ const Room = () => {
                      localStorage.setItem('video_agent_username', newUsername);
                      localStorage.setItem('video_agent_avatar', newAvatar);
                    }}
+                   hideChat={false}
                  />
              </div>
           </div>
