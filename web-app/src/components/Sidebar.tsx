@@ -190,7 +190,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <input
                   type="text"
                   placeholder="搜尋 YouTube..."
-                  className="w-full bg-[#2b2d31] text-white text-sm rounded-lg pl-9 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full bg-[#2b2d31] text-white text-sm rounded-lg pl-9 pr-9 py-2 focus:outline-none focus:ring-1 focus:ring-purple-500"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -198,6 +198,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 absolute left-3 top-2.5 text-gray-500">
                   <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
                 </svg>
+                {(searchInput || searchResults.length > 0) && (
+                  <button 
+                    onClick={() => {
+                      setSearchInput('');
+                      onSearch('');
+                    }}
+                    className="absolute right-3 top-2.5 text-gray-500 hover:text-white"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
 

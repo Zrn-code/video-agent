@@ -171,7 +171,7 @@ def get_room_response(room: RoomInternal) -> Room:
         queue=room.queue,
         history=room.history,
         messages=room.messages,
-        aiCompanion=room.aiCompanion
+        aiCompanions=room.aiCompanions
     )
 
 async def update_mock_emotions():

@@ -6,7 +6,8 @@ import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import UserDock from '../components/UserDock';
-import type { VideoItem, YouTubeVideo, Message } from '../types';
+import AICompanionSelector from '../components/AICompanionSelector';
+import type { VideoItem, YouTubeVideo, Message, AICompanion } from '../types';
 
 interface User {
   id: string;
@@ -559,6 +560,7 @@ const Room = () => {
           
           setQueue(data.queue || []);
           setHistory(data.history || []);
+          setMessages(data.messages || []);
           
           // 更新 server 視頻狀態用於顯示
           setServerVideoState({
@@ -711,6 +713,13 @@ const Room = () => {
 
   // YouTube 搜尋功能
   const performSearch = async (queryOverride?: string) => {
+    // Allow clearing search results by passing empty string
+    if (queryOverride === '') {
+      setSearchResults([]);
+      setSearchError('');
+      return;
+    }
+
     const query = queryOverride || searchInputRef.current?.value.trim();
     
     if (!query) {
@@ -992,6 +1001,34 @@ const Room = () => {
   }, [pendingAudioUrl]);
   */
 
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [selectedCompanionsToAdd, setSelectedCompanionsToAdd] = useState<AICompanion[]>([]);
+
+  const handleAddCompanions = async () => {
+    if (selectedCompanionsToAdd.length === 0) return;
+
+    // Check room limit (6)
+    if (roomUsers.length + selectedCompanionsToAdd.length > 6) {
+      setSearchError('房間人數上限為 6 人 (含智慧影伴)');
+      setTimeout(() => setSearchError(''), 3000);
+      return;
+    }
+
+    try {
+      for (const companion of selectedCompanionsToAdd) {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/ai-companion`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(companion)
+        });
+      }
+      setShowInviteModal(false);
+      setSelectedCompanionsToAdd([]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#0f0f0f] text-white overflow-hidden font-sans selection:bg-primary selection:text-primary-content">
       <Header 
@@ -1221,11 +1258,7 @@ const Room = () => {
               emotion={emotion}
               isFocused={isFocused}
               messages={messages}
-              onInvite={() => {
-                 navigator.clipboard.writeText(window.location.href);
-                 setSearchError('連結已複製！');
-                 setTimeout(() => setSearchError(''), 2000);
-              }}
+              onInvite={() => setShowInviteModal(true)}
             />
 
             {/* Voice Input Control (Bottom Right of Main Stage) */}
@@ -1350,6 +1383,42 @@ const Room = () => {
       </div>
 
 
+
+      {/* Invite / Add AI Modal */}
+      {showInviteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-[#1e1f22] border border-white/10 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl relative animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setShowInviteModal(false)}
+              className="absolute top-4 right-4 btn btn-circle btn-sm btn-ghost text-gray-400 hover:text-white"
+            >
+              ✕
+            </button>
+            
+            <h2 className="text-2xl font-bold text-white mb-2 text-center">加入智慧影伴</h2>
+            <p className="text-gray-400 text-center mb-8">選擇一位或多位智慧影伴加入房間 (房間上限 6 人)</p>
+
+            <div className="flex flex-col gap-8">
+                {/* AI Selector */}
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-medium text-white">選擇智慧影伴</h3>
+                        <button 
+                            onClick={handleAddCompanions}
+                            disabled={selectedCompanionsToAdd.length === 0}
+                            className="btn btn-primary btn-sm"
+                        >
+                            加入選取的夥伴 ({selectedCompanionsToAdd.length})
+                        </button>
+                    </div>
+                    <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
+                        <AICompanionSelector onSelect={setSelectedCompanionsToAdd} />
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Notifications */}
       {searchError && (

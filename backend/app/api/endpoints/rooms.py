@@ -9,6 +9,7 @@ from app.models.room import (
     AICompanion
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users
+from app.services.connection_manager import manager
 
 router = APIRouter()
 
@@ -24,19 +25,22 @@ async def create_room(request: CreateRoomRequest):
         name=request.name,
         description=request.description,
         videoState=VideoState(),
-        aiCompanion=request.aiCompanion
+        aiCompanions=request.aiCompanions
     )
     
-    if request.aiCompanion:
-        # Add AI companion as a user
-        ai_user_id = f"ai-companion-{uuid.uuid4()}"
-        new_room.users[ai_user_id] = {
-            "username": request.aiCompanion.name,
-            "avatar": request.aiCompanion.avatar,
-            "lastSeen": datetime.now().timestamp(),
-            "emotion": "neutral",
-            "isAi": True
-        }
+    if request.aiCompanions:
+        for companion in request.aiCompanions:
+            # Add AI companion as a user
+            ai_user_id = f"ai-companion-{uuid.uuid4()}"
+            new_room.users[ai_user_id] = {
+                "username": companion.name,
+                "avatar": companion.avatar,
+                "lastSeen": datetime.now().timestamp(),
+                "emotion": "neutral",
+                "isAi": True,
+                "personality": companion.personality,
+                "background": companion.background
+            }
     
     if request.initialPlaylist:
         new_room.queue = request.initialPlaylist
@@ -128,6 +132,12 @@ async def send_chat(room_id: str, request: ChatRequest):
     )
     
     rooms[room_id].messages.append(message)
+    
+    await manager.broadcast({
+        "type": "new_message",
+        "message": message.dict()
+    }, room_id)
+    
     return message
 
 @router.post("/rooms/{room_id}/leave")
@@ -212,4 +222,30 @@ async def play_video(room_id: str, video: VideoItem):
     if len(room.history) > 50: # Keep history size manageable
         room.history.pop()
         
+    return get_room_response(room)
+
+@router.post("/rooms/{room_id}/ai-companion")
+async def add_ai_companion(room_id: str, companion: AICompanion):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    
+    room = rooms[room_id]
+    
+    # Add AI companion as a user
+    ai_user_id = f"ai-companion-{uuid.uuid4()}"
+    room.users[ai_user_id] = {
+        "username": companion.name,
+        "avatar": companion.avatar,
+        "lastSeen": datetime.now().timestamp(),
+        "emotion": "neutral",
+        "isAi": True,
+        "personality": companion.personality,
+        "background": companion.background
+    }
+    
+    # Update room's aiCompanions field
+    if room.aiCompanions is None:
+        room.aiCompanions = []
+    room.aiCompanions.append(companion)
+    
     return get_room_response(room)

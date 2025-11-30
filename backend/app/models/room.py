@@ -27,6 +27,7 @@ class AICompanion(BaseModel):
     personality: str
     background: str
     avatar: str
+    category: Optional[str] = "其他"
 
 class Message(BaseModel):
     id: str
@@ -54,10 +55,10 @@ class Room(BaseModel):
     queue: List[VideoItem] = []
     history: List[VideoItem] = []
     messages: List[Message] = []
-    aiCompanion: Optional[AICompanion] = None
+    aiCompanions: List[AICompanion] = []
 
 class RoomInternal:
-    def __init__(self, id, name, videoState, description=None, aiCompanion=None):
+    def __init__(self, id, name, videoState, description=None, aiCompanions=None):
         self.id = id
         self.name = name
         self.description = description
@@ -67,13 +68,13 @@ class RoomInternal:
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []
         self.messages: List[Message] = []
-        self.aiCompanion = aiCompanion
+        self.aiCompanions = aiCompanions or []
 
 class CreateRoomRequest(BaseModel):
     name: str
     description: Optional[str] = None
     initialPlaylist: Optional[List[VideoItem]] = []
-    aiCompanion: Optional[AICompanion] = None
+    aiCompanions: Optional[List[AICompanion]] = []
 
 class UpdateStateRequest(BaseModel):
     url: Optional[str] = None

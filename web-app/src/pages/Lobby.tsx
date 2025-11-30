@@ -44,6 +44,7 @@ const RoomTimeDisplay = ({ videoState }: { videoState: any }) => {
 const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => void; onJoin: (nickname: string, avatar: string) => void }) => {
   const [nickname, setNickname] = useState(() => localStorage.getItem('video_agent_username') || '');
   const [avatar, setAvatar] = useState(() => localStorage.getItem('video_agent_avatar') || `https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}`);
+  const [showPlaylist, setShowPlaylist] = useState(false);
 
   const randomizeAvatar = () => {
     setAvatar(`https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random().toString(36).substr(2, 9)}`);
@@ -68,7 +69,7 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
         <div className="p-6 space-y-6">
           {/* Room Info Preview */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">正在播放 / 播放清單</h3>
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">正在播放</h3>
             {room.currentVideo ? (
               <div className="flex gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
                 <img src={room.currentVideo.thumbnailUrl} alt="Thumbnail" className="w-20 h-12 object-cover rounded" />
@@ -82,14 +83,26 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
             )}
             
             {room.queue && room.queue.length > 0 && (
-              <div className="pl-2 border-l-2 border-white/10 space-y-2">
-                {room.queue.slice(0, 2).map((video, idx) => (
-                  <div key={idx} className="text-xs text-gray-400 truncate">
-                    {idx + 1}. {video.title}
+              <div className="pt-2">
+                <button 
+                  onClick={() => setShowPlaylist(!showPlaylist)}
+                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+                >
+                  {showPlaylist ? '隱藏播放清單' : `查看播放清單 (${room.queue.length})`}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 transition-transform ${showPlaylist ? 'rotate-180' : ''}`}>
+                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                
+                {showPlaylist && (
+                  <div className="mt-2 pl-2 border-l-2 border-white/10 space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+                    {room.queue.map((video, idx) => (
+                      <div key={idx} className="text-xs text-gray-400 truncate flex gap-2">
+                        <span className="text-gray-600 w-4">{idx + 1}.</span>
+                        <span className="truncate">{video.title}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-                {room.queue.length > 2 && (
-                  <div className="text-xs text-gray-500">...還有 {room.queue.length - 2} 首</div>
                 )}
               </div>
             )}
@@ -230,7 +243,7 @@ const Lobby = () => {
             </span>
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-              您的專屬 AI 觀影夥伴
+              您的專屬智慧影伴
             </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">

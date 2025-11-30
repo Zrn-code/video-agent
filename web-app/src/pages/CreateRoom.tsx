@@ -28,7 +28,7 @@ const CreateRoom = () => {
   const [step, setStep] = useState(1);
   const [newRoomName, setNewRoomName] = useState('');
   const [playlist, setPlaylist] = useState<VideoItem[]>([]);
-  const [selectedCompanion, setSelectedCompanion] = useState<AICompanion | null>(null);
+  const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
   
   // Search State
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,6 +83,7 @@ const CreateRoom = () => {
       if (!newRoomName.trim() || !userName.trim()) return;
       setStep(2);
     } else if (step === 2) {
+      if (playlist.length === 0) return;
       setStep(3);
     }
   };
@@ -97,7 +98,7 @@ const CreateRoom = () => {
         body: JSON.stringify({ 
           name: newRoomName,
           initialPlaylist: playlist,
-          aiCompanion: selectedCompanion
+          aiCompanions: selectedCompanions
         }),
       });
 
@@ -113,7 +114,7 @@ const CreateRoom = () => {
   const stepTitles = {
     1: { title: "設定身份與房間", subtitle: "首先，請設定您的暱稱與房間名稱" },
     2: { title: "建立播放清單", subtitle: "搜尋並加入您想觀看的 YouTube 影片" },
-    3: { title: "選擇 AI 觀影夥伴", subtitle: "AI 影伴將會陪您一起觀看影片，並根據性格做出反應" }
+    3: { title: "選擇智慧影伴", subtitle: "智慧影伴將會陪您一起觀看影片，並根據性格做出反應" }
   };
 
   return (
@@ -151,33 +152,31 @@ const CreateRoom = () => {
             
             {/* Step 1: Identity */}
             {step === 1 && (
-                <div className="h-full flex flex-col md:flex-row items-center justify-center gap-16 animate-fade-in">
-                    {/* Left: Avatar */}
-                    <div className="flex flex-col items-center space-y-8">
+                <div className="h-full flex flex-col items-center justify-center animate-fade-in max-w-2xl mx-auto">
+                    {/* Avatar Section */}
+                    <div className="flex flex-col items-center mb-12">
                         <div className="relative group">
-                            <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white/5 group-hover:border-purple-500/50 transition-all duration-500 bg-[#1a1a1a] shadow-2xl shadow-black/50">
+                            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white/5 group-hover:border-purple-500/50 transition-all duration-500 bg-[#1a1a1a] shadow-2xl shadow-black/50">
                                 <img src={userAvatar} alt="Avatar" className="w-full h-full object-cover" />
                             </div>
-                            <button onClick={randomizeAvatar} className="absolute bottom-4 right-4 btn btn-circle btn-lg btn-primary border-4 border-[#050505] shadow-xl hover:scale-110 transition-transform" title="隨機頭像">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-7 h-7">
+                            <button onClick={randomizeAvatar} className="absolute bottom-2 right-2 btn btn-circle btn-primary border-4 border-[#050505] shadow-xl hover:scale-110 transition-transform" title="隨機頭像">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
                                     <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clipRule="evenodd" />
                                 </svg>
                             </button>
                         </div>
-                        <p className="text-gray-500 font-medium tracking-wide">點擊按鈕隨機生成頭像</p>
+                        <p className="text-gray-500 font-medium tracking-wide mt-4">點擊按鈕隨機生成頭像</p>
                     </div>
 
-                    {/* Right: Inputs */}
-                    <div className="w-full max-w-xl space-y-10">
-                        <div className="space-y-8">
-                            <div className="form-control w-full group">
-                                <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">您的暱稱</span></label>
-                                <input type="text" placeholder="例如：電影狂熱者" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                            </div>
-                            <div className="form-control w-full group">
-                                <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">房間名稱</span></label>
-                                <input type="text" placeholder="例如：週五電影夜" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
-                            </div>
+                    {/* Inputs Section */}
+                    <div className="w-full space-y-6">
+                        <div className="form-control w-full group">
+                            <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">您的暱稱</span></label>
+                            <input type="text" placeholder="例如：電影狂熱者" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                        </div>
+                        <div className="form-control w-full group">
+                            <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">房間名稱</span></label>
+                            <input type="text" placeholder="例如：週五電影夜" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
                         </div>
                     </div>
                 </div>
@@ -285,7 +284,7 @@ const CreateRoom = () => {
             {/* Step 3: AI Companion */}
             {step === 3 && (
                 <div className="h-full overflow-y-auto custom-scrollbar animate-fade-in">
-                    <AICompanionSelector onSelect={setSelectedCompanion} />
+                    <AICompanionSelector onSelect={setSelectedCompanions} />
                 </div>
             )}
           </div>
@@ -305,8 +304,11 @@ const CreateRoom = () => {
             
             <button 
                 onClick={step === 3 ? handleCreateRoom : handleNextStep}
-                disabled={step === 1 && (!newRoomName.trim() || !userName.trim())}
-                className="btn btn-primary btn-lg rounded-2xl px-10 shadow-xl shadow-purple-900/20 min-w-[180px] text-lg hover:scale-105 transition-transform"
+                disabled={
+                    (step === 1 && (!newRoomName.trim() || !userName.trim())) ||
+                    (step === 2 && playlist.length === 0)
+                }
+                className="btn btn-primary btn-lg rounded-2xl px-10 shadow-xl shadow-purple-900/20 min-w-[180px] text-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {step === 1 && "下一步"}
                 {step === 2 && "下一步"}

@@ -48,6 +48,7 @@ export interface AICompanion {
   personality: string;
   background: string;
   avatar: string;
+  category?: string;
 }
 
 export interface Room {
@@ -61,5 +62,5 @@ export interface Room {
   queue: VideoItem[];
   history: VideoItem[];
   messages: Message[];
-  aiCompanion?: AICompanion;
+  aiCompanions?: AICompanion[];
 }
