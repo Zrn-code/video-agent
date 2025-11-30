@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import threading
 import asyncio
 
-from app.api.endpoints import rooms, websocket, youtube, asr
+from app.api.endpoints import rooms, websocket, youtube, asr, ai
 from app.services.room_manager import update_mock_emotions
 
 app = FastAPI()
@@ -22,6 +22,7 @@ app.include_router(rooms.router, prefix="/api")
 app.include_router(websocket.router, prefix="/api")
 app.include_router(youtube.router, prefix="/api")
 app.include_router(asr.router, prefix="/api")
+app.include_router(ai.router, prefix="/api")
 
 # Start background task for mock emotions
 def run_async_task():

@@ -5,7 +5,8 @@ from datetime import datetime
 
 from app.models.room import (
     Room, CreateRoomRequest, RoomInternal, VideoState, CurrentVideo, 
-    HeartbeatRequest, ChatRequest, Message, UpdateStateRequest, VideoItem
+    HeartbeatRequest, ChatRequest, Message, UpdateStateRequest, VideoItem,
+    AICompanion
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users
 
@@ -22,8 +23,20 @@ async def create_room(request: CreateRoomRequest):
         id=room_id,
         name=request.name,
         description=request.description,
-        videoState=VideoState()
+        videoState=VideoState(),
+        aiCompanion=request.aiCompanion
     )
+    
+    if request.aiCompanion:
+        # Add AI companion as a user
+        ai_user_id = f"ai-companion-{uuid.uuid4()}"
+        new_room.users[ai_user_id] = {
+            "username": request.aiCompanion.name,
+            "avatar": request.aiCompanion.avatar,
+            "lastSeen": datetime.now().timestamp(),
+            "emotion": "neutral",
+            "isAi": True
+        }
     
     if request.initialPlaylist:
         new_room.queue = request.initialPlaylist

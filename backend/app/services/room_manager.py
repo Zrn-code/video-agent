@@ -18,7 +18,7 @@ def init_demo_rooms():
         name="🧪 測試房間 (永久)",
         videoState=VideoState(
             url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-            playing=True,
+            playing=False,
             played=0,
             duration=212.0,  # Rick Astley - Never Gonna Give You Up 的長度
             playbackRate=1.0,
@@ -35,82 +35,90 @@ def init_demo_rooms():
     
     rooms[test_room_id] = test_room
     
-    # 創建示範房間
-    demo_rooms = [
+    # Sample videos for variety
+    sample_videos = [
         {
-            "name": "Action Movies 🎬", 
-            "url": "https://www.youtube.com/watch?v=oUFJJNQGwhk",
-            "currentVideo": {
-                "videoId": "oUFJJNQGwhk",
-                "title": "Top Gun: Maverick Official Trailer",
-                "channelTitle": "Paramount Pictures",
-                "thumbnailUrl": "https://img.youtube.com/vi/oUFJJNQGwhk/mqdefault.jpg"
-            },
-            "mockUsers": [
-                {"id": "mock-user-1", "username": "MovieFan123", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=MovieFan123"},
-                {"id": "mock-user-2", "username": "ActionLover", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ActionLover"},
-                {"id": "mock-user-3", "username": "CinemaKing", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=CinemaKing"},
-            ]
+            "url": "https://www.youtube.com/watch?v=jfKfPfyJRdk",
+            "videoId": "jfKfPfyJRdk",
+            "title": "lofi hip hop radio - beats to relax/study to",
+            "channelTitle": "Lofi Girl",
+            "thumbnailUrl": "https://img.youtube.com/vi/jfKfPfyJRdk/mqdefault.jpg"
         },
         {
-            "name": "Tech Talk 💻", 
-            "url": "https://www.youtube.com/watch?v=jNgP6d9HraI",
-            "currentVideo": {
-                "videoId": "jNgP6d9HraI",
-                "title": "The Future of AI and Technology",
-                "channelTitle": "Tech Channel",
-                "thumbnailUrl": "https://img.youtube.com/vi/jNgP6d9HraI/mqdefault.jpg"
-            },
-            "mockUsers": [
-                {"id": "mock-user-8", "username": "TechGuru", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=TechGuru"},
-                {"id": "mock-user-9", "username": "CodeMaster", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=CodeMaster"},
-                {"id": "mock-user-10", "username": "DevPro", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=DevPro"},
-            ]
+            "url": "https://www.youtube.com/watch?v=K4TOrB7at0Y",
+            "videoId": "K4TOrB7at0Y",
+            "title": "Relaxing Jazz Piano Radio - Slow Jazz Music",
+            "channelTitle": "Cafe Music BGM",
+            "thumbnailUrl": "https://img.youtube.com/vi/K4TOrB7at0Y/mqdefault.jpg"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=5qap5aO4i9A",
+            "videoId": "5qap5aO4i9A",
+            "title": "lofi hip hop radio - beats to sleep/chill to",
+            "channelTitle": "Lofi Girl",
+            "thumbnailUrl": "https://img.youtube.com/vi/5qap5aO4i9A/mqdefault.jpg"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=LXb3EKWsInQ",
+            "videoId": "LXb3EKWsInQ",
+            "title": "COSTA RICA IN 4K 60fps HDR (ULTRA HD)",
+            "channelTitle": "Jacob + Katie Schwarz",
+            "thumbnailUrl": "https://img.youtube.com/vi/LXb3EKWsInQ/mqdefault.jpg"
+        },
+        {
+            "url": "https://www.youtube.com/watch?v=tO01J-M3g0U",
+            "videoId": "tO01J-M3g0U",
+            "title": "The Bull of Wall Street | The Wolf of Wall Street",
+            "channelTitle": "Flashback FM",
+            "thumbnailUrl": "https://img.youtube.com/vi/tO01J-M3g0U/mqdefault.jpg"
         }
     ]
 
-    for demo in demo_rooms:
-        room_id = str(uuid.uuid4())
-        now = datetime.now().timestamp()
+    # Generate 5 rooms (Total 6 with the permanent one)
+    for i in range(1, 6):
+        room_id = f"test-room-{i}"
+        video_info = sample_videos[i % len(sample_videos)]
         
-        # 創建初始視頻狀態（假設播放中，隨機進度）
-        initial_played = random.uniform(10, 60)  # 10-60秒的隨機進度
         new_room = RoomInternal(
             id=room_id,
-            name=demo["name"],
+            name=f"測試房間 #{i:03d}",
             videoState=VideoState(
-                url=demo["url"],
-                playing=True,
-                played=initial_played,
-                duration=180.0,  # 假設3分鐘長度
+                url=video_info["url"],
+                playing=False,
+                played=0,
+                duration=180.0,
                 playbackRate=1.0,
                 lastUpdated=now
             )
         )
         
-        # Set current video
-        if "currentVideo" in demo:
-            new_room.currentVideo = CurrentVideo(**demo["currentVideo"])
+        new_room.currentVideo = CurrentVideo(
+            videoId=video_info["videoId"],
+            title=video_info["title"],
+            channelTitle=video_info["channelTitle"],
+            thumbnailUrl=video_info["thumbnailUrl"]
+        )
         
-        # Add mock users with random emotions
-        emotions = ['Happy', 'Neutral', 'Sad', 'Surprise', 'Excited']
-        for mock_user in demo.get("mockUsers", []):
-            new_room.users[mock_user["id"]] = {
-                "username": mock_user["username"],
-                "avatar": mock_user["avatar"],
-                "lastSeen": now,
-                "emotion": random.choice(emotions)
-            }
+        # Add some random mock users to make it look alive
+        if random.random() > 0.3: # 70% chance to have users
+            num_users = random.randint(1, 5)
+            for j in range(num_users):
+                user_id = f"mock-user-{i}-{j}"
+                new_room.users[user_id] = {
+                    "username": f"User_{random.randint(1000, 9999)}",
+                    "avatar": f"https://api.dicebear.com/7.x/avataaars/svg?seed={user_id}",
+                    "lastSeen": now
+                }
         
         rooms[room_id] = new_room
 
 def cleanup_users(room: RoomInternal):
     now = datetime.now().timestamp()
-    # Remove users inactive for more than 10 seconds (but keep mock users)
+    # Remove users inactive for more than 10 seconds (but keep mock users and AI companions)
     room.users = {
         uid: info 
         for uid, info in room.users.items() 
-        if (now - info['lastSeen'] < 10) or uid.startswith('mock-user-')
+        if (now - info['lastSeen'] < 10) or uid.startswith('mock-user-') or info.get('isAi', False)
     }
     # Remove messages older than 15 seconds
     room.messages = [m for m in room.messages if now - m.timestamp < 15]
@@ -146,21 +154,24 @@ def get_room_response(room: RoomInternal) -> Room:
             username=info['username'],
             avatar=info['avatar'],
             lastSeen=info['lastSeen'],
-            emotion=info.get('emotion')
+            emotion=info.get('emotion'),
+            isAi=info.get('isAi', False)
         )
         for uid, info in room.users.items()
     ]
+    
     return Room(
         id=room.id,
         name=room.name,
         description=room.description,
-        userCount=len(room.users),
+        userCount=len(users_list),
         users=users_list,
         videoState=response_video_state,
         currentVideo=room.currentVideo,
         queue=room.queue,
         history=room.history,
-        messages=room.messages
+        messages=room.messages,
+        aiCompanion=room.aiCompanion
     )
 
 async def update_mock_emotions():

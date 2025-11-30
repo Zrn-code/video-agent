@@ -40,4 +40,26 @@ export interface RoomUser {
   username: string;
   avatar: string;
   emotion?: string;
+  isAi?: boolean;
+}
+
+export interface AICompanion {
+  name: string;
+  personality: string;
+  background: string;
+  avatar: string;
+}
+
+export interface Room {
+  id: string;
+  name: string;
+  description?: string;
+  userCount: number;
+  users: RoomUser[];
+  videoState: any; // Using any for simplicity as it wasn't fully visible, but ideally should be typed
+  currentVideo?: CurrentVideo;
+  queue: VideoItem[];
+  history: VideoItem[];
+  messages: Message[];
+  aiCompanion?: AICompanion;
 }

@@ -22,6 +22,12 @@ class VideoItem(BaseModel):
     thumbnailUrl: str
     addedBy: Optional[str] = None
 
+class AICompanion(BaseModel):
+    name: str
+    personality: str
+    background: str
+    avatar: str
+
 class Message(BaseModel):
     id: str
     userId: str
@@ -35,6 +41,7 @@ class User(BaseModel):
     avatar: str
     lastSeen: float
     emotion: Optional[str] = None
+    isAi: bool = False
 
 class Room(BaseModel):
     id: str
@@ -47,23 +54,26 @@ class Room(BaseModel):
     queue: List[VideoItem] = []
     history: List[VideoItem] = []
     messages: List[Message] = []
+    aiCompanion: Optional[AICompanion] = None
 
 class RoomInternal:
-    def __init__(self, id, name, videoState, description=None):
+    def __init__(self, id, name, videoState, description=None, aiCompanion=None):
         self.id = id
         self.name = name
         self.description = description
         self.videoState = videoState
         self.currentVideo: Optional[CurrentVideo] = None
-        self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp}
+        self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp, emotion, isAi}
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []
         self.messages: List[Message] = []
+        self.aiCompanion = aiCompanion
 
 class CreateRoomRequest(BaseModel):
     name: str
     description: Optional[str] = None
     initialPlaylist: Optional[List[VideoItem]] = []
+    aiCompanion: Optional[AICompanion] = None
 
 class UpdateStateRequest(BaseModel):
     url: Optional[str] = None
