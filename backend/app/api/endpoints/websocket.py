@@ -105,6 +105,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                 
                 # 更新時間戳記
                 current_state.lastUpdated = datetime.now().timestamp()
+                current_state.lastUpdatedBy = user_id
                 
                 # 廣播給房間內所有其他用戶
                 await manager.broadcast({
@@ -114,7 +115,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                         "played": current_state.played,
                         "duration": current_state.duration,
                         "playbackRate": current_state.playbackRate,
-                        "lastUpdated": current_state.lastUpdated
+                        "lastUpdated": current_state.lastUpdated,
+                        "lastUpdatedBy": current_state.lastUpdatedBy
                     },
                     "sender": user_id
                 }, room_id)

@@ -17,13 +17,14 @@ interface UserDockProps {
   isFocused?: boolean;
   messages: Message[];
   onInvite?: () => void;
+  onEmotionSelect?: (emotion: string) => void;
 }
 
 const getEmotionEmoji = (emotion?: string) => {
   switch (emotion) {
     case 'Happy': return '😊';
-    case 'Sad': return '😢';
-    case 'Surprise': return '😲';
+    case 'Sad': return '😭';
+    case 'Surprise': return '😯';
     case 'Angry': return '😠';
     case 'Neutral': return '😐';
     case 'Excited': return '🤩';
@@ -39,8 +40,10 @@ const UserSeat: React.FC<{
   activeMessage: string | null;
   emotion?: string;
   isFocused?: boolean;
-}> = ({ user, isMe, activeMessage, emotion, isFocused }) => {
+  onEmotionSelect?: (emotion: string) => void;
+}> = ({ user, isMe, activeMessage, emotion, isFocused, onEmotionSelect }) => {
   const [visibleEmoji, setVisibleEmoji] = useState<string | null>(null);
+  const [showEmojiMenu, setShowEmojiMenu] = useState(false);
   const prevEmotionRef = useRef<string | undefined>(emotion);
 
   useEffect(() => {
@@ -58,9 +61,46 @@ const UserSeat: React.FC<{
     }
   }, [emotion]);
 
+  const handleEmojiClick = (e: React.MouseEvent, selectedEmotion: string) => {
+    e.stopPropagation();
+    if (onEmotionSelect) {
+      onEmotionSelect(selectedEmotion);
+    }
+    setShowEmojiMenu(false);
+  };
+
   return (
     <div className="relative flex flex-col items-center group pointer-events-auto transition-all duration-300 ease-out">
       
+      {/* Emoji Menu */}
+      {showEmojiMenu && isMe && (
+        <div className="absolute bottom-[110%] mb-2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-40">
+          <div className="bg-[#1e1f22] border border-white/10 rounded-full p-2 shadow-xl flex gap-2">
+            <button 
+              onClick={(e) => handleEmojiClick(e, 'Laughing')}
+              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
+              title="Laughing"
+            >
+              😂
+            </button>
+            <button 
+              onClick={(e) => handleEmojiClick(e, 'Sad')}
+              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
+              title="Sad"
+            >
+              😭
+            </button>
+            <button 
+              onClick={(e) => handleEmojiClick(e, 'Surprise')}
+              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
+              title="Surprise"
+            >
+              😯
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Chat Bubble - Positioned higher */}
       {activeMessage && (
         <div className="absolute bottom-[105%] mb-2 animate-in fade-in slide-in-from-bottom-2 duration-300 z-30 w-64 flex justify-center">
@@ -73,10 +113,14 @@ const UserSeat: React.FC<{
       )}
 
       {/* User Card (Discord Stream Style) */}
-      <div className={`relative w-36 h-16 bg-[#1e1f22] rounded-xl overflow-hidden border-2 transition-all duration-300 shadow-2xl
+      <div 
+        className={`relative w-36 h-16 bg-[#1e1f22] rounded-xl overflow-hidden border-2 transition-all duration-300 shadow-2xl
         ${activeMessage ? 'border-green-500' : 'border-transparent group-hover:border-white/20'}
         ${isFocused === false ? 'opacity-60 grayscale' : 'opacity-100'}
-      `}>
+        ${isMe ? 'cursor-pointer hover:ring-2 hover:ring-primary/50' : ''}
+        `}
+        onClick={() => isMe && setShowEmojiMenu(!showEmojiMenu)}
+      >
         
         {/* Avatar Container */}
         <div className="absolute inset-0 flex items-center justify-center">
@@ -120,7 +164,8 @@ const UserDock: React.FC<UserDockProps> = ({
   emotion, 
   isFocused, 
   messages, 
-  onInvite 
+  onInvite,
+  onEmotionSelect
 }) => {
   // Merge current user emotion and focus status
   const displayUsers = users.map(u => 
@@ -174,6 +219,7 @@ const UserDock: React.FC<UserDockProps> = ({
             activeMessage={activeMessage}
             emotion={userEmotion}
             isFocused={userFocused}
+            onEmotionSelect={isMe ? onEmotionSelect : undefined}
           />
         );
       })}

@@ -26,6 +26,8 @@ export interface Message {
   username: string;
   content: string;
   timestamp: number;
+  videoTitle?: string;
+  videoTimestamp?: number;
 }
 
 export interface CurrentVideo {

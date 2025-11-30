@@ -77,49 +77,26 @@ const Room = () => {
   const [isCameraEnabled, setIsCameraEnabled] = useState(false);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const toggleRecording = async () => {
     if (isRecording) {
-      // Stop Recording
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.stop();
-        setIsRecording(false);
-        setMediaRecorder(null);
-        console.log("Recording stopped");
-      }
+      // Stop "Recording"
+      setIsRecording(false);
+      // Show suggestions
+      setSuggestions([
+        "這部影片真有趣！"
+      ]);
     } else {
-      // Start Recording
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const recorder = new MediaRecorder(stream);
-        const chunks: Blob[] = [];
-
-        recorder.ondataavailable = (e) => {
-          if (e.data.size > 0) {
-            chunks.push(e.data);
-          }
-        };
-
-        recorder.onstop = () => {
-          const audioBlob = new Blob(chunks, { type: 'audio/wav' });
-          console.log("Recording finished", audioBlob);
-          const url = URL.createObjectURL(audioBlob);
-          setRecordedAudioUrl(url);
-          // Here you would typically send the blob to the backend
-          stream.getTracks().forEach(track => track.stop());
-        };
-
-        recorder.start();
-        setMediaRecorder(recorder);
-        setIsRecording(true);
-        console.log("Recording started");
-      } catch (err) {
-        console.error("Error accessing microphone:", err);
-        setIsMicEnabled(false);
-      }
+      // Start "Recording" (Fake)
+      setIsRecording(true);
+      setSuggestions([]);
     }
+  };
+
+  const handleSuggestionClick = (text: string) => {
+    handleSendMessage(text);
+    setSuggestions([]);
   };
 
   const toggleCamera = async () => {
@@ -322,6 +299,7 @@ const Room = () => {
     lastUpdated: number;
     playing: boolean;
     playbackRate: number;
+    lastUpdatedBy?: string;
   } | undefined>(undefined);
 
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
@@ -567,7 +545,8 @@ const Room = () => {
             played: serverState.played,
             lastUpdated: serverState.lastUpdated,
             playing: serverState.playing,
-            playbackRate: serverState.playbackRate
+            playbackRate: serverState.playbackRate,
+            lastUpdatedBy: serverState.lastUpdatedBy
           });
 
           // 計算當前伺服器時間（只有播放中才外推）
@@ -593,6 +572,11 @@ const Room = () => {
               duration: serverState.duration || prev.duration
             }));
           } else if (playerRef.current && !isUserSeekingRef.current) {
+            // 如果是自己更新的狀態，則忽略同步（避免回朔）
+            if (serverState.lastUpdatedBy === userId) {
+               return;
+            }
+
             const currentTime = playerRef.current.currentTime || 0;
             const timeDiff = Math.abs(currentTime - currentServerTime);
             
@@ -1213,39 +1197,7 @@ const Room = () => {
                       onTimeUpdate={handleTimeUpdate}
                     />
                     
-                    {/* Sync Button Overlay */}
-                    <div className="absolute top-6 right-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                       <button 
-                         onClick={() => {
-                           if (playerRef.current) {
-                             const testTime = 30; // 30秒
-                             console.log('Test jump to:', testTime, 'duration:', playerRef.current.duration);
-                             playerRef.current.currentTime = testTime;
-                             lastSeekTimeRef.current = Date.now(); // 記錄測試跳轉時間
-                           } else {
-                             console.error('playerRef is null');
-                           }
-                         }} 
-                         className="btn btn-sm bg-black/60 border-white/10 text-white hover:bg-orange-600 backdrop-blur-md gap-2 shadow-xl"
-                       >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          Jump 0:30
-                       </button>
-                       <button 
-                         onClick={() => {
-                           console.log('Sync button clicked, playerRef:', playerRef.current);
-                           syncToRoom();
-                         }} 
-                         className="btn btn-sm bg-black/60 border-white/10 text-white hover:btn-primary backdrop-blur-md gap-2 shadow-xl"
-                       >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                          Sync to Room
-                       </button>
-                    </div>
+                    {/* Sync Button Overlay Removed */}
                  </>
               )}
             </div>
@@ -1259,22 +1211,32 @@ const Room = () => {
               isFocused={isFocused}
               messages={messages}
               onInvite={() => setShowInviteModal(true)}
+              onEmotionSelect={(selectedEmotion) => {
+                setEmotion(selectedEmotion);
+                emotionRef.current = selectedEmotion;
+                // Send immediate update via WS if connected
+                if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                  wsRef.current.send(JSON.stringify({
+                    type: 'emotion',
+                    emotion: selectedEmotion
+                  }));
+                }
+              }}
             />
 
             {/* Voice Input Control (Bottom Right of Main Stage) */}
             <div className="absolute bottom-6 right-6 z-50 flex items-center gap-4">
-              {recordedAudioUrl && (
-                <div className="bg-[#1a1a1a] p-2 rounded-full border border-white/10 shadow-xl flex items-center gap-2 animate-in slide-in-from-right-4">
-                  <audio src={recordedAudioUrl} controls className="h-8 w-48" />
-                  <button 
-                    onClick={() => { 
-                      URL.revokeObjectURL(recordedAudioUrl); 
-                      setRecordedAudioUrl(null); 
-                    }} 
-                    className="btn btn-circle btn-xs btn-ghost text-gray-400 hover:text-white"
-                  >
-                    ✕
-                  </button>
+              {suggestions.length > 0 && (
+                <div className="flex flex-col gap-2 animate-in slide-in-from-right-4 items-end">
+                  {suggestions.map((text, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSuggestionClick(text)}
+                      className="btn btn-sm bg-[#1a1a1a] border-white/10 text-white hover:bg-primary hover:border-primary shadow-xl"
+                    >
+                      {text}
+                    </button>
+                  ))}
                 </div>
               )}
               <div className="flex flex-col items-end gap-2">

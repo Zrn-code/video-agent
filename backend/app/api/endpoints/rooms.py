@@ -8,7 +8,7 @@ from app.models.room import (
     HeartbeatRequest, ChatRequest, Message, UpdateStateRequest, VideoItem,
     AICompanion
 )
-from app.services.room_manager import rooms, get_room_response, cleanup_users
+from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
 
 router = APIRouter()
@@ -58,6 +58,7 @@ async def create_room(request: CreateRoomRequest):
             new_room.queue.pop(0)
 
     rooms[room_id] = new_room
+    save_rooms()
     return get_room_response(new_room)
 
 @router.get("/rooms/{room_id}", response_model=Room)
@@ -76,6 +77,7 @@ async def join_room(room_id: str, request: HeartbeatRequest):
         'avatar': request.avatar or 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + request.userId,
         'lastSeen': datetime.now().timestamp()
     }
+    save_rooms()
     return get_room_response(rooms[room_id])
 
 @router.post("/rooms/{room_id}/heartbeat")
@@ -123,15 +125,35 @@ async def send_chat(room_id: str, request: ChatRequest):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     
+    room = rooms[room_id]
+    
+    # Calculate current video timestamp
+    current_played = room.videoState.played
+    now = datetime.now().timestamp()
+    
+    if room.videoState.playing and room.videoState.lastUpdated > 0:
+        diff = now - room.videoState.lastUpdated
+        if diff > 0:
+            current_played += diff * room.videoState.playbackRate
+            
+    # Clamp to duration if available
+    if room.videoState.duration > 0 and current_played > room.videoState.duration:
+        current_played = room.videoState.duration
+
+    video_title = room.currentVideo.title if room.currentVideo else None
+    
     message = Message(
         id=str(uuid.uuid4()),
         userId=request.userId,
         username=request.username,
         content=request.content,
-        timestamp=datetime.now().timestamp()
+        timestamp=now,
+        videoTitle=video_title,
+        videoTimestamp=current_played
     )
     
     rooms[room_id].messages.append(message)
+    save_rooms()
     
     await manager.broadcast({
         "type": "new_message",
@@ -148,6 +170,8 @@ async def leave_room(room_id: str, request: HeartbeatRequest):
     if request.userId in rooms[room_id].users:
         del rooms[room_id].users[request.userId]
     
+    save_rooms()
+
     # 暫時停用自動刪除空房間的功能
     # If room is empty, delete it
     # if len(rooms[room_id].users) == 0:
@@ -176,6 +200,7 @@ async def update_room_state(room_id: str, state: UpdateStateRequest):
         
     current_state.lastUpdated = datetime.now().timestamp()
     
+    save_rooms()
     return current_state
 
 @router.post("/rooms/{room_id}/queue")
@@ -183,6 +208,7 @@ async def add_to_queue(room_id: str, video: VideoItem):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     rooms[room_id].queue.append(video)
+    save_rooms()
     return rooms[room_id].queue
 
 @router.delete("/rooms/{room_id}/queue/{index}")
@@ -193,6 +219,7 @@ async def remove_from_queue(room_id: str, index: int):
         raise HTTPException(status_code=400, detail="Invalid queue index")
     
     removed = rooms[room_id].queue.pop(index)
+    save_rooms()
     return {"message": "Removed from queue", "video": removed}
 
 @router.post("/rooms/{room_id}/play")
@@ -222,6 +249,7 @@ async def play_video(room_id: str, video: VideoItem):
     if len(room.history) > 50: # Keep history size manageable
         room.history.pop()
         
+    save_rooms()
     return get_room_response(room)
 
 @router.post("/rooms/{room_id}/ai-companion")
@@ -248,4 +276,5 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
         room.aiCompanions = []
     room.aiCompanions.append(companion)
     
+    save_rooms()
     return get_room_response(room)

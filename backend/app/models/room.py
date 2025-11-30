@@ -8,6 +8,7 @@ class VideoState(BaseModel):
     duration: float = 0.0
     playbackRate: float = 1.0
     lastUpdated: float = 0.0
+    lastUpdatedBy: Optional[str] = None
 
 class CurrentVideo(BaseModel):
     videoId: str
@@ -35,6 +36,8 @@ class Message(BaseModel):
     username: str
     content: str
     timestamp: float
+    videoTitle: Optional[str] = None
+    videoTimestamp: Optional[float] = None
 
 class User(BaseModel):
     id: str
@@ -69,6 +72,43 @@ class RoomInternal:
         self.history: List[VideoItem] = []
         self.messages: List[Message] = []
         self.aiCompanions = aiCompanions or []
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "videoState": self.videoState.dict(),
+            "currentVideo": self.currentVideo.dict() if self.currentVideo else None,
+            "users": self.users,
+            "queue": [v.dict() for v in self.queue],
+            "history": [v.dict() for v in self.history],
+            "messages": [m.dict() for m in self.messages],
+            "aiCompanions": [c.dict() for c in self.aiCompanions] if self.aiCompanions else []
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        video_state = VideoState(**data["videoState"])
+        ai_companions = [AICompanion(**c) for c in data.get("aiCompanions", [])]
+        
+        room = cls(
+            id=data["id"],
+            name=data["name"],
+            videoState=video_state,
+            description=data.get("description"),
+            aiCompanions=ai_companions
+        )
+        
+        if data.get("currentVideo"):
+            room.currentVideo = CurrentVideo(**data["currentVideo"])
+            
+        room.users = data.get("users", {})
+        room.queue = [VideoItem(**v) for v in data.get("queue", [])]
+        room.history = [VideoItem(**v) for v in data.get("history", [])]
+        room.messages = [Message(**m) for m in data.get("messages", [])]
+        
+        return room
 
 class CreateRoomRequest(BaseModel):
     name: str

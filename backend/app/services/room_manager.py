@@ -1,14 +1,46 @@
 import uuid
 import random
 import asyncio
+import json
+import os
 from datetime import datetime
 from typing import Dict, List
 from app.models.room import RoomInternal, VideoState, CurrentVideo, User, Room
 
 # In-memory storage
 rooms: Dict[str, RoomInternal] = {}
+DB_FILE = "rooms_db.json"
+
+def save_rooms():
+    try:
+        data = {rid: room.to_dict() for rid, room in rooms.items()}
+        with open(DB_FILE, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Error saving rooms: {e}")
+
+def load_rooms():
+    if not os.path.exists(DB_FILE):
+        return False
+    
+    try:
+        with open(DB_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        rooms.clear()
+        for rid, room_data in data.items():
+            rooms[rid] = RoomInternal.from_dict(room_data)
+        print(f"Loaded {len(rooms)} rooms from {DB_FILE}")
+        return True
+    except Exception as e:
+        print(f"Error loading rooms: {e}")
+        return False
 
 def init_demo_rooms():
+    # Try to load from file first
+    if load_rooms() and len(rooms) > 0:
+        return
+
     # 創建永久測試房間
     test_room_id = "test-room-permanent"
     now = datetime.now().timestamp()
@@ -111,6 +143,8 @@ def init_demo_rooms():
                 }
         
         rooms[room_id] = new_room
+    
+    save_rooms()
 
 def cleanup_users(room: RoomInternal):
     now = datetime.now().timestamp()
@@ -120,8 +154,8 @@ def cleanup_users(room: RoomInternal):
         for uid, info in room.users.items() 
         if (now - info['lastSeen'] < 10) or uid.startswith('mock-user-') or info.get('isAi', False)
     }
-    # Remove messages older than 15 seconds
-    room.messages = [m for m in room.messages if now - m.timestamp < 15]
+    # Messages are now persisted, no cleanup based on time
+    # room.messages = [m for m in room.messages if now - m.timestamp < 15]
 
 def get_room_response(room: RoomInternal) -> Room:
     cleanup_users(room)
@@ -145,7 +179,8 @@ def get_room_response(room: RoomInternal) -> Room:
         played=current_played,
         duration=room.videoState.duration,
         playbackRate=room.videoState.playbackRate,
-        lastUpdated=now
+        lastUpdated=now,
+        lastUpdatedBy=room.videoState.lastUpdatedBy
     )
 
     users_list = [
@@ -214,6 +249,8 @@ async def update_mock_emotions():
                 # Loop if reached end
                 if room.videoState.duration > 0 and room.videoState.played >= room.videoState.duration:
                     room.videoState.played = 0
+        
+        save_rooms()
 
 # Initialize demo rooms on module load
 init_demo_rooms()

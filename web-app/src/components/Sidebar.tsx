@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { VideoItem } from '../types';
+import type { VideoItem, Message } from '../types';
 
 interface User {
   id: string;
@@ -7,14 +7,6 @@ interface User {
   avatar: string;
   lastSeen: number;
   emotion?: string;
-}
-
-interface Message {
-  id: string;
-  userId: string;
-  username: string;
-  content: string;
-  timestamp: number;
 }
 
 interface SidebarProps {
@@ -85,6 +77,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const formatVideoTime = (seconds: number) => {
+    if (seconds === undefined || seconds === null) return '';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className="w-96 bg-[#1e1f22]/95 backdrop-blur-xl border-l border-white/10 flex flex-col h-full shadow-2xl rounded-l-3xl overflow-hidden my-2 mr-2">
       {/* Tabs */}
@@ -135,9 +134,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                       <img src={avatar} alt={msg.username} className="w-8 h-8 rounded-full bg-gray-700" />
                     </div>
                     <div className={`flex flex-col max-w-[80%] ${isMe ? 'items-end' : 'items-start'}`}>
-                      <div className="flex items-baseline gap-2 mb-1">
-                        <span className="text-xs font-medium text-gray-300">{msg.username}</span>
-                        <span className="text-[10px] text-gray-500">{formatTime(msg.timestamp)}</span>
+                      <div className="flex items-baseline gap-2 mb-1 max-w-full">
+                        <span className="text-xs font-medium text-gray-300 flex-shrink-0">{msg.username}</span>
+                        {msg.videoTitle ? (
+                          <span className="text-[10px] text-purple-400 truncate min-w-0" title={`${msg.videoTitle} @ ${formatVideoTime(msg.videoTimestamp || 0)}`}>
+                            {msg.videoTitle} <span className="text-gray-500">@ {formatVideoTime(msg.videoTimestamp || 0)}</span>
+                          </span>
+                        ) : (
+                          <span className="text-[10px] text-gray-500 flex-shrink-0">{formatTime(msg.timestamp)}</span>
+                        )}
                       </div>
                       <div className={`px-3 py-2 rounded-lg text-sm break-words ${
                         isMe 
