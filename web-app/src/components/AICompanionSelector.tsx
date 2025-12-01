@@ -22,10 +22,29 @@ const AICompanionSelector = ({ onSelect }: Props) => {
 
   // Detail View State
   const [viewingCompanion, setViewingCompanion] = useState<AICompanion | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Edit State
+  const [editName, setEditName] = useState('');
+  const [editPersonality, setEditPersonality] = useState('');
+  const [editBackground, setEditBackground] = useState('');
 
   useEffect(() => {
     fetchPresets();
+    loadCustomCompanions();
   }, []);
+
+  const loadCustomCompanions = () => {
+    const saved = localStorage.getItem('my_custom_companions');
+    if (saved) {
+      try {
+        const custom = JSON.parse(saved);
+        setCustomCompanions(custom);
+      } catch (e) {
+        console.error('Failed to parse custom companions', e);
+      }
+    }
+  };
 
   const fetchPresets = async () => {
     try {
@@ -78,7 +97,11 @@ const AICompanionSelector = ({ onSelect }: Props) => {
     if (generatedCompanion) {
       // Add to custom list
       const newCompanion = { ...generatedCompanion, category: '自訂' };
-      setCustomCompanions(prev => [newCompanion, ...prev]);
+      const updatedCustoms = [newCompanion, ...customCompanions];
+      setCustomCompanions(updatedCustoms);
+      
+      // Save to localStorage
+      localStorage.setItem('my_custom_companions', JSON.stringify(updatedCustoms));
       
       // Auto select
       toggleSelection(newCompanion);
@@ -163,6 +186,7 @@ const AICompanionSelector = ({ onSelect }: Props) => {
 
         {displayItems.map((companion) => {
           const isSelected = selectedCompanions.some(c => c.name === companion.name);
+          const isCustom = companion.category === '自訂' || !presets.find(p => p.name === companion.name);
           return (
             <div 
               key={companion.name}
@@ -270,12 +294,34 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
                     <img src={generatedCompanion.avatar} alt={generatedCompanion.name} className="w-full h-full object-cover bg-white/5" />
                   </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-white">{generatedCompanion.name}</h4>
-                    <p className="text-sm text-gray-400 mt-1">{generatedCompanion.personality}</p>
-                  </div>
-                  <div className="bg-white/5 rounded-xl p-3 text-sm text-gray-300 w-full">
-                    {generatedCompanion.background}
+                  <div className="w-full space-y-3">
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">名稱</label>
+                      <input 
+                        type="text"
+                        value={generatedCompanion.name}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, name: e.target.value})}
+                        className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500/50"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
+                      <textarea
+                        value={generatedCompanion.personality}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, personality: e.target.value})}
+                        rows={2}
+                        className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
+                      <textarea
+                        value={generatedCompanion.background}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, background: e.target.value})}
+                        rows={3}
+                        className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-3">
@@ -300,52 +346,150 @@ const AICompanionSelector = ({ onSelect }: Props) => {
 
       {/* Detail View Modal */}
       {viewingCompanion && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setViewingCompanion(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => {
+          setViewingCompanion(null);
+          setIsEditing(false);
+        }}>
           <div className="bg-[#1a1b26] rounded-2xl p-6 w-full max-w-sm border border-white/10 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex flex-col items-center gap-4">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
                 <img src={viewingCompanion.avatar} alt={viewingCompanion.name} className="w-full h-full object-cover bg-white/5" />
               </div>
-              <div className="text-center">
-                <h4 className="text-xl font-bold text-white">{viewingCompanion.name}</h4>
-                <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-white/10 text-xs text-gray-400">
-                  {viewingCompanion.category || '其他'}
-                </span>
-              </div>
               
-              <div className="w-full space-y-3">
-                <div>
-                  <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
-                  <p className="text-sm text-gray-300 mt-1">{viewingCompanion.personality}</p>
+              {isEditing ? (
+                <div className="w-full space-y-3">
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">名稱</label>
+                    <input 
+                      type="text"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500/50"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
+                    <textarea
+                      value={editPersonality}
+                      onChange={(e) => setEditPersonality(e.target.value)}
+                      rows={2}
+                      className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
+                    <textarea
+                      value={editBackground}
+                      onChange={(e) => setEditBackground(e.target.value)}
+                      rows={3}
+                      className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
-                  <p className="text-sm text-gray-300 mt-1">{viewingCompanion.background}</p>
-                </div>
-              </div>
+              ) : (
+                <>
+                  <div className="text-center">
+                    <h4 className="text-xl font-bold text-white">{viewingCompanion.name}</h4>
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-white/10 text-xs text-gray-400">
+                      {viewingCompanion.category || '其他'}
+                    </span>
+                  </div>
+                  
+                  <div className="w-full space-y-3">
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
+                      <p className="text-sm text-gray-300 mt-1">{viewingCompanion.personality}</p>
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
+                      <p className="text-sm text-gray-300 mt-1">{viewingCompanion.background}</p>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="flex gap-3 w-full mt-2">
-                <button
-                  onClick={() => setViewingCompanion(null)}
-                  className="flex-1 py-2.5 rounded-xl bg-white/5 text-gray-300 hover:bg-white/10 transition-colors"
-                >
-                  關閉
-                </button>
-                <button
-                  onClick={() => {
-                    if (viewingCompanion) {
-                      toggleSelection(viewingCompanion);
-                      setViewingCompanion(null);
-                    }
-                  }}
-                  className={`flex-1 py-2.5 rounded-xl text-white transition-colors ${
-                    selectedCompanions.some(c => c.name === viewingCompanion?.name)
-                      ? 'bg-red-500/80 hover:bg-red-500'
-                      : 'bg-purple-600 hover:bg-purple-500'
-                  }`}
-                >
-                  {selectedCompanions.some(c => c.name === viewingCompanion?.name) ? '移除' : '加入'}
-                </button>
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="flex-1 py-2.5 rounded-xl bg-white/5 text-gray-300 hover:bg-white/10 transition-colors"
+                    >
+                      取消
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Save the edits
+                        const updatedCompanion = {
+                          ...viewingCompanion,
+                          name: editName,
+                          personality: editPersonality,
+                          background: editBackground
+                        };
+                        
+                        // Update in customCompanions if it's custom
+                        if (viewingCompanion.category === '自訂' || !presets.find(p => p.name === viewingCompanion.name)) {
+                          const updatedCustoms = customCompanions.map(c => 
+                            c.name === viewingCompanion.name ? updatedCompanion : c
+                          );
+                          setCustomCompanions(updatedCustoms);
+                          localStorage.setItem('my_custom_companions', JSON.stringify(updatedCustoms));
+                        }
+                        
+                        // Update selected companions if this one is selected
+                        setSelectedCompanions(prev => 
+                          prev.map(c => c.name === viewingCompanion.name ? updatedCompanion : c)
+                        );
+                        
+                        setViewingCompanion(updatedCompanion);
+                        setIsEditing(false);
+                      }}
+                      className="flex-1 py-2.5 rounded-xl bg-purple-600 text-white hover:bg-purple-500 transition-colors"
+                    >
+                      儲存
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setViewingCompanion(null);
+                        setIsEditing(false);
+                      }}
+                      className="flex-1 py-2.5 rounded-xl bg-white/5 text-gray-300 hover:bg-white/10 transition-colors"
+                    >
+                      關閉
+                    </button>
+                    {(viewingCompanion.category === '自訂' || !presets.find(p => p.name === viewingCompanion.name)) && (
+                      <button
+                        onClick={() => {
+                          setEditName(viewingCompanion.name);
+                          setEditPersonality(viewingCompanion.personality);
+                          setEditBackground(viewingCompanion.background);
+                          setIsEditing(true);
+                        }}
+                        className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+                      >
+                        編輯
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        if (viewingCompanion) {
+                          toggleSelection(viewingCompanion);
+                          setViewingCompanion(null);
+                        }
+                      }}
+                      className={`flex-1 py-2.5 rounded-xl text-white transition-colors ${
+                        selectedCompanions.some(c => c.name === viewingCompanion?.name)
+                          ? 'bg-red-500/80 hover:bg-red-500'
+                          : 'bg-purple-600 hover:bg-purple-500'
+                      }`}
+                    >
+                      {selectedCompanions.some(c => c.name === viewingCompanion?.name) ? '移除' : '加入'}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

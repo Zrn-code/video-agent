@@ -10,6 +10,7 @@ from app.models.room import (
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
+from app.services.ai_generator import generate_companion_response
 
 router = APIRouter()
 
@@ -160,6 +161,42 @@ async def send_chat(room_id: str, request: ChatRequest):
         "message": message.dict()
     }, room_id)
     
+    # AI Companion Response
+    ai_companions = [(uid, u) for uid, u in room.users.items() if u.get('isAi')]
+    if ai_companions:
+        # Pick the first one only
+        ai_uid, ai_info = ai_companions[0]
+        
+        try:
+            response_text = await generate_companion_response(
+                companion_name=ai_info['username'],
+                companion_personality=ai_info.get('personality', 'Friendly'),
+                user_name=request.username,
+                user_input=request.content,
+                context_type="chat",
+                video_context=f"{video_title} @ {int(current_played)}s" if video_title else None
+            )
+            
+            ai_message = Message(
+                id=str(uuid.uuid4()),
+                userId=ai_uid,
+                username=ai_info['username'],
+                content=response_text,
+                timestamp=datetime.now().timestamp(),
+                videoTitle=video_title,
+                videoTimestamp=current_played
+            )
+            
+            rooms[room_id].messages.append(ai_message)
+            save_rooms()
+            
+            await manager.broadcast({
+                "type": "new_message",
+                "message": ai_message.dict()
+            }, room_id)
+        except Exception as e:
+            print(f"Failed to generate AI response: {e}")
+
     return message
 
 @router.post("/rooms/{room_id}/leave")

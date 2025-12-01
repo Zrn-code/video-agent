@@ -78,6 +78,20 @@ const Room = () => {
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showEmojiMenu, setShowEmojiMenu] = useState(false);
+
+  const handleEmojiSelect = (selectedEmotion: string) => {
+    setEmotion(selectedEmotion);
+    emotionRef.current = selectedEmotion;
+    // Send immediate update via WS if connected
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'emotion',
+        emotion: selectedEmotion
+      }));
+    }
+    setShowEmojiMenu(false);
+  };
 
   const toggleRecording = async () => {
     if (isRecording) {
@@ -1225,7 +1239,8 @@ const Room = () => {
             />
 
             {/* Voice Input Control (Bottom Right of Main Stage) */}
-            <div className="absolute bottom-6 right-6 z-50 flex items-center gap-4">
+            <div className="absolute bottom-6 right-6 z-50 flex items-end gap-4">
+              
               {suggestions.length > 0 && (
                 <div className="flex flex-col gap-2 animate-in slide-in-from-right-4 items-end">
                   {suggestions.map((text, index) => (
@@ -1256,6 +1271,44 @@ const Room = () => {
                     </svg>
                   )}
                 </button>
+              </div>
+
+              {/* Emoji Control */}
+              <div className="relative flex flex-col items-center">
+                 {showEmojiMenu && (
+                    <div className="absolute bottom-full mb-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                      <div className="bg-[#1e1f22] border border-white/10 rounded-full p-2 shadow-xl flex flex-col gap-2">
+                        <button 
+                          onClick={() => handleEmojiSelect('Laughing')}
+                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
+                          title="Laughing"
+                        >
+                          😂
+                        </button>
+                        <button 
+                          onClick={() => handleEmojiSelect('Sad')}
+                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
+                          title="Sad"
+                        >
+                          😭
+                        </button>
+                        <button 
+                          onClick={() => handleEmojiSelect('Surprise')}
+                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
+                          title="Surprise"
+                        >
+                          😯
+                        </button>
+                      </div>
+                    </div>
+                 )}
+                 <button
+                    onClick={() => setShowEmojiMenu(!showEmojiMenu)}
+                    className="btn btn-circle btn-lg btn-neutral shadow-xl border-white/10"
+                    title="Set Emotion"
+                 >
+                    <span className="text-2xl">😊</span>
+                 </button>
               </div>
             </div>
           </div>
@@ -1358,7 +1411,7 @@ const Room = () => {
             </button>
             
             <h2 className="text-2xl font-bold text-white mb-2 text-center">加入智慧影伴</h2>
-            <p className="text-gray-400 text-center mb-8">選擇一位或多位智慧影伴加入房間 (房間上限 6 人)</p>
+            <p className="text-gray-400 text-center mb-8">選擇一位或多位智慧影伴加入房間</p>
 
             <div className="flex flex-col gap-8">
                 {/* AI Selector */}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import AICompanionManager from '../components/AICompanionManager';
 import type { Room } from '../types';
 
 const RoomTimeDisplay = ({ videoState }: { videoState: any }) => {
@@ -167,7 +168,26 @@ const Lobby = () => {
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const roomsPerPage = 10;
+  const [roomsPerPage, setRoomsPerPage] = useState(10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 1280) { // xl: 5 cols
+        setRoomsPerPage(20);
+      } else if (width >= 1024) { // lg: 4 cols
+        setRoomsPerPage(16);
+      } else if (width >= 768) { // md: 3 cols
+        setRoomsPerPage(12);
+      } else { // 2 cols
+        setRoomsPerPage(10);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fetch rooms
   const fetchRooms = async () => {
@@ -221,6 +241,12 @@ const Lobby = () => {
   const indexOfFirstRoom = indexOfLastRoom - roomsPerPage;
   const currentRooms = rooms.slice(indexOfFirstRoom, indexOfLastRoom);
   const totalPages = Math.ceil(rooms.length / roomsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
 
   const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
   const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
@@ -302,7 +328,11 @@ const Lobby = () => {
            </div>
         ) : (
            <>
-             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-4">
+             <div className="flex-1 overflow-y-auto min-h-0 pr-2 custom-scrollbar">
+               <div 
+                 key={currentPage}
+                 className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-4 animate-fade-in"
+               >
                {currentRooms.map((room) => {
                  const thumbnailUrl = getThumbnailUrl(room.videoState.url);
                  
@@ -389,9 +419,11 @@ const Lobby = () => {
                })}
              </div>
 
+             </div>
+
              {/* Pagination Controls */}
-             {totalPages > 1 && (
-               <div className="flex justify-center items-center gap-4 pb-4 mt-auto">
+             {totalPages > 0 && (
+               <div className="flex justify-center items-center gap-4 pt-2 pb-4 shrink-0 border-t border-white/5">
                  <button 
                    onClick={prevPage} 
                    disabled={currentPage === 1}
@@ -421,6 +453,11 @@ const Lobby = () => {
         )}
         </div>
       </main>
+
+      {/* AI Companion Section */}
+      <section className="w-full bg-[#0a0a0a] pb-20 snap-start shrink-0">
+        <AICompanionManager />
+      </section>
 
       {/* Join Room Modal */}
       {selectedRoom && (

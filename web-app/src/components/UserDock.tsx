@@ -38,12 +38,13 @@ const UserSeat: React.FC<{
   user: User;
   isMe: boolean;
   activeMessage: string | null;
+  lastMessage: string | null;
   emotion?: string;
   isFocused?: boolean;
   onEmotionSelect?: (emotion: string) => void;
-}> = ({ user, isMe, activeMessage, emotion, isFocused, onEmotionSelect }) => {
+}> = ({ user, isMe, activeMessage, lastMessage, emotion, isFocused, onEmotionSelect }) => {
   const [visibleEmoji, setVisibleEmoji] = useState<string | null>(null);
-  const [showEmojiMenu, setShowEmojiMenu] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const prevEmotionRef = useRef<string | undefined>(emotion);
 
   useEffect(() => {
@@ -61,51 +62,16 @@ const UserSeat: React.FC<{
     }
   }, [emotion]);
 
-  const handleEmojiClick = (e: React.MouseEvent, selectedEmotion: string) => {
-    e.stopPropagation();
-    if (onEmotionSelect) {
-      onEmotionSelect(selectedEmotion);
-    }
-    setShowEmojiMenu(false);
-  };
+  const messageToDisplay = activeMessage || (showHistory ? lastMessage : null);
 
   return (
     <div className="relative flex flex-col items-center group pointer-events-auto transition-all duration-300 ease-out">
       
-      {/* Emoji Menu */}
-      {showEmojiMenu && isMe && (
-        <div className="absolute bottom-[110%] mb-2 animate-in fade-in slide-in-from-bottom-2 duration-200 z-40">
-          <div className="bg-[#1e1f22] border border-white/10 rounded-full p-2 shadow-xl flex gap-2">
-            <button 
-              onClick={(e) => handleEmojiClick(e, 'Laughing')}
-              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
-              title="Laughing"
-            >
-              😂
-            </button>
-            <button 
-              onClick={(e) => handleEmojiClick(e, 'Sad')}
-              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
-              title="Sad"
-            >
-              😭
-            </button>
-            <button 
-              onClick={(e) => handleEmojiClick(e, 'Surprise')}
-              className="w-8 h-8 flex items-center justify-center text-xl hover:bg-white/10 rounded-full transition-colors"
-              title="Surprise"
-            >
-              😯
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Chat Bubble - Positioned higher */}
-      {activeMessage && (
+      {messageToDisplay && (
         <div className="absolute bottom-[105%] mb-2 animate-in fade-in slide-in-from-bottom-2 duration-300 z-30 w-64 flex justify-center">
           <div className="relative bg-[#2b2d31] text-gray-100 px-3 py-2 rounded-2xl shadow-xl border border-white/10">
-            <p className="text-xs font-medium leading-snug break-words text-center">{activeMessage}</p>
+            <p className="text-xs font-medium leading-snug break-words text-center">{messageToDisplay}</p>
             {/* Bubble Tail */}
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#2b2d31] border-r border-b border-white/10 rotate-45"></div>
           </div>
@@ -115,11 +81,10 @@ const UserSeat: React.FC<{
       {/* User Card (Discord Stream Style) */}
       <div 
         className={`relative w-36 h-16 bg-[#1e1f22] rounded-xl overflow-hidden border-2 transition-all duration-300 shadow-2xl
-        ${activeMessage ? 'border-green-500' : 'border-transparent group-hover:border-white/20'}
-        ${isFocused === false ? 'opacity-60 grayscale' : 'opacity-100'}
-        ${isMe ? 'cursor-pointer hover:ring-2 hover:ring-primary/50' : ''}
+        ${messageToDisplay ? 'border-green-500' : 'border-transparent group-hover:border-white/20'}
+        ${isMe ? 'cursor-pointer hover:ring-2 hover:ring-primary/50' : 'cursor-pointer hover:ring-2 hover:ring-white/20'}
         `}
-        onClick={() => isMe && setShowEmojiMenu(!showEmojiMenu)}
+        onClick={() => setShowHistory(!showHistory)}
       >
         
         {/* Avatar Container */}
@@ -139,13 +104,6 @@ const UserSeat: React.FC<{
             )}
            </div>
         </div>
-
-        {/* Status Indicator (Sleeping only) */}
-        {isFocused === false && (
-          <div className="absolute top-1 right-1 bg-black/60 backdrop-blur-md rounded-full px-1 py-0.5 flex items-center gap-1 border border-white/10">
-             <span className="text-xs">💤</span>
-          </div>
-        )}
         
         {/* Name Tag Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-1 bg-gradient-to-t from-black/80 to-transparent flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -167,15 +125,20 @@ const UserDock: React.FC<UserDockProps> = ({
   onInvite,
   onEmotionSelect
 }) => {
-  // Merge current user emotion and focus status
-  const displayUsers = users.map(u => 
-    u.id === currentUser.id ? { ...u, emotion: emotion || u.emotion, isFocused: isFocused } : u
-  );
-  
-  // Ensure current user is in the list if not already (for local preview)
-  if (!displayUsers.find(u => u.id === currentUser.id)) {
-    displayUsers.unshift({ ...currentUser, emotion, isFocused });
-  }
+  // Merge current user emotion and focus status, but keep stable order
+  const displayUsers = React.useMemo(() => {
+    const updatedUsers = users.map(u => 
+      u.id === currentUser.id ? { ...u, emotion: emotion || u.emotion, isFocused: isFocused } : u
+    );
+    
+    // Ensure current user is in the list if not already (for local preview)
+    if (!updatedUsers.find(u => u.id === currentUser.id)) {
+      updatedUsers.unshift({ ...currentUser, emotion, isFocused });
+    }
+    
+    // Sort by user ID to maintain consistent order
+    return updatedUsers.sort((a, b) => a.id.localeCompare(b.id));
+  }, [users, currentUser, emotion, isFocused]);
 
   // Helper to get active message for a user
   const getActiveMessage = (userId: string) => {
@@ -191,6 +154,11 @@ const UserDock: React.FC<UserDockProps> = ({
       return lastMessage.content;
     }
     return null;
+  };
+
+  const getLastMessage = (userId: string) => {
+    const userMessages = messages.filter(m => m.userId === userId);
+    return userMessages.length > 0 ? userMessages[userMessages.length - 1].content : null;
   };
 
   // Force re-render every second to update message visibility (fade out)
@@ -210,6 +178,7 @@ const UserDock: React.FC<UserDockProps> = ({
         const userEmotion = isMe ? emotion : user.emotion;
         const userFocused = isMe ? isFocused : user.isFocused;
         const activeMessage = getActiveMessage(user.id);
+        const lastMessage = getLastMessage(user.id);
         
         return (
           <UserSeat 
@@ -217,6 +186,7 @@ const UserDock: React.FC<UserDockProps> = ({
             user={user}
             isMe={isMe}
             activeMessage={activeMessage}
+            lastMessage={lastMessage}
             emotion={userEmotion}
             isFocused={userFocused}
             onEmotionSelect={isMe ? onEmotionSelect : undefined}

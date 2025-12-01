@@ -27,6 +27,8 @@ const CreateRoom = () => {
   // Create Room State
   const [step, setStep] = useState(1);
   const [newRoomName, setNewRoomName] = useState('');
+  const [roomPrivacy, setRoomPrivacy] = useState<'public' | 'private'>('public');
+  const [maxUsers, setMaxUsers] = useState<number>(6);
   const [playlist, setPlaylist] = useState<VideoItem[]>([]);
   const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
   
@@ -97,6 +99,8 @@ const CreateRoom = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           name: newRoomName,
+          privacy: roomPrivacy,
+          maxUsers: maxUsers,
           initialPlaylist: playlist,
           aiCompanions: selectedCompanions
         }),
@@ -150,33 +154,209 @@ const CreateRoom = () => {
           {/* Main Content Body */}
           <div className="flex-1 min-h-0 relative">
             
-            {/* Step 1: Identity */}
+            {/* Step 1: Identity & Room Settings */}
             {step === 1 && (
-                <div className="h-full flex flex-col items-center justify-center animate-fade-in max-w-2xl mx-auto">
-                    {/* Avatar Section */}
-                    <div className="flex flex-col items-center mb-12">
-                        <div className="relative group">
-                            <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white/5 group-hover:border-purple-500/50 transition-all duration-500 bg-[#1a1a1a] shadow-2xl shadow-black/50">
-                                <img src={userAvatar} alt="Avatar" className="w-full h-full object-cover" />
+                <div className="h-full flex flex-col gap-5 animate-fade-in">
+                    {/* Top Section: User Identity */}
+                    <div className="bg-gradient-to-br from-purple-900/20 via-[#121212] to-blue-900/20 rounded-2xl border border-white/10 p-6 shadow-2xl">
+                        <div className="flex items-center gap-6">
+                            {/* Avatar */}
+                            <div className="flex-shrink-0">
+                                <div className="relative group">
+                                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30 group-hover:border-purple-500/60 transition-all duration-500 bg-gradient-to-br from-purple-900/50 to-blue-900/50 shadow-2xl shadow-purple-500/20">
+                                        <img src={userAvatar} alt="Avatar" className="w-full h-full object-cover" />
+                                    </div>
+                                    <button 
+                                        onClick={randomizeAvatar} 
+                                        className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform border-2 border-[#121212]"
+                                        title="隨機頭像"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-white">
+                                            <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <button onClick={randomizeAvatar} className="absolute bottom-2 right-2 btn btn-circle btn-primary border-4 border-[#050505] shadow-xl hover:scale-110 transition-transform" title="隨機頭像">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
-                                    <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clipRule="evenodd" />
-                                </svg>
-                            </button>
+
+                            {/* User Info */}
+                            <div className="flex-1">
+                                <label className="block font-bold text-purple-400 mb-2 uppercase tracking-wide">您的身份</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="輸入您的暱稱..." 
+                                    className="input bg-black/40 border-white/10 focus:border-purple-500/50 focus:bg-black/60 w-full rounded-xl text-lg transition-all h-12 px-5 placeholder:text-gray-600 font-medium" 
+                                    value={userName} 
+                                    onChange={(e) => setUserName(e.target.value)} 
+                                />
+                                <p className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
+                                    </svg>
+                                    這個名稱會顯示給房間內的其他成員
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-gray-500 font-medium tracking-wide mt-4">點擊按鈕隨機生成頭像</p>
                     </div>
 
-                    {/* Inputs Section */}
-                    <div className="w-full space-y-6">
-                        <div className="form-control w-full group">
-                            <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">您的暱稱</span></label>
-                            <input type="text" placeholder="例如：電影狂熱者" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                        </div>
-                        <div className="form-control w-full group">
-                            <label className="label"><span className="label-text text-gray-400 text-lg group-focus-within:text-purple-400 transition-colors">房間名稱</span></label>
-                            <input type="text" placeholder="例如：週五電影夜" className="input input-lg bg-[#121212] border-white/5 focus:border-purple-500/50 focus:bg-[#1a1a1a] w-full rounded-2xl text-xl transition-all h-16 px-6" value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
+                    {/* Bottom Section: Room Settings */}
+                    <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-xl flex-1 min-h-0 overflow-y-auto">
+                        <div className="space-y-6">
+                            {/* Room Info Section */}
+                            <div>
+                                <div className="flex items-center gap-2 mb-5">
+                                    <div className="w-9 h-9 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-purple-400">
+                                            <path fillRule="evenodd" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25Zm4.03 6.28a.75.75 0 0 0-1.06-1.06L4.97 9.47a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 0 0 1.06-1.06L6.56 10l1.72-1.72Zm4.5-1.06a.75.75 0 1 0-1.06 1.06L13.44 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06l2.25-2.25a.75.75 0 0 0 0-1.06l-2.25-2.25Z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-base font-bold text-xl text-white">房間設定</h3>
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-5">
+                                    <div className="form-control">
+                                        <label className="label pb-1.5">
+                                            <span className="label-text text-gray-400 font-medium">房間名稱</span>
+                                            <span className="label-text-alt text-purple-400 text-xs">必填</span>
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="例如：週五電影夜 🎬" 
+                                            className="input bg-black/40 border-white/10 focus:border-purple-500/50 w-full rounded-xl transition-all px-4 h-20 text-sm" 
+                                            value={newRoomName} 
+                                            onChange={(e) => setNewRoomName(e.target.value)} 
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label pb-2">
+                                            <span className="label-text text-gray-400 font-medium">隱私設定</span>
+                                        </label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <button
+                                                onClick={() => setRoomPrivacy('public')}
+                                                className={`relative p-3 rounded-xl border-2 transition-all group ${
+                                                    roomPrivacy === 'public'
+                                                        ? 'border-purple-500 bg-purple-500/10'
+                                                        : 'border-white/10 bg-white/5 hover:border-white/20'
+                                                }`}
+                                            >
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                                        roomPrivacy === 'public' ? 'bg-purple-500/20' : 'bg-white/5'
+                                                    }`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${roomPrivacy === 'public' ? 'text-purple-400' : 'text-gray-400'}`}>
+                                                            <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <span className={`text-s font-medium ${roomPrivacy === 'public' ? 'text-white' : 'text-gray-400'}`}>公開</span>
+                                                </div>
+                                                {roomPrivacy === 'public' && (
+                                                    <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5 text-white">
+                                                            <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </button>
+                                            <button
+                                                onClick={() => setRoomPrivacy('private')}
+                                                className={`relative p-3 rounded-xl border-2 transition-all group ${
+                                                    roomPrivacy === 'private'
+                                                        ? 'border-purple-500 bg-purple-500/10'
+                                                        : 'border-white/10 bg-white/5 hover:border-white/20'
+                                                }`}
+                                            >
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                                                        roomPrivacy === 'private' ? 'bg-purple-500/20' : 'bg-white/5'
+                                                    }`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${roomPrivacy === 'private' ? 'text-purple-400' : 'text-gray-400'}`}>
+                                                            <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                    <span className={`text-s font-medium ${roomPrivacy === 'private' ? 'text-white' : 'text-gray-400'}`}>私密</span>
+                                                </div>
+                                                {roomPrivacy === 'private' && (
+                                                    <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5 text-white">
+                                                            <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="h-px bg-white/10"></div>
+
+                            {/* Room Capacity Section */}
+                            <div>
+                                <div className="flex items-center gap-2 mb-5">
+                                    <div className="w-9 h-9 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-blue-400">
+                                            <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-base font-bold text-xl text-white">人數上限</h3>
+                                </div>
+
+                                <div className="flex items-center gap-6">
+                                    {/* Visual Counter */}
+                                    <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-6 border border-blue-500/20 flex-shrink-0">
+                                        <div className="text-center">
+                                            <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-purple-400">
+                                                {maxUsers}
+                                            </div>
+                                            <div className="text-xs text-gray-400 mt-1.5 whitespace-nowrap">最多可容納人數</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Controls */}
+                                    <div className="flex-1 space-y-4">
+                                        {/* Quick Select Buttons */}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {[2, 6, 10].map(num => (
+                                                <button
+                                                    key={num}
+                                                    onClick={() => setMaxUsers(num)}
+                                                    className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                                                        maxUsers === num
+                                                            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                                    }`}
+                                                >
+                                                    {num}人
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        {/* Slider */}
+                                        <div className="w-full">
+                                            <input
+                                                type="range"
+                                                min="2"
+                                                max="10"
+                                                value={maxUsers}
+                                                onChange={(e) => setMaxUsers(Number(e.target.value))}
+                                                className="range range-primary range-sm w-full"
+                                                step="1"
+                                            />
+                                            <div className="flex justify-between text-xs text-gray-500 mt-1.5 px-1">
+                                                <span>2</span>
+                                                <span>4</span>
+                                                <span>6</span>
+                                                <span>8</span>
+                                                <span>10</span>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

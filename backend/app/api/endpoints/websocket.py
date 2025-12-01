@@ -3,8 +3,9 @@ from datetime import datetime
 import uuid
 
 from app.services.connection_manager import manager
-from app.services.room_manager import rooms
+from app.services.room_manager import rooms, save_rooms
 from app.models.room import Message, CurrentVideo, VideoItem
+from app.services.ai_generator import generate_companion_response
 
 router = APIRouter()
 
@@ -52,8 +53,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
             elif event_type == "emotion":
                 emotion = data.get("emotion")
                 if user_id in rooms[room_id].users:
+                    old_emotion = rooms[room_id].users[user_id].get('emotion')
                     rooms[room_id].users[user_id]['emotion'] = emotion
                     rooms[room_id].users[user_id]['lastSeen'] = datetime.now().timestamp()
+                    
                     # Broadcast specific user update or full list? Full list is easier for now
                     await manager.broadcast({
                         "type": "users_update",
@@ -68,6 +71,49 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                             for uid, info in rooms[room_id].users.items()
                         ]
                     }, room_id)
+
+                    # AI Response Logic (Only if emotion changed and is not None)
+                    if emotion and old_emotion != emotion:
+                        ai_companions = [(uid, u) for uid, u in rooms[room_id].users.items() if u.get('isAi')]
+                        if ai_companions:
+                            ai_uid, ai_info = ai_companions[0]
+                            user_info = rooms[room_id].users[user_id]
+                            
+                            # Get current video state for context
+                            room = rooms[room_id]
+                            video_title = room.currentVideo.title if room.currentVideo else None
+                            current_played = room.videoState.played
+                            
+                            try:
+                                response_text = await generate_companion_response(
+                                    companion_name=ai_info['username'],
+                                    companion_personality=ai_info.get('personality', 'Friendly'),
+                                    user_name=user_info['username'],
+                                    user_input=emotion,
+                                    context_type="emotion",
+                                    video_context=f"{video_title}" if video_title else None
+                                )
+                                
+                                ai_message = Message(
+                                    id=str(uuid.uuid4()),
+                                    userId=ai_uid,
+                                    username=ai_info['username'],
+                                    content=response_text,
+                                    timestamp=datetime.now().timestamp(),
+                                    videoTitle=video_title,
+                                    videoTimestamp=current_played
+                                )
+                                
+                                rooms[room_id].messages.append(ai_message)
+                                save_rooms()
+                                
+                                await manager.broadcast({
+                                    "type": "new_message",
+                                    "message": ai_message.dict()
+                                }, room_id)
+                            except Exception as e:
+                                print(f"Failed to generate AI response: {e}")
+
 
             elif event_type == "chat":
                 content = data.get("content")

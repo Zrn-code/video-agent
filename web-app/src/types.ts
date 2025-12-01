@@ -57,6 +57,8 @@ export interface Room {
   id: string;
   name: string;
   description?: string;
+  privacy?: 'public' | 'private';
+  maxUsers?: number;
   userCount: number;
   users: RoomUser[];
   videoState: any; // Using any for simplicity as it wasn't fully visible, but ideally should be typed
