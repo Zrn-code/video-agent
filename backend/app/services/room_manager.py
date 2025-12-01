@@ -252,5 +252,71 @@ async def update_mock_emotions():
         
         save_rooms()
 
+async def update_ai_random_emotions():
+    """每10-15秒為所有AI影伴隨機更新emoji狀態，顯示3秒後清除"""
+    ai_emotions = ['😊', '😎', '🤔', '😴', '🎵', '👀', '💭', '✨']
+    
+    while True:
+        # 每10-15秒隨機觸發一次
+        await asyncio.sleep(random.uniform(10, 15))
+        
+        from app.services.connection_manager import manager
+        
+        for room_id, room in rooms.items():
+            updated = False
+            # 只更新AI影伴的狀態，但不干擾正在準備發言的AI
+            for user_id, user_info in room.users.items():
+                if user_info.get('isAi', False):
+                    # 如果正在準備發言（💬），跳過
+                    if user_info.get('emotion') == '💬':
+                        continue
+                    
+                    # 50% 機率顯示隨機emoji
+                    if random.random() < 0.5:
+                        user_info['emotion'] = random.choice(ai_emotions)
+                        user_info['lastSeen'] = datetime.now().timestamp()
+                        updated = True
+            
+            # 如果有更新，廣播給房間內的所有用戶
+            if updated:
+                await manager.broadcast({
+                    "type": "users_update",
+                    "users": [
+                        {
+                            "id": uid,
+                            "username": info['username'],
+                            "avatar": info['avatar'],
+                            "lastSeen": info['lastSeen'],
+                            "emotion": info.get('emotion'),
+                            "isAi": info.get('isAi', False)
+                        }
+                        for uid, info in room.users.items()
+                    ]
+                }, room_id)
+                
+                # 3秒後清除這些emoji狀態
+                await asyncio.sleep(3)
+                
+                for user_id, user_info in room.users.items():
+                    if user_info.get('isAi', False) and user_info.get('emotion') != '💬':
+                        user_info['emotion'] = None
+                
+                await manager.broadcast({
+                    "type": "users_update",
+                    "users": [
+                        {
+                            "id": uid,
+                            "username": info['username'],
+                            "avatar": info['avatar'],
+                            "lastSeen": info['lastSeen'],
+                            "emotion": info.get('emotion'),
+                            "isAi": info.get('isAi', False)
+                        }
+                        for uid, info in room.users.items()
+                    ]
+                }, room_id)
+        
+        save_rooms()
+
 # Initialize demo rooms on module load
 init_demo_rooms()

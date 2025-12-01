@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { VideoItem, Message } from '../types';
+import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 interface User {
   id: string;
@@ -131,7 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 return (
                   <div key={msg.id} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
                     <div className="flex-shrink-0">
-                      <img src={avatar} alt={msg.username} className="w-8 h-8 rounded-full bg-gray-700" />
+                      <img src={optimizeAvatarUrl(avatar, avatarSizes.thumbnail)} alt={msg.username} loading="lazy" className="w-8 h-8 rounded-full bg-gray-700" />
                     </div>
                     <div className={`flex flex-col max-w-[80%] ${isMe ? 'items-end' : 'items-start'}`}>
                       <div className="flex items-baseline gap-2 mb-1 max-w-full">

@@ -39,8 +39,9 @@ async def create_room(request: CreateRoomRequest):
                 "lastSeen": datetime.now().timestamp(),
                 "emotion": "neutral",
                 "isAi": True,
-                "personality": companion.personality,
-                "background": companion.background
+                "style": companion.style,
+                "catchphrase_1": companion.catchphrase_1,
+                "catchphrase_2": companion.catchphrase_2
             }
     
     if request.initialPlaylist:
@@ -170,7 +171,7 @@ async def send_chat(room_id: str, request: ChatRequest):
         try:
             response_text = await generate_companion_response(
                 companion_name=ai_info['username'],
-                companion_personality=ai_info.get('personality', 'Friendly'),
+                companion_style=ai_info.get('style', '友善的角色'),
                 user_name=request.username,
                 user_input=request.content,
                 context_type="chat",
@@ -304,8 +305,9 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
         "lastSeen": datetime.now().timestamp(),
         "emotion": "neutral",
         "isAi": True,
-        "personality": companion.personality,
-        "background": companion.background
+        "style": companion.style,
+        "catchphrase_1": companion.catchphrase_1,
+        "catchphrase_2": companion.catchphrase_2
     }
     
     # Update room's aiCompanions field

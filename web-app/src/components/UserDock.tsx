@@ -8,6 +8,7 @@ interface User {
   lastSeen: number;
   emotion?: string;
   isFocused?: boolean;
+  isAi?: boolean;
 }
 
 interface UserDockProps {
@@ -20,7 +21,17 @@ interface UserDockProps {
   onEmotionSelect?: (emotion: string) => void;
 }
 
-const getEmotionEmoji = (emotion?: string) => {
+const getEmotionEmoji = (emotion?: string, isAi?: boolean) => {
+  // 如果是 AI，emotion 可能直接包含 emoji
+  if (isAi && emotion) {
+    // 檢查是否為直接的 emoji
+    const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+    if (emojiRegex.test(emotion)) {
+      return emotion;
+    }
+  }
+  
+  // 標準情緒映射
   switch (emotion) {
     case 'Happy': return '😊';
     case 'Sad': return '😭';
@@ -49,18 +60,17 @@ const UserSeat: React.FC<{
 
   useEffect(() => {
     if (emotion !== prevEmotionRef.current) {
-      const emoji = getEmotionEmoji(emotion);
+      // 只有當情緒改變時才更新
+      const emoji = getEmotionEmoji(emotion, user.isAi);
       if (emoji) {
         setVisibleEmoji(emoji);
-        const timer = setTimeout(() => {
-          setVisibleEmoji(null);
-        }, 3000);
-        prevEmotionRef.current = emotion;
-        return () => clearTimeout(timer);
+      } else {
+        // 如果新情緒是 null/undefined，立即清除
+        setVisibleEmoji(null);
       }
       prevEmotionRef.current = emotion;
     }
-  }, [emotion]);
+  }, [emotion, user.isAi]);
 
   const messageToDisplay = activeMessage || (showHistory ? lastMessage : null);
 
@@ -83,6 +93,7 @@ const UserSeat: React.FC<{
         className={`relative w-36 h-16 bg-[#1e1f22] rounded-xl overflow-hidden border-2 transition-all duration-300 shadow-2xl
         ${messageToDisplay ? 'border-green-500' : 'border-transparent group-hover:border-white/20'}
         ${isMe ? 'cursor-pointer hover:ring-2 hover:ring-primary/50' : 'cursor-pointer hover:ring-2 hover:ring-white/20'}
+        ${user.isAi ? 'border-purple-500/30' : ''}
         `}
         onClick={() => setShowHistory(!showHistory)}
       >
@@ -93,7 +104,7 @@ const UserSeat: React.FC<{
              <img 
               src={user.avatar} 
               alt={user.username}
-              className={`w-10 h-10 rounded-full object-cover border-2 border-[#2b2d31] shadow-lg ${activeMessage ? 'scale-110' : 'scale-100'} transition-transform duration-300`}
+              className={`w-10 h-10 rounded-full object-cover border-2 ${user.isAi ? 'border-purple-500/50' : 'border-[#2b2d31]'} shadow-lg ${activeMessage ? 'scale-110' : 'scale-100'} transition-transform duration-300`}
             />
             
             {/* Emotion Overlay (Animated) */}

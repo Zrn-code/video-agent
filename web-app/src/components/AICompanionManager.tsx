@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 export interface Companion {
   id: string;
   name: string;
   avatar: string;
-  personality: string;
-  background: string;
+  style: string;
+  catchphrase_1?: string;
+  catchphrase_2?: string;
   voice: string;
 }
 
@@ -26,8 +28,9 @@ const AICompanionManager = () => {
   // Form state for editing
   const [editForm, setEditForm] = useState({
     name: '',
-    personality: '',
-    background: ''
+    style: '',
+    catchphrase_1: '',
+    catchphrase_2: ''
   });
 
   // Fetch preset companions from server
@@ -41,8 +44,9 @@ const AICompanionManager = () => {
             id: `preset-${index}`,
             name: c.name,
             avatar: c.avatar,
-            personality: c.personality,
-            background: c.background,
+            style: c.style,
+            catchphrase_1: c.catchphrase_1,
+            catchphrase_2: c.catchphrase_2,
             voice: 'default'
           }));
           setPresetCompanions(presets);
@@ -90,8 +94,9 @@ const AICompanionManager = () => {
     setSelectedCompanion(companion);
     setEditForm({
       name: companion.name,
-      personality: companion.personality,
-      background: companion.background
+      style: companion.style,
+      catchphrase_1: companion.catchphrase_1 || '',
+      catchphrase_2: companion.catchphrase_2 || ''
     });
     setIsEditing(false);
     setIsDetailModalOpen(true);
@@ -118,27 +123,28 @@ const AICompanionManager = () => {
     if (selectedCompanion) {
       setEditForm({
         name: selectedCompanion.name,
-        personality: selectedCompanion.personality,
-        background: selectedCompanion.background
+        style: selectedCompanion.style,
+        catchphrase_1: selectedCompanion.catchphrase_1 || '',
+        catchphrase_2: selectedCompanion.catchphrase_2 || ''
       });
     }
     setIsEditing(false);
   };
 
   const handleSaveEdit = () => {
-    if (!selectedCompanion || !editForm.name.trim() || !editForm.personality.trim() || !editForm.background.trim()) {
-      alert('請填寫所有欄位');
+    if (!selectedCompanion || !editForm.name.trim() || !editForm.style.trim()) {
+      alert('請填寫名稱和風格');
       return;
     }
 
     const updatedCompanions = customCompanions.map(c => 
       c.id === selectedCompanion.id 
-        ? { ...c, name: editForm.name, personality: editForm.personality, background: editForm.background }
+        ? { ...c, name: editForm.name, style: editForm.style, catchphrase_1: editForm.catchphrase_1 || undefined, catchphrase_2: editForm.catchphrase_2 || undefined }
         : c
     );
     
     saveCustomCompanions(updatedCompanions);
-    setSelectedCompanion({ ...selectedCompanion, name: editForm.name, personality: editForm.personality, background: editForm.background });
+    setSelectedCompanion({ ...selectedCompanion, name: editForm.name, style: editForm.style, catchphrase_1: editForm.catchphrase_1 || undefined, catchphrase_2: editForm.catchphrase_2 || undefined });
     setIsEditing(false);
   };
 
@@ -161,8 +167,9 @@ const AICompanionManager = () => {
           id: `custom-${Date.now()}`,
           name: generatedCompanion.name,
           avatar: generatedCompanion.avatar,
-          personality: generatedCompanion.personality,
-          background: generatedCompanion.background,
+          style: generatedCompanion.style,
+          catchphrase_1: generatedCompanion.catchphrase_1,
+          catchphrase_2: generatedCompanion.catchphrase_2,
           voice: 'default'
         };
         saveCustomCompanions([...customCompanions, newCompanion]);
@@ -227,7 +234,7 @@ const AICompanionManager = () => {
                       className="flex flex-col items-center gap-2 p-3 bg-[#1a1a1a] rounded-xl border border-white/5 hover:border-purple-500/50 transition-all group hover:scale-105 cursor-pointer"
                     >
                       <div className="relative w-16 h-16 rounded-full bg-gray-800 overflow-hidden border-2 border-white/10 group-hover:border-purple-500/50 transition-colors">
-                        <img src={companion.avatar} alt={companion.name} className="w-full h-full object-cover" />
+                        <img src={optimizeAvatarUrl(companion.avatar, avatarSizes.thumbnail)} alt={companion.name} loading="lazy" className="w-full h-full object-cover" />
                       </div>
                       <span className="text-xs font-medium text-white truncate w-full text-center">{companion.name}</span>
                     </button>
@@ -255,7 +262,7 @@ const AICompanionManager = () => {
                         className="w-full flex flex-col items-center gap-2 p-3 bg-[#1a1a1a] rounded-xl border border-white/5 hover:border-blue-500/50 transition-all group-hover:scale-105 cursor-pointer"
                       >
                         <div className="relative w-16 h-16 rounded-full bg-gray-800 overflow-hidden border-2 border-white/10 group-hover:border-blue-500/50 transition-colors">
-                          <img src={companion.avatar} alt={companion.name} className="w-full h-full object-cover" />
+                          <img src={optimizeAvatarUrl(companion.avatar, avatarSizes.thumbnail)} alt={companion.name} loading="lazy" className="w-full h-full object-cover" />
                         </div>
                         <span className="text-xs font-medium text-white truncate w-full text-center">{companion.name}</span>
                       </button>
@@ -343,7 +350,7 @@ const AICompanionManager = () => {
             <div className="p-6 border-b border-white/5 bg-gradient-to-r from-purple-900/20 to-blue-900/20">
               <div className="flex items-center gap-4">
                 <div className="relative w-20 h-20 rounded-full bg-gray-800 overflow-hidden border-2 border-white/10">
-                  <img src={selectedCompanion.avatar} alt={selectedCompanion.name} className="w-full h-full object-cover" />
+                  <img src={optimizeAvatarUrl(selectedCompanion.avatar, avatarSizes.small)} alt={selectedCompanion.name} loading="lazy" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-white">{selectedCompanion.name}</h3>
@@ -388,19 +395,19 @@ const AICompanionManager = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                     <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
                   </svg>
-                  個性特質
+                  風格特質
                 </h4>
                 {isEditing ? (
                   <textarea
-                    value={editForm.personality}
-                    onChange={(e) => setEditForm({ ...editForm, personality: e.target.value })}
+                    value={editForm.style}
+                    onChange={(e) => setEditForm({ ...editForm, style: e.target.value })}
                     rows={3}
                     className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 resize-none"
-                    placeholder="描述個性特質"
+                    placeholder="描述風格特質"
                   />
                 ) : (
                   <p className="text-sm text-gray-300 bg-white/5 p-3 rounded-lg border border-white/5">
-                    {selectedCompanion.personality}
+                    {selectedCompanion.style}
                   </p>
                 )}
               </div>
@@ -410,20 +417,46 @@ const AICompanionManager = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                     <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
                   </svg>
-                  背景故事
+                  口頭禪 1{isEditing && !selectedCompanion?.id?.startsWith('preset-') ? ' (可選)' : ''}
                 </h4>
                 {isEditing ? (
                   <textarea
-                    value={editForm.background}
-                    onChange={(e) => setEditForm({ ...editForm, background: e.target.value })}
-                    rows={4}
+                    value={editForm.catchphrase_1}
+                    onChange={(e) => setEditForm({ ...editForm, catchphrase_1: e.target.value })}
+                    rows={2}
                     className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 resize-none"
-                    placeholder="描述背景故事"
+                    placeholder="第一句經典語錄"
                   />
                 ) : (
-                  <p className="text-sm text-gray-300 bg-white/5 p-3 rounded-lg border border-white/5">
-                    {selectedCompanion.background}
-                  </p>
+                  selectedCompanion.catchphrase_1 && (
+                    <p className="text-sm text-gray-300 bg-white/5 p-3 rounded-lg border border-white/5">
+                      {selectedCompanion.catchphrase_1}
+                    </p>
+                  )
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold text-gray-500 uppercase flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
+                  </svg>
+                  口頭禪 2{isEditing && !selectedCompanion?.id?.startsWith('preset-') ? ' (可選)' : ''}
+                </h4>
+                {isEditing ? (
+                  <textarea
+                    value={editForm.catchphrase_2}
+                    onChange={(e) => setEditForm({ ...editForm, catchphrase_2: e.target.value })}
+                    rows={2}
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 resize-none"
+                    placeholder="第二句經典語錄"
+                  />
+                ) : (
+                  selectedCompanion.catchphrase_2 && (
+                    <p className="text-sm text-gray-300 bg-white/5 p-3 rounded-lg border border-white/5">
+                      {selectedCompanion.catchphrase_2}
+                    </p>
+                  )
                 )}
               </div>
             </div>
@@ -446,6 +479,12 @@ const AICompanionManager = () => {
                 </div>
               ) : (
                 <div className="flex gap-3">
+                  <button 
+                    onClick={() => setIsDetailModalOpen(false)}
+                    className="flex-1 px-4 py-2 rounded-lg font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
+                  >
+                    關閉
+                  </button>
                   {!selectedCompanion?.id?.startsWith('preset-') && (
                     <button 
                       onClick={handleStartEdit}
@@ -458,12 +497,6 @@ const AICompanionManager = () => {
                       編輯
                     </button>
                   )}
-                  <button 
-                    onClick={() => setIsDetailModalOpen(false)}
-                    className="flex-1 px-4 py-2 rounded-lg font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
-                  >
-                    關閉
-                  </button>
                 </div>
               )}
             </div>

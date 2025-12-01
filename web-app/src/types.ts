@@ -47,8 +47,9 @@ export interface RoomUser {
 
 export interface AICompanion {
   name: string;
-  personality: string;
-  background: string;
+  style: string;
+  catchphrase_1?: string;
+  catchphrase_2?: string;
   avatar: string;
   category?: string;
 }

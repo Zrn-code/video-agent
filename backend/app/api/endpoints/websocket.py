@@ -76,18 +76,41 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                     if emotion and old_emotion != emotion:
                         ai_companions = [(uid, u) for uid, u in rooms[room_id].users.items() if u.get('isAi')]
                         if ai_companions:
-                            ai_uid, ai_info = ai_companions[0]
-                            user_info = rooms[room_id].users[user_id]
+                            # 隨機選擇一個 AI 影伴回復
+                            import random
+                            import asyncio
                             
-                            # Get current video state for context
+                            ai_uid, ai_info = random.choice(ai_companions)
+                            
+                            user_info = rooms[room_id].users[user_id]
                             room = rooms[room_id]
                             video_title = room.currentVideo.title if room.currentVideo else None
                             current_played = room.videoState.played
                             
+                            # 設置準備發言狀態（使用 emoji）
+                            rooms[room_id].users[ai_uid]['emotion'] = '💬'
+                            await manager.broadcast({
+                                "type": "users_update",
+                                "users": [
+                                    {
+                                        "id": uid,
+                                        "username": info['username'],
+                                        "avatar": info['avatar'],
+                                        "lastSeen": info['lastSeen'],
+                                        "emotion": info.get('emotion'),
+                                        "isAi": info.get('isAi', False)
+                                    }
+                                    for uid, info in rooms[room_id].users.items()
+                                ]
+                            }, room_id)
+                            
+                            # 延遲 0.5 秒
+                            await asyncio.sleep(0.5)
+                            
                             try:
                                 response_text = await generate_companion_response(
                                     companion_name=ai_info['username'],
-                                    companion_personality=ai_info.get('personality', 'Friendly'),
+                                    companion_style=ai_info.get('style', '友善的角色'),
                                     user_name=user_info['username'],
                                     user_input=emotion,
                                     context_type="emotion",
@@ -111,8 +134,27 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                     "type": "new_message",
                                     "message": ai_message.dict()
                                 }, room_id)
+                                
+                                # 清除準備發言狀態
+                                rooms[room_id].users[ai_uid]['emotion'] = None
+                                await manager.broadcast({
+                                    "type": "users_update",
+                                    "users": [
+                                        {
+                                            "id": uid,
+                                            "username": info['username'],
+                                            "avatar": info['avatar'],
+                                            "lastSeen": info['lastSeen'],
+                                            "emotion": info.get('emotion'),
+                                            "isAi": info.get('isAi', False)
+                                        }
+                                        for uid, info in rooms[room_id].users.items()
+                                    ]
+                                }, room_id)
                             except Exception as e:
                                 print(f"Failed to generate AI response: {e}")
+                                # 即使失敗也要清除準備發言狀態
+                                rooms[room_id].users[ai_uid]['emotion'] = None
 
 
             elif event_type == "chat":

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import AICompanionSelector from '../components/AICompanionSelector';
 import type { VideoItem, YouTubeVideo, AICompanion } from '../types';
+import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 const CreateRoom = () => {
   const navigate = useNavigate();
@@ -164,7 +165,7 @@ const CreateRoom = () => {
                             <div className="flex-shrink-0">
                                 <div className="relative group">
                                     <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30 group-hover:border-purple-500/60 transition-all duration-500 bg-gradient-to-br from-purple-900/50 to-blue-900/50 shadow-2xl shadow-purple-500/20">
-                                        <img src={userAvatar} alt="Avatar" className="w-full h-full object-cover" />
+                                        <img src={optimizeAvatarUrl(userAvatar, avatarSizes.small)} alt="Avatar" loading="lazy" className="w-full h-full object-cover" />
                                     </div>
                                     <button 
                                         onClick={randomizeAvatar} 
@@ -199,7 +200,7 @@ const CreateRoom = () => {
                     </div>
 
                     {/* Bottom Section: Room Settings */}
-                    <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-xl flex-1 min-h-0 overflow-y-auto">
+                    <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-xl flex-1 min-h-0">
                         <div className="space-y-6">
                             {/* Room Info Section */}
                             <div>

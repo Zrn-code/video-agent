@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { AICompanion } from '../types';
+import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 interface Props {
   onSelect: (companions: AICompanion[]) => void;
@@ -12,7 +13,6 @@ const AICompanionSelector = ({ onSelect }: Props) => {
   const [customCompanions, setCustomCompanions] = useState<AICompanion[]>([]);
   const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
   
   // Custom Generation State
   const [showCustomModal, setShowCustomModal] = useState(false);
@@ -26,8 +26,9 @@ const AICompanionSelector = ({ onSelect }: Props) => {
   
   // Edit State
   const [editName, setEditName] = useState('');
-  const [editPersonality, setEditPersonality] = useState('');
-  const [editBackground, setEditBackground] = useState('');
+  const [editStyle, setEditStyle] = useState('');
+  const [editCatchphrase1, setEditCatchphrase1] = useState('');
+  const [editCatchphrase2, setEditCatchphrase2] = useState('');
 
   useEffect(() => {
     fetchPresets();
@@ -110,22 +111,14 @@ const AICompanionSelector = ({ onSelect }: Props) => {
       setShowCustomModal(false);
       setGeneratedCompanion(null);
       setCustomPrompt('');
-      
-      // Switch to '自訂' or '全部' category to see the new item
-      if (selectedCategory !== '全部' && selectedCategory !== '自訂') {
-        setSelectedCategory('自訂');
-      }
     }
   };
 
   // Combine presets and custom companions
   const allCompanions = [...customCompanions, ...presets];
   
-  // Filter by category
-  const categories = ['全部', '自訂', ...Array.from(new Set(presets.map(p => p.category || '其他')))];
-  const filteredCompanions = selectedCategory === '全部' 
-    ? allCompanions 
-    : allCompanions.filter(c => (c.category || '其他') === selectedCategory);
+  // No filtering by category
+  const filteredCompanions = allCompanions;
 
   // Pagination
   const totalPages = Math.ceil((filteredCompanions.length + 1) / ITEMS_PER_PAGE); // +1 for the "Create New" button
@@ -146,25 +139,7 @@ const AICompanionSelector = ({ onSelect }: Props) => {
         <h3 className="text-gray-400 text-sm">
           已選擇 {selectedCompanions.length} 位智慧影伴
         </h3>
-      </div>        {/* Categories */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => {
-                setSelectedCategory(cat);
-                setCurrentPage(1);
-              }}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
-                selectedCategory === cat
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+      </div>
       </div>
 
       {/* Grid */}
@@ -186,7 +161,6 @@ const AICompanionSelector = ({ onSelect }: Props) => {
 
         {displayItems.map((companion) => {
           const isSelected = selectedCompanions.some(c => c.name === companion.name);
-          const isCustom = companion.category === '自訂' || !presets.find(p => p.name === companion.name);
           return (
             <div 
               key={companion.name}
@@ -199,8 +173,9 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                   : 'border-transparent hover:border-white/20'
               }`}>
                 <img 
-                  src={companion.avatar} 
+                  src={optimizeAvatarUrl(companion.avatar, avatarSizes.thumbnail)} 
                   alt={companion.name}
+                  loading="lazy"
                   className="w-full h-full object-cover bg-white/5"
                 />
                 
@@ -292,7 +267,7 @@ const AICompanionSelector = ({ onSelect }: Props) => {
               <div className="space-y-6">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
-                    <img src={generatedCompanion.avatar} alt={generatedCompanion.name} className="w-full h-full object-cover bg-white/5" />
+                    <img src={optimizeAvatarUrl(generatedCompanion.avatar, avatarSizes.small)} alt={generatedCompanion.name} loading="lazy" className="w-full h-full object-cover bg-white/5" />
                   </div>
                   <div className="w-full space-y-3">
                     <div>
@@ -305,21 +280,32 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">風格</label>
                       <textarea
-                        value={generatedCompanion.personality}
-                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, personality: e.target.value})}
-                        rows={2}
+                        value={generatedCompanion.style}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, style: e.target.value})}
+                        rows={3}
                         className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 1 (可選)</label>
                       <textarea
-                        value={generatedCompanion.background}
-                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, background: e.target.value})}
-                        rows={3}
+                        value={generatedCompanion.catchphrase_1 || ''}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, catchphrase_1: e.target.value})}
+                        rows={2}
                         className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                        placeholder="第一句經典語錄"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 2 (可選)</label>
+                      <textarea
+                        value={generatedCompanion.catchphrase_2 || ''}
+                        onChange={(e) => setGeneratedCompanion({...generatedCompanion, catchphrase_2: e.target.value})}
+                        rows={2}
+                        className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                        placeholder="第二句經典語錄"
                       />
                     </div>
                   </div>
@@ -353,7 +339,7 @@ const AICompanionSelector = ({ onSelect }: Props) => {
           <div className="bg-[#1a1b26] rounded-2xl p-6 w-full max-w-sm border border-white/10 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex flex-col items-center gap-4">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30">
-                <img src={viewingCompanion.avatar} alt={viewingCompanion.name} className="w-full h-full object-cover bg-white/5" />
+                <img src={optimizeAvatarUrl(viewingCompanion.avatar, avatarSizes.small)} alt={viewingCompanion.name} loading="lazy" className="w-full h-full object-cover bg-white/5" />
               </div>
               
               {isEditing ? (
@@ -368,20 +354,29 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">風格</label>
                     <textarea
-                      value={editPersonality}
-                      onChange={(e) => setEditPersonality(e.target.value)}
+                      value={editStyle}
+                      onChange={(e) => setEditStyle(e.target.value)}
+                      rows={3}
+                      className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 1 (可選)</label>
+                    <textarea
+                      value={editCatchphrase1}
+                      onChange={(e) => setEditCatchphrase1(e.target.value)}
                       rows={2}
                       className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
+                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 2 (可選)</label>
                     <textarea
-                      value={editBackground}
-                      onChange={(e) => setEditBackground(e.target.value)}
-                      rows={3}
+                      value={editCatchphrase2}
+                      onChange={(e) => setEditCatchphrase2(e.target.value)}
+                      rows={2}
                       className="w-full mt-1 bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 resize-none"
                     />
                   </div>
@@ -397,13 +392,21 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                   
                   <div className="w-full space-y-3">
                     <div>
-                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">個性</label>
-                      <p className="text-sm text-gray-300 mt-1">{viewingCompanion.personality}</p>
+                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">風格</label>
+                      <p className="text-sm text-gray-300 mt-1">{viewingCompanion.style}</p>
                     </div>
-                    <div>
-                      <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">背景</label>
-                      <p className="text-sm text-gray-300 mt-1">{viewingCompanion.background}</p>
-                    </div>
+                    {viewingCompanion.catchphrase_1 && (
+                      <div>
+                        <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 1</label>
+                        <p className="text-sm text-gray-300 mt-1">{viewingCompanion.catchphrase_1}</p>
+                      </div>
+                    )}
+                    {viewingCompanion.catchphrase_2 && (
+                      <div>
+                        <label className="text-xs text-gray-500 uppercase font-bold tracking-wider">口頭禪 2</label>
+                        <p className="text-sm text-gray-300 mt-1">{viewingCompanion.catchphrase_2}</p>
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -423,8 +426,9 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                         const updatedCompanion = {
                           ...viewingCompanion,
                           name: editName,
-                          personality: editPersonality,
-                          background: editBackground
+                          style: editStyle,
+                          catchphrase_1: editCatchphrase1 || undefined,
+                          catchphrase_2: editCatchphrase2 || undefined
                         };
                         
                         // Update in customCompanions if it's custom
@@ -464,8 +468,9 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                       <button
                         onClick={() => {
                           setEditName(viewingCompanion.name);
-                          setEditPersonality(viewingCompanion.personality);
-                          setEditBackground(viewingCompanion.background);
+                          setEditStyle(viewingCompanion.style);
+                          setEditCatchphrase1(viewingCompanion.catchphrase_1 || '');
+                          setEditCatchphrase2(viewingCompanion.catchphrase_2 || '');
                           setIsEditing(true);
                         }}
                         className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 transition-colors"

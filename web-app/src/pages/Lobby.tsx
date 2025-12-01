@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import AICompanionManager from '../components/AICompanionManager';
 import type { Room } from '../types';
+import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 const RoomTimeDisplay = ({ videoState }: { videoState: any }) => {
   const [currentTime, setCurrentTime] = useState(videoState.played);
@@ -73,7 +74,7 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">正在播放</h3>
             {room.currentVideo ? (
               <div className="flex gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                <img src={room.currentVideo.thumbnailUrl} alt="Thumbnail" className="w-20 h-12 object-cover rounded" />
+                <img src={optimizeAvatarUrl(room.currentVideo.thumbnailUrl, avatarSizes.small)} alt="Thumbnail" loading="lazy" className="w-20 h-12 object-cover rounded" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white truncate">{room.currentVideo.title}</p>
                   <p className="text-xs text-gray-400 truncate">{room.currentVideo.channelTitle}</p>
@@ -118,7 +119,7 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
                 className="relative group w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 hover:border-purple-500 transition-colors"
                 title="點擊更換頭像"
               >
-                <img src={avatar} alt="Avatar" className="w-full h-full object-cover bg-gray-800" />
+                <img src={optimizeAvatarUrl(avatar, avatarSizes.small)} alt="Avatar" loading="lazy" className="w-full h-full object-cover bg-gray-800" />
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-white">
                     <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h-2.433a2.5 2.5 0 0 0-2.45 2.534 6.002 6.002 0 0 1 13.943-2.28l.453-.709ZM6 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clipRule="evenodd" />
@@ -231,7 +232,7 @@ const Lobby = () => {
   const getThumbnailUrl = (url: string) => {
     try {
       const videoId = url.split('v=')[1]?.split('&')[0];
-      if (videoId) return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+      if (videoId) return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     } catch (e) { return null; }
     return null;
   };
@@ -348,8 +349,9 @@ const Lobby = () => {
                        
                        {thumbnailUrl ? (
                          <img 
-                           src={thumbnailUrl} 
-                           alt="Thumbnail" 
+                           src={optimizeAvatarUrl(thumbnailUrl, 600, 85)} 
+                           alt="Thumbnail"
+                           loading="lazy" 
                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                          />
                        ) : (
@@ -388,8 +390,9 @@ const Lobby = () => {
                              room.users.slice(0, 4).map((user, i) => (
                                <img 
                                  key={i} 
-                                 src={user.avatar} 
+                                 src={optimizeAvatarUrl(user.avatar, avatarSizes.thumbnail)} 
                                  alt={user.username}
+                                 loading="lazy"
                                  className="inline-block h-5 w-5 rounded-full ring-2 ring-[#121212] bg-gray-800 object-cover"
                                  title={user.username}
                                />
@@ -455,7 +458,7 @@ const Lobby = () => {
       </main>
 
       {/* AI Companion Section */}
-      <section className="w-full bg-[#0a0a0a] pb-20 snap-start shrink-0">
+      <section className="h-screen w-full bg-[#0a0a0a] snap-start shrink-0 overflow-hidden">
         <AICompanionManager />
       </section>
 

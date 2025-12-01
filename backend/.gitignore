@@ -1,3 +1,4 @@
 .env
 rooms_db.json
 *__pycache__*/
+test/

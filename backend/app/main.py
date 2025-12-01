@@ -4,7 +4,7 @@ import threading
 import asyncio
 
 from app.api.endpoints import rooms, websocket, youtube, asr, ai
-from app.services.room_manager import update_mock_emotions
+from app.services.room_manager import update_mock_emotions, update_ai_random_emotions
 
 app = FastAPI()
 
@@ -26,7 +26,16 @@ app.include_router(ai.router, prefix="/api")
 
 # Start background task for mock emotions
 def run_async_task():
-    asyncio.run(update_mock_emotions())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
+    # 創建兩個並行任務
+    tasks = [
+        update_mock_emotions(),
+        update_ai_random_emotions()
+    ]
+    
+    loop.run_until_complete(asyncio.gather(*tasks))
 
 emotion_thread = threading.Thread(target=run_async_task, daemon=True)
 emotion_thread.start()

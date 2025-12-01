@@ -25,8 +25,9 @@ class VideoItem(BaseModel):
 
 class AICompanion(BaseModel):
     name: str
-    personality: str
-    background: str
+    style: str
+    catchphrase_1: Optional[str] = None
+    catchphrase_2: Optional[str] = None
     avatar: str
     category: Optional[str] = "其他"
 

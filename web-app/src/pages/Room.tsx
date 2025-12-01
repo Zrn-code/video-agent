@@ -16,6 +16,7 @@ interface User {
   lastSeen: number;
   emotion?: string;
   isFocused?: boolean;
+  isAi?: boolean;
 }
 
 const Room = () => {
@@ -91,6 +92,18 @@ const Room = () => {
       }));
     }
     setShowEmojiMenu(false);
+    
+    // 3秒後自動清除情緒
+    setTimeout(() => {
+      setEmotion(undefined);
+      emotionRef.current = undefined;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'emotion',
+          emotion: undefined
+        }));
+      }
+    }, 3000);
   };
 
   const toggleRecording = async () => {
@@ -124,7 +137,7 @@ const Room = () => {
       }
       setEmotion(undefined);
     } else {
-      await startWebcam();
+      // 模擬攝像頭：不啟動真實攝像頭，只開啟模擬情緒功能
       setIsCameraEnabled(true);
     }
   };
@@ -142,6 +155,47 @@ const Room = () => {
   useEffect(() => {
     emotionRef.current = emotion;
   }, [emotion]);
+
+  // 模擬攝像頭情緒顯示：開啟後每15秒展示一個隨機情緒，持續3秒
+  useEffect(() => {
+    if (!isCameraEnabled) return;
+
+    const simulatedEmotions = ['Happy', 'Sad', 'Surprise', 'Excited', 'Thinking', 'Laughing'];
+    
+    const showRandomEmotion = () => {
+      const randomEmotion = simulatedEmotions[Math.floor(Math.random() * simulatedEmotions.length)];
+      setEmotion(randomEmotion);
+      emotionRef.current = randomEmotion;
+      
+      // 發送到伺服器
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'emotion',
+          emotion: randomEmotion
+        }));
+      }
+      
+      // 3秒後清除情緒
+      setTimeout(() => {
+        setEmotion(undefined);
+        emotionRef.current = undefined;
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({
+            type: 'emotion',
+            emotion: undefined
+          }));
+        }
+      }, 3000);
+    };
+
+    // 立即顯示一次
+    showRandomEmotion();
+    
+    // 每15秒重複
+    const interval = setInterval(showRandomEmotion, 15000);
+    
+    return () => clearInterval(interval);
+  }, [isCameraEnabled]);
 
   useEffect(() => {
     const onFocus = () => { setIsFocused(true); isFocusedRef.current = true; };
@@ -1040,10 +1094,46 @@ const Room = () => {
           setSidebarTab('chat');
           setShowSidebar(true);
         }}
-        onShareClick={() => {
-          navigator.clipboard.writeText(window.location.href);
-          setSearchError('連結已複製到剪貼簿！'); // Reuse searchError for toast
-          setTimeout(() => setSearchError(''), 2000);
+        onShareClick={async () => {
+          try {
+            const url = window.location.href;
+            
+            // 嘗試使用 Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(url);
+              setSearchError('✅ 連結已複製到剪貼簿！');
+            } else {
+              // 備用方案：使用傳統的複製方法
+              const textArea = document.createElement('textarea');
+              textArea.value = url;
+              textArea.style.position = 'fixed';
+              textArea.style.left = '-999999px';
+              textArea.style.top = '-999999px';
+              document.body.appendChild(textArea);
+              textArea.focus();
+              textArea.select();
+              
+              try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                  setSearchError('✅ 連結已複製到剪貼簿！');
+                } else {
+                  setSearchError('❌ 複製失敗，請手動複製連結');
+                }
+              } catch (err) {
+                console.error('Failed to copy:', err);
+                setSearchError('❌ 複製失敗，請手動複製連結');
+              } finally {
+                document.body.removeChild(textArea);
+              }
+            }
+            
+            setTimeout(() => setSearchError(''), 3000);
+          } catch (error) {
+            console.error('Failed to copy URL:', error);
+            setSearchError('❌ 複製失敗，請手動複製連結');
+            setTimeout(() => setSearchError(''), 3000);
+          }
         }}
         isCameraEnabled={isCameraEnabled}
         onToggleCamera={toggleCamera}

@@ -26,8 +26,9 @@ async def generate_character_card(prompt: str) -> AICompanion:
     
     請「僅」返回一個有效的 JSON 物件，包含以下欄位：
     - name: 角色名稱 (字串)
-    - personality: 簡短的個性描述 (字串)，使用繁體中文。
-    - background: 簡短的背景故事 (字串)，使用繁體中文。
+    - style: 角色在「陪看影片時」的行為風格描述 (字串)，使用繁體中文，30-50字。
+    - catchphrase_1: 角色的第一句口頭禪或經典語錄 (字串，可選)，使用繁體中文。
+    - catchphrase_2: 角色的第二句口頭禪或經典語錄 (字串，可選)，使用繁體中文。
     
     請勿包含任何 markdown 格式或解釋文字，只返回 JSON。
     """
@@ -54,8 +55,9 @@ async def generate_character_card(prompt: str) -> AICompanion:
         
         return AICompanion(
             name=data.get("name", "Unknown"),
-            personality=data.get("personality", "A mysterious figure."),
-            background=data.get("background", "No records found."),
+            style=data.get("style", "神秘的角色。"),
+            catchphrase_1=data.get("catchphrase_1"),
+            catchphrase_2=data.get("catchphrase_2"),
             avatar=avatar
         )
     except Exception as e:
@@ -63,18 +65,19 @@ async def generate_character_card(prompt: str) -> AICompanion:
         # Fallback
         return AICompanion(
             name="Glitch",
-            personality="Unpredictable and glitchy.",
-            background="Something went wrong during creation.",
+            style="無法預測、系統異常，像個出錯的程式。",
+            catchphrase_1="錯誤...錯誤...系統異常...",
+            catchphrase_2="ERROR 404: 口頭禪 not found",
             avatar="https://api.dicebear.com/9.x/bottts/svg?seed=Glitch"
         )
 
 def get_presets():
     return load_presets()
 
-async def generate_companion_response(companion_name: str, companion_personality: str, user_name: str, user_input: str, context_type: str = "chat", video_context: str = None) -> str:
+async def generate_companion_response(companion_name: str, companion_style: str, user_name: str, user_input: str, context_type: str = "chat", video_context: str = None) -> str:
     prompt = f"""
     你是 {companion_name}。
-    個性：{companion_personality}
+    風格：{companion_style}
     
     當前情境：
     影片：{video_context or "目前沒有播放影片"}
@@ -92,7 +95,7 @@ async def generate_companion_response(companion_name: str, companion_personality
     
     try:
         response = await client.aio.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-2.5-flash-lite',
             contents=prompt
         )
         return response.text.strip()
