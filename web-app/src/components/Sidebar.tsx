@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { VideoItem, Message } from '../types';
 import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
+import MessageItem from './MessageItem';
 
 interface User {
   id: string;
@@ -26,7 +27,10 @@ interface SidebarProps {
   onAddToQueue: (video: VideoItem) => void;
   onSearch: (query: string) => void;
   hideChat?: boolean;
+  spoilerPreference?: 'show_all' | 'hide_spoilers';
+  mutedUserIds?: string[];
 }
+
 
 const Sidebar: React.FC<SidebarProps> = ({ 
   currentUser, 
@@ -43,7 +47,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   onRemoveFromQueue,
   onAddToQueue,
   onSearch,
-  hideChat = false
+  hideChat = false,
+  spoilerPreference = 'show_all',
+  mutedUserIds = []
 }) => {
   const [chatInput, setChatInput] = useState('');
   const [searchInput, setSearchInput] = useState('');
@@ -124,36 +130,24 @@ const Sidebar: React.FC<SidebarProps> = ({
         {activeTab === 'chat' ? (
           <div className="h-full flex flex-col">
             <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-              {messages.map((msg) => {
+              {messages
+                .filter(msg => !mutedUserIds.includes(msg.userId))
+                .map((msg) => {
                 const isMe = msg.userId === currentUser.id;
                 const user = roomUsers.find(u => u.id === msg.userId);
                 const avatar = user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.userId}`;
                 
                 return (
-                  <div key={msg.id} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
-                    <div className="flex-shrink-0">
-                      <img src={optimizeAvatarUrl(avatar, avatarSizes.thumbnail)} alt={msg.username} loading="lazy" className="w-8 h-8 rounded-full bg-gray-700" />
-                    </div>
-                    <div className={`flex flex-col max-w-[80%] ${isMe ? 'items-end' : 'items-start'}`}>
-                      <div className="flex items-baseline gap-2 mb-1 max-w-full">
-                        <span className="text-xs font-medium text-gray-300 flex-shrink-0">{msg.username}</span>
-                        {msg.videoTitle ? (
-                          <span className="text-[10px] text-purple-400 truncate min-w-0" title={`${msg.videoTitle} @ ${formatVideoTime(msg.videoTimestamp || 0)}`}>
-                            {msg.videoTitle} <span className="text-gray-500">@ {formatVideoTime(msg.videoTimestamp || 0)}</span>
-                          </span>
-                        ) : (
-                          <span className="text-[10px] text-gray-500 flex-shrink-0">{formatTime(msg.timestamp)}</span>
-                        )}
-                      </div>
-                      <div className={`px-3 py-2 rounded-lg text-sm break-words ${
-                        isMe 
-                          ? 'bg-primary text-primary-content rounded-tr-none' 
-                          : 'bg-[#2b2d31] text-gray-100 rounded-tl-none'
-                      }`}>
-                        {msg.content}
-                      </div>
-                    </div>
-                  </div>
+                  <MessageItem 
+                    key={msg.id}
+                    msg={msg}
+                    isMe={isMe}
+                    user={user}
+                    avatar={avatar}
+                    formatTime={formatTime}
+                    formatVideoTime={formatVideoTime}
+                    spoilerPreference={spoilerPreference}
+                  />
                 );
               })}
               <div ref={messagesEndRef} />

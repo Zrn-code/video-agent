@@ -3,6 +3,7 @@ import shutil
 import uuid
 import os
 from google import genai
+from google.genai import types
 from app.core.config import GOOGLE_API_KEY
 
 router = APIRouter()
@@ -24,12 +25,19 @@ async def asr(file: UploadFile = File(...)):
         try:
             # Upload to Gemini using the new SDK client
             if client:
-                uploaded_file = client.files.upload(path=temp_filename)
-                
+                with open(temp_filename, "rb") as f:
+                    audio_bytes = f.read()
+
                 # Generate content
                 response = client.models.generate_content(
-                    model="gemini-2.0-flash",
-                    contents=[uploaded_file, "Transcribe this audio exactly as spoken. Do not add any other text."]
+                    model="gemini-2.5-flash-lite",
+                    contents=[
+                        types.Part.from_bytes(
+                            data=audio_bytes,
+                            mime_type="audio/wav"
+                        ),
+                        "Transcribe this audio exactly as spoken. Do not add any other text."
+                    ]
                 )
                 return {"text": response.text}
             else:

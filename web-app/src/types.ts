@@ -28,6 +28,8 @@ export interface Message {
   timestamp: number;
   videoTitle?: string;
   videoTimestamp?: number;
+  isSpoiler?: boolean;
+  spoilerReason?: string;
 }
 
 export interface CurrentVideo {
@@ -43,6 +45,8 @@ export interface RoomUser {
   avatar: string;
   emotion?: string;
   isAi?: boolean;
+  spoilerPreference?: 'show_all' | 'hide_spoilers';
+  addedBy?: string;
 }
 
 export interface AICompanion {
@@ -52,14 +56,14 @@ export interface AICompanion {
   catchphrase_2?: string;
   avatar: string;
   category?: string;
+  addedBy?: string;
 }
 
 export interface Room {
   id: string;
   name: string;
   description?: string;
-  privacy?: 'public' | 'private';
-  maxUsers?: number;
+  isPrivate?: boolean;
   userCount: number;
   users: RoomUser[];
   videoState: any; // Using any for simplicity as it wasn't fully visible, but ideally should be typed
@@ -68,4 +72,5 @@ export interface Room {
   history: VideoItem[];
   messages: Message[];
   aiCompanions?: AICompanion[];
+  hostId?: string;
 }

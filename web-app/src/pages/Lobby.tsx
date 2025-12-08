@@ -43,9 +43,10 @@ const RoomTimeDisplay = ({ videoState }: { videoState: any }) => {
   );
 };
 
-const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => void; onJoin: (nickname: string, avatar: string) => void }) => {
+const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => void; onJoin: (nickname: string, avatar: string, spoilerPreference: 'show_all' | 'hide_spoilers') => void }) => {
   const [nickname, setNickname] = useState(() => localStorage.getItem('video_agent_username') || '');
   const [avatar, setAvatar] = useState(() => localStorage.getItem('video_agent_avatar') || `https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}`);
+  const [spoilerPreference, setSpoilerPreference] = useState<'show_all' | 'hide_spoilers'>('show_all');
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const randomizeAvatar = () => {
@@ -136,6 +137,25 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
                 />
               </div>
             </div>
+            
+            {/* Spoiler Preference */}
+            <div className="flex items-center gap-3 pt-2">
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer"
+                    checked={spoilerPreference === 'hide_spoilers'}
+                    onChange={(e) => setSpoilerPreference(e.target.checked ? 'hide_spoilers' : 'show_all')}
+                  />
+                  <div className="w-10 h-6 bg-gray-700 rounded-full peer-checked:bg-purple-600 transition-colors"></div>
+                  <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-4"></div>
+                </div>
+                <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                  開啟防暴雷模式 (模糊劇透內容)
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -148,11 +168,11 @@ const JoinRoomModal = ({ room, onClose, onJoin }: { room: Room; onClose: () => v
             取消
           </button>
           <button 
-            onClick={() => onJoin(nickname, avatar)}
+            onClick={() => onJoin(nickname, avatar, spoilerPreference)}
             disabled={!nickname.trim()}
-            className="flex-1 px-4 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-900/20 transition-all hover:scale-[1.02]"
+            className="flex-1 px-4 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-purple-900/20"
           >
-            進入房間
+            加入房間
           </button>
         </div>
       </div>
@@ -218,12 +238,13 @@ const Lobby = () => {
     setSelectedRoom(room);
   };
 
-  const handleConfirmJoin = (nickname: string, avatar: string) => {
+  const handleConfirmJoin = (nickname: string, avatar: string, spoilerPreference: 'show_all' | 'hide_spoilers') => {
     if (!selectedRoom) return;
     
     // Save user info
     localStorage.setItem('video_agent_username', nickname);
     localStorage.setItem('video_agent_avatar', avatar);
+    localStorage.setItem('video_agent_spoiler_preference', spoilerPreference);
     
     // Navigate
     navigate(`/room/${selectedRoom.id}`);

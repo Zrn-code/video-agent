@@ -102,3 +102,69 @@ async def generate_companion_response(companion_name: str, companion_style: str,
     except Exception as e:
         print(f"Error generating response: {e}")
         return "..."
+
+async def analyze_message(content: str, video_title: str = None, companions: list[AICompanion] = []) -> dict:
+    """
+    Analyze the message to detect spoilers and select the best companion to reply.
+    Returns a dict with is_spoiler, reason, selected_companion, selection_reason.
+    """
+    companions_text = ""
+    if companions:
+        companions_text = "可用角色列表：\n" + "\n".join([f"- {c.name}: {c.style}" for c in companions])
+    else:
+        companions_text = "可用角色列表：無"
+
+    prompt = f"""
+    你是一個專業的劇情暴雷偵測員，同時也是一個對話分配系統。
+    
+    影片標題：{video_title or "無"}
+    使用者訊息：{content}
+    
+    {companions_text}
+    
+    任務 1：判斷使用者的訊息是否包含該影片的關鍵劇情透漏（暴雷）。(如果沒有影片標題，則為 false)
+    任務 2：根據使用者的訊息內容與語氣，從可用角色列表中選擇一位「最適合」回應的角色。
+           請考慮角色的性格（style）與名字。
+           如果沒有特別適合的角色，請隨機選擇一位。
+           如果沒有可用角色，selected_companion 為 null。
+    
+    請「僅」返回一個有效的 JSON 物件，包含以下欄位：
+    - is_spoiler: boolean (true/false)
+    - reason: string (如果是暴雷，請說明原因，否則為 null)
+    - selected_companion: string (被選中的角色名稱，或 null)
+    - selection_reason: string (選擇該角色的原因)
+    
+    請勿包含任何 markdown 格式或解釋文字，只返回 JSON。
+    """
+    
+    try:
+        response = await client.aio.models.generate_content(
+            model='gemini-2.5-flash-lite',
+            contents=prompt
+        )
+        text = response.text.strip()
+        # Remove markdown code blocks if present
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.startswith("```"):
+            text = text[3:]
+        if text.endswith("```"):
+            text = text[:-3]
+            
+        data = json.loads(text)
+        return {
+            "is_spoiler": data.get("is_spoiler", False),
+            "reason": data.get("reason"),
+            "selected_companion": data.get("selected_companion"),
+            "selection_reason": data.get("selection_reason")
+        }
+    except Exception as e:
+        print(f"Error analyzing message: {e}")
+        # Fallback: pick a random companion if available
+        selected = random.choice(companions).name if companions else None
+        return {
+            "is_spoiler": False,
+            "reason": None,
+            "selected_companion": selected,
+            "selection_reason": "Fallback due to error"
+        }

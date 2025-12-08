@@ -29,7 +29,6 @@ const CreateRoom = () => {
   const [step, setStep] = useState(1);
   const [newRoomName, setNewRoomName] = useState('');
   const [roomPrivacy, setRoomPrivacy] = useState<'public' | 'private'>('public');
-  const [maxUsers, setMaxUsers] = useState<number>(6);
   const [playlist, setPlaylist] = useState<VideoItem[]>([]);
   const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
   
@@ -100,10 +99,9 @@ const CreateRoom = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           name: newRoomName,
-          privacy: roomPrivacy,
-          maxUsers: maxUsers,
+          isPrivate: roomPrivacy === 'private',
           initialPlaylist: playlist,
-          aiCompanions: selectedCompanions
+          aiCompanions: selectedCompanions.map(c => ({ ...c, addedBy: userId }))
         }),
       });
 
@@ -181,7 +179,7 @@ const CreateRoom = () => {
 
                             {/* User Info */}
                             <div className="flex-1">
-                                <label className="block font-bold text-purple-400 mb-2 uppercase tracking-wide">您的身份</label>
+                                <label className="block font-bold text-xl text-purple-400 mb-2 uppercase tracking-wide">您的身份</label>
                                 <input 
                                     type="text" 
                                     placeholder="輸入您的暱稱..." 
@@ -189,7 +187,7 @@ const CreateRoom = () => {
                                     value={userName} 
                                     onChange={(e) => setUserName(e.target.value)} 
                                 />
-                                <p className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                                <p className="text-sm text-gray-500 mt-1.5 flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                                         <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
                                     </svg>
@@ -213,7 +211,7 @@ const CreateRoom = () => {
                                     <h3 className="text-base font-bold text-xl text-white">房間設定</h3>
                                 </div>
                                 
-                                <div className="grid grid-cols-2 gap-5">
+                                <div className="grid grid-cols-1 gap-5">
                                     <div className="form-control">
                                         <label className="label pb-1.5">
                                             <span className="label-text text-gray-400 font-medium">房間名稱</span>
@@ -286,75 +284,6 @@ const CreateRoom = () => {
                                                 )}
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="h-px bg-white/10"></div>
-
-                            {/* Room Capacity Section */}
-                            <div>
-                                <div className="flex items-center gap-2 mb-5">
-                                    <div className="w-9 h-9 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-blue-400">
-                                            <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-base font-bold text-xl text-white">人數上限</h3>
-                                </div>
-
-                                <div className="flex items-center gap-6">
-                                    {/* Visual Counter */}
-                                    <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-6 border border-blue-500/20 flex-shrink-0">
-                                        <div className="text-center">
-                                            <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-purple-400">
-                                                {maxUsers}
-                                            </div>
-                                            <div className="text-xs text-gray-400 mt-1.5 whitespace-nowrap">最多可容納人數</div>
-                                        </div>
-                                    </div>
-
-                                    {/* Controls */}
-                                    <div className="flex-1 space-y-4">
-                                        {/* Quick Select Buttons */}
-                                        <div className="grid grid-cols-3 gap-2">
-                                            {[2, 6, 10].map(num => (
-                                                <button
-                                                    key={num}
-                                                    onClick={() => setMaxUsers(num)}
-                                                    className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
-                                                        maxUsers === num
-                                                            ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
-                                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
-                                                    }`}
-                                                >
-                                                    {num}人
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        {/* Slider */}
-                                        <div className="w-full">
-                                            <input
-                                                type="range"
-                                                min="2"
-                                                max="10"
-                                                value={maxUsers}
-                                                onChange={(e) => setMaxUsers(Number(e.target.value))}
-                                                className="range range-primary range-sm w-full"
-                                                step="1"
-                                            />
-                                            <div className="flex justify-between text-xs text-gray-500 mt-1.5 px-1">
-                                                <span>2</span>
-                                                <span>4</span>
-                                                <span>6</span>
-                                                <span>8</span>
-                                                <span>10</span>
-                                            </div>
-                                        </div>
-
-                                        
                                     </div>
                                 </div>
                             </div>

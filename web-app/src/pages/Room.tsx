@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
-import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
@@ -31,6 +30,14 @@ const Room = () => {
   const isUserSeekingRef = useRef<boolean>(false); // 記錄用戶是否正在操作
   const lastAutoSyncTimeRef = useRef<number>(0); // 記錄上次自動同步時間，防止頻繁同步
   const hasInitialSeekedRef = useRef<boolean>(false); // 記錄是否已經初始化 seek 過
+  const isAutoSyncingRef = useRef<boolean>(false); // 記錄是否正在進行自動同步（接收房主更新）
+  const pendingSeekIdRef = useRef<string | null>(null); // 追蹤當前等待確認的 seek ID
+  const roomUsersRef = useRef<User[]>([]); // 儲存最新的用戶列表
+  const hostIdRef = useRef<string | undefined>(undefined); // 儲存最新的房主ID
+  const queueRef = useRef<VideoItem[]>([]); // 儲存最新的播放列表
+  const historyRef = useRef<VideoItem[]>([]); // 儲存最新的歷史記錄
+  const messagesRef = useRef<Message[]>([]); // 儲存最新的消息列表
+  const serverVideoStateRef = useRef<{played: number; lastUpdated: number; playing: boolean; playbackRate: number; lastUpdatedBy?: string} | undefined>(undefined);
 
   const setPlayerRef = useCallback((player: HTMLVideoElement) => {
     if (!player) return;
@@ -53,11 +60,188 @@ const Room = () => {
     return localStorage.getItem('video_agent_avatar') || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
   });
 
+  const [spoilerPreference] = useState<string>(() => {
+    return localStorage.getItem('video_agent_spoiler_preference') || 'show_all';
+  });
+
+  const [mutedUserIds, setMutedUserIds] = useState<string[]>(() => {
+    const stored = localStorage.getItem('video_agent_muted_users');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const toggleMuteUser = (targetUserId: string) => {
+    setMutedUserIds(prev => {
+      const newMuted = prev.includes(targetUserId) 
+        ? prev.filter(id => id !== targetUserId)
+        : [...prev, targetUserId];
+      localStorage.setItem('video_agent_muted_users', JSON.stringify(newMuted));
+      return newMuted;
+    });
+  };
+
   const [roomUsers, setRoomUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [roomName, setRoomName] = useState<string>('');
+  const [hostId, setHostId] = useState<string | undefined>(undefined);
+  
+  // 更新用戶列表的優化函數
+  const updateRoomUsers = React.useCallback((newUsers: User[]) => {
+    // 比較用戶列表是否真的有變化（基於用戶ID而不是索引）
+    if (roomUsersRef.current.length !== newUsers.length) {
+      roomUsersRef.current = newUsers;
+      setRoomUsers(newUsers);
+      return;
+    }
+    
+    // 創建用戶映射來比較
+    const currentMap = new Map(roomUsersRef.current.map(u => [u.id, u]));
+    const hasChanged = newUsers.some(newUser => {
+      const currentUser = currentMap.get(newUser.id);
+      if (!currentUser) return true;
+      return currentUser.username !== newUser.username ||
+             currentUser.avatar !== newUser.avatar ||
+             currentUser.emotion !== newUser.emotion ||
+             currentUser.isAi !== newUser.isAi;
+    });
+    
+    if (hasChanged) {
+      roomUsersRef.current = newUsers;
+      setRoomUsers(newUsers);
+    }
+  }, []);
+  
+  // 更新房主ID的優化函數
+  const updateHostId = React.useCallback((newHostId: string | undefined) => {
+    if (hostIdRef.current !== newHostId) {
+      hostIdRef.current = newHostId;
+      setHostId(newHostId);
+    }
+  }, []);
+  
+  // 更新播放列表的優化函數
+  const updateQueue = React.useCallback((newQueue: VideoItem[]) => {
+    if (queueRef.current.length !== newQueue.length ||
+        queueRef.current.some((item, idx) => item.videoId !== newQueue[idx]?.videoId)) {
+      queueRef.current = newQueue;
+      setQueue(newQueue);
+    }
+  }, []);
+  
+  // 更新歷史記錄的優化函數
+  const updateHistory = React.useCallback((newHistory: VideoItem[]) => {
+    if (historyRef.current.length !== newHistory.length ||
+        historyRef.current.some((item, idx) => item.videoId !== newHistory[idx]?.videoId)) {
+      historyRef.current = newHistory;
+      setHistory(newHistory);
+    }
+  }, []);
+  
+  // 更新消息列表的優化函數
+  const updateMessages = React.useCallback((newMessages: Message[]) => {
+    if (messagesRef.current.length !== newMessages.length ||
+        messagesRef.current[messagesRef.current.length - 1]?.id !== newMessages[newMessages.length - 1]?.id) {
+      messagesRef.current = newMessages;
+      setMessages(newMessages);
+    }
+  }, []);
+  
+  // 更新 server 視頻狀態的優化函數
+  const updateServerVideoState = React.useCallback((newState: {played: number; lastUpdated: number; playing: boolean; playbackRate: number; lastUpdatedBy?: string}) => {
+    const current = serverVideoStateRef.current;
+    if (!current ||
+        Math.abs(current.played - newState.played) > 0.1 ||
+        current.playing !== newState.playing ||
+        current.playbackRate !== newState.playbackRate ||
+        current.lastUpdatedBy !== newState.lastUpdatedBy) {
+      serverVideoStateRef.current = newState;
+      setServerVideoState(newState);
+    }
+  }, []);
   const [showSidebar, setShowSidebar] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<'chat' | 'playlist'>('chat');
+  const [showInviteModal, setShowInviteModal] = useState(false);
+
+  // 優化的回調函數，確保引用穩定
+  const handleInvite = React.useCallback(() => {
+    setShowInviteModal(true);
+  }, []);
+  
+  const handleEmotionSelect = React.useCallback((selectedEmotion: string) => {
+    setEmotion(selectedEmotion);
+    emotionRef.current = selectedEmotion;
+    // Send immediate update via WS if connected
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'emotion',
+        emotion: selectedEmotion
+      }));
+    }
+    
+    // 3秒後自動清除情緒
+    setTimeout(() => {
+      setEmotion(undefined);
+      emotionRef.current = undefined;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'emotion',
+          emotion: undefined
+        }));
+      }
+    }, 3000);
+  }, []);
+
+  // 缓存 Header 的 props 避免不必要的重新渲染
+  const userCount = React.useMemo(() => roomUsers.length, [roomUsers.length]);
+  
+  const handlePlaylistClick = React.useCallback(() => {
+    setSidebarTab('playlist');
+    setShowSidebar(true);
+  }, []);
+  
+  const handleChatClick = React.useCallback(() => {
+    setSidebarTab('chat');
+    setShowSidebar(true);
+  }, []);
+  
+  const handleShareClick = React.useCallback(async () => {
+    try {
+      const url = window.location.href;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+        setSearchError('✅ 連結已複製到剪貼簿！');
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            setSearchError('✅ 連結已複製到剪貼簿！');
+          } else {
+            setSearchError('❌ 複製失敗，請手動複製連結');
+          }
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          setSearchError('❌ 複製失敗，請手動複製連結');
+        } finally {
+          document.body.removeChild(textArea);
+        }
+      }
+      
+      setTimeout(() => setSearchError(''), 3000);
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+      setSearchError('❌ 複製失敗，請手動複製連結');
+      setTimeout(() => setSearchError(''), 3000);
+    }
+  }, []);
 
   // Emotion & Focus Detection State
   const [emotion, setEmotion] = useState<string | undefined>(undefined);
@@ -72,14 +256,15 @@ const Room = () => {
   const [isFocused, setIsFocused] = useState(true);
   const isFocusedRef = useRef(true);
   
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [faceLandmarker, setFaceLandmarker] = useState<FaceLandmarker | null>(null);
-  const [webcamRunning, setWebcamRunning] = useState(false);
-  const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   const [isMicEnabled, setIsMicEnabled] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isProcessingAudio, setIsProcessingAudio] = useState(false);
+  const [inputText, setInputText] = useState('');
+  const [isInputBarExpanded, setIsInputBarExpanded] = useState(false);
   const [showEmojiMenu, setShowEmojiMenu] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const handleEmojiSelect = (selectedEmotion: string) => {
     setEmotion(selectedEmotion);
@@ -106,18 +291,76 @@ const Room = () => {
     }, 3000);
   };
 
-  const toggleRecording = async () => {
-    if (isRecording) {
-      // Stop "Recording"
-      setIsRecording(false);
-      // Show suggestions
-      setSuggestions([
-        "這部影片真有趣！"
-      ]);
-    } else {
-      // Start "Recording" (Fake)
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        await handleAudioUpload(audioBlob);
+        
+        // Stop all tracks
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
       setIsRecording(true);
-      setSuggestions([]);
+      setIsMicEnabled(true);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('無法存取麥克風');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      setIsMicEnabled(false);
+    }
+  };
+
+  const handleAudioUpload = async (audioBlob: Blob) => {
+    setIsProcessingAudio(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'recording.wav');
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/asr`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Unknown error' }));
+        throw new Error(errorData.detail || 'Audio upload failed');
+      }
+
+      const data = await response.json();
+      if (data.text) {
+        setInputText(prev => prev + (prev ? ' ' : '') + data.text);
+      }
+    } catch (error) {
+      console.error('Error uploading audio:', error);
+    } finally {
+      setIsProcessingAudio(false);
+    }
+  };
+
+  const toggleMic = async () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      await startRecording();
     }
   };
 
@@ -126,76 +369,12 @@ const Room = () => {
     setSuggestions([]);
   };
 
-  const toggleCamera = async () => {
-    if (isCameraEnabled) {
-      setWebcamRunning(false);
-      setIsCameraEnabled(false);
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
-        videoRef.current.srcObject = null;
-      }
-      setEmotion(undefined);
-    } else {
-      // 模擬攝像頭：不啟動真實攝像頭，只開啟模擬情緒功能
-      setIsCameraEnabled(true);
-    }
-  };
-
-  const toggleMic = async () => {
-    // This function is called by Header mic button.
-    // We can map it to toggleRecording or just toggle the state.
-    // For now, let's make it toggle recording as well for consistency if the user clicks it.
-    await toggleRecording();
-    setIsMicEnabled(!isRecording); // Update UI state based on next state
-  };
   const lastVideoTimeRef = useRef(-1);
   const requestRef = useRef<number>(0);
 
   useEffect(() => {
     emotionRef.current = emotion;
   }, [emotion]);
-
-  // 模擬攝像頭情緒顯示：開啟後每15秒展示一個隨機情緒，持續3秒
-  useEffect(() => {
-    if (!isCameraEnabled) return;
-
-    const simulatedEmotions = ['Happy', 'Sad', 'Surprise', 'Excited', 'Thinking', 'Laughing'];
-    
-    const showRandomEmotion = () => {
-      const randomEmotion = simulatedEmotions[Math.floor(Math.random() * simulatedEmotions.length)];
-      setEmotion(randomEmotion);
-      emotionRef.current = randomEmotion;
-      
-      // 發送到伺服器
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
-          type: 'emotion',
-          emotion: randomEmotion
-        }));
-      }
-      
-      // 3秒後清除情緒
-      setTimeout(() => {
-        setEmotion(undefined);
-        emotionRef.current = undefined;
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-          wsRef.current.send(JSON.stringify({
-            type: 'emotion',
-            emotion: undefined
-          }));
-        }
-      }, 3000);
-    };
-
-    // 立即顯示一次
-    showRandomEmotion();
-    
-    // 每15秒重複
-    const interval = setInterval(showRandomEmotion, 15000);
-    
-    return () => clearInterval(interval);
-  }, [isCameraEnabled]);
 
   useEffect(() => {
     const onFocus = () => { setIsFocused(true); isFocusedRef.current = true; };
@@ -215,129 +394,6 @@ const Room = () => {
     };
   }, []);
 
-  // Initialize MediaPipe FaceLandmarker
-  useEffect(() => {
-    const initMediaPipe = async () => {
-      try {
-        const filesetResolver = await FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
-        );
-        const landmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
-          baseOptions: {
-            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
-            delegate: "GPU"
-          },
-          outputFaceBlendshapes: true,
-          runningMode: "VIDEO",
-          numFaces: 1
-        });
-        setFaceLandmarker(landmarker);
-        // startWebcam(); // Manual start only
-      } catch (error) {
-        console.error("Error initializing MediaPipe:", error);
-        // setModelError('Failed to load AI model');
-      }
-    };
-    initMediaPipe();
-  }, []);
-
-  const startWebcam = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.addEventListener("loadeddata", predictWebcam);
-        setWebcamRunning(true);
-      }
-    } catch (err) {
-      console.error("Error accessing webcam:", err);
-      // setModelError('Camera access denied');
-    }
-  };
-
-  const predictWebcam = async () => {
-    if (!faceLandmarker || !videoRef.current) return;
-    
-    // Ensure video dimensions are valid
-    if (videoRef.current.videoWidth === 0 || videoRef.current.videoHeight === 0) {
-      requestRef.current = requestAnimationFrame(predictWebcam);
-      return;
-    }
-
-    let startTimeMs = performance.now();
-    try {
-      if (lastVideoTimeRef.current !== videoRef.current.currentTime) {
-        lastVideoTimeRef.current = videoRef.current.currentTime;
-        const results = faceLandmarker.detectForVideo(videoRef.current, startTimeMs);
-        
-        let rawEmotion = 'Neutral';
-        let faceDetected = false;
-
-        if (results.faceBlendshapes && results.faceBlendshapes.length > 0 && results.faceBlendshapes[0].categories) {
-          faceDetected = true;
-          const shapes = results.faceBlendshapes[0].categories;
-          // Simple emotion mapping
-          const getScore = (name: string) => shapes.find(s => s.categoryName === name)?.score || 0;
-          
-          const smile = (getScore('mouthSmileLeft') + getScore('mouthSmileRight')) / 2;
-          const browDown = (getScore('browDownLeft') + getScore('browDownRight')) / 2;
-          const browInnerUp = getScore('browInnerUp');
-          const jawOpen = getScore('jawOpen');
-          const mouthFrown = (getScore('mouthFrownLeft') + getScore('mouthFrownRight')) / 2;
-
-          if (smile > 0.5) rawEmotion = 'Happy';
-          else if (browDown > 0.5) rawEmotion = 'Angry';
-          else if (browInnerUp > 0.5 && jawOpen > 0.3) rawEmotion = 'Surprise';
-          else if (mouthFrown > 0.5) rawEmotion = 'Sad';
-        }
-
-        if (!faceDetected) {
-          setEmotion(undefined);
-        } else {
-          const now = Date.now();
-
-          // Stability Check
-          if (rawEmotion === lastRawEmotionRef.current) {
-             // Stable
-          } else {
-             lastRawEmotionRef.current = rawEmotion;
-             emotionStabilityStartRef.current = now;
-          }
-
-          const stabilityDuration = now - emotionStabilityStartRef.current;
-
-          // Trigger Hold (if non-neutral and stable > 0.5s)
-          if (rawEmotion !== 'Neutral' && stabilityDuration > 500) {
-             heldEmotionRef.current = rawEmotion;
-             emotionHoldEndRef.current = now + 3000;
-          }
-
-          // Determine Display Emotion
-          let finalEmotion = rawEmotion;
-          if (now < emotionHoldEndRef.current && heldEmotionRef.current) {
-             finalEmotion = heldEmotionRef.current;
-          }
-          
-          if (finalEmotion !== emotion) {
-             setEmotion(finalEmotion);
-             // Emotion will be sent via heartbeat polling
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error in predictWebcam:", error);
-    }
-    requestRef.current = requestAnimationFrame(predictWebcam);
-  };
-
-  useEffect(() => {
-    if (webcamRunning && faceLandmarker) {
-      requestRef.current = requestAnimationFrame(predictWebcam);
-    }
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, [webcamRunning, faceLandmarker]);
 
 
 
@@ -373,9 +429,27 @@ const Room = () => {
   const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string>('');
+  const [hostControlWarning, setHostControlWarning] = useState<string>('');
   
   const [queue, setQueue] = useState<VideoItem[]>([]);
   const [history, setHistory] = useState<VideoItem[]>([]);
+
+  // Refs for stable access in WebSocket effect
+  const latestStateRef = useRef(state);
+  const latestHostIdRef = useRef(hostId);
+
+  useEffect(() => {
+    latestStateRef.current = state;
+    latestHostIdRef.current = hostId;
+  }, [state, hostId]);
+
+  // 創建穩定的 currentUser 對象
+  const currentUser = React.useMemo(() => ({
+    id: userId,
+    username,
+    avatar,
+    lastSeen: Date.now()
+  }), [userId, username, avatar]);
 
   // 當 src 變更時，重置初始化 seek 標記
   useEffect(() => {
@@ -403,10 +477,11 @@ const Room = () => {
           body: JSON.stringify({ userId, username, avatar })
         });
         
-        setQueue(roomData.queue || []);
+        updateQueue(roomData.queue || []);
         setHistory(roomData.history || []);
-        setRoomUsers(roomData.users || []);
-        setMessages(roomData.messages || []);
+        updateRoomUsers(roomData.users || []);
+        updateMessages(roomData.messages || []);
+        updateHostId(roomData.hostId);
         
         // Sync initial state
         if (roomData.videoState.url) {
@@ -418,7 +493,7 @@ const Room = () => {
             playbackRate: roomData.videoState.playbackRate,
             duration: roomData.videoState.duration || 0
           }));
-          setServerVideoState({
+          updateServerVideoState({
             played: roomData.videoState.played,
             lastUpdated: roomData.videoState.lastUpdated,
             playing: roomData.videoState.playing,
@@ -429,7 +504,11 @@ const Room = () => {
           if (playerRef.current && roomData.videoState.played > 0) {
             setTimeout(() => {
               if (playerRef.current) {
+                isAutoSyncingRef.current = true; // 標記為自動同步
                 playerRef.current.currentTime = roomData.videoState.played;
+                setTimeout(() => {
+                  isAutoSyncingRef.current = false;
+                }, 100);
               }
             }, 500);
           }
@@ -472,7 +551,8 @@ const Room = () => {
         user: {
           username,
           avatar,
-          emotion: emotionRef.current
+          emotion: emotionRef.current,
+          spoilerPreference
         }
       }));
     };
@@ -480,20 +560,38 @@ const Room = () => {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log('WebSocket message:', data);
+        // console.log('WebSocket message:', data); // Reduce log noise
 
         if (data.type === 'video_state_update' && data.sender !== userId) {
           // 接收其他用戶的播放狀態更新
           const serverState = data.state;
           
-          // 更新本地狀態
-          setState(prev => ({
-            ...prev,
-            playing: serverState.playing,
-            playedSeconds: serverState.played,
-            duration: serverState.duration || prev.duration,
-            playbackRate: serverState.playbackRate
-          }));
+          // 檢查是否有新的 seek 操作
+          if (serverState.pendingSeekId && serverState.pendingSeekId !== pendingSeekIdRef.current) {
+            pendingSeekIdRef.current = serverState.pendingSeekId;
+            console.log(`New seek detected: ${serverState.pendingSeekId}`);
+          }
+          
+          // 只在狀態真正改變時才更新（避免不必要的重新渲染）
+          setState(prev => {
+            const hasChanges = 
+              prev.playing !== serverState.playing ||
+              Math.abs(prev.playedSeconds - serverState.played) > 0.1 ||
+              Math.abs(prev.duration - (serverState.duration || 0)) > 0.1 ||
+              prev.playbackRate !== serverState.playbackRate;
+            
+            if (!hasChanges) {
+              return prev; // 沒有變化，返回原狀態避免重新渲染
+            }
+            
+            return {
+              ...prev,
+              playing: serverState.playing,
+              playedSeconds: serverState.played,
+              duration: serverState.duration || prev.duration,
+              playbackRate: serverState.playbackRate
+            };
+          });
 
           // 計算當前伺服器時間（只有播放中才外推，WebSocket延遲小）
           let currentServerTime = serverState.played;
@@ -527,17 +625,44 @@ const Room = () => {
             // 如果時間差超過容忍度，且允許同步，進行 seek
             if (timeDiff > tolerance && canAutoSync) {
               console.log(`WS Sync to ${currentServerTime.toFixed(2)}s (server: ${serverState.played.toFixed(2)}s, diff: ${timeDiff.toFixed(2)}s, tolerance: ${tolerance}s)`);
+              isAutoSyncingRef.current = true; // 標記為自動同步
               playerRef.current.currentTime = currentServerTime;
               lastAutoSyncTimeRef.current = Date.now(); // 記錄自動同步時間
-              // 不重置 lastSeekTimeRef，避免連鎖反應
+              
+              // 當 seek 完成後發送確認
+              const sendSeekAck = () => {
+                if (pendingSeekIdRef.current && ws.readyState === WebSocket.OPEN) {
+                  console.log(`Sending seek_ack for ${pendingSeekIdRef.current}`);
+                  ws.send(JSON.stringify({
+                    type: 'seek_ack',
+                    seekId: pendingSeekIdRef.current
+                  }));
+                }
+                isAutoSyncingRef.current = false;
+                playerRef.current?.removeEventListener('seeked', sendSeekAck);
+              };
+              
+              playerRef.current.addEventListener('seeked', sendSeekAck, { once: true });
+              
+              // 備用：如果 seeked 事件沒觸發，100ms 後清除標記
+              setTimeout(() => {
+                if (isAutoSyncingRef.current) {
+                  sendSeekAck();
+                }
+              }, 100);
             } else if (timeDiff > tolerance) {
               console.log(`WS Sync skipped: diff=${timeDiff.toFixed(2)}s but synced ${timeSinceLastAutoSync}ms ago`);
             }
           }
         } else if (data.type === 'users_update') {
-          setRoomUsers(data.users || []);
+          updateRoomUsers(data.users || []);
+          if (data.hostId !== undefined) {
+            updateHostId(data.hostId);
+          }
         } else if (data.type === 'new_message') {
-          setMessages(prev => [...prev, data.message]);
+          const newMessages = [...messagesRef.current, data.message];
+          messagesRef.current = newMessages;
+          setMessages(newMessages);
         }
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
@@ -562,9 +687,12 @@ const Room = () => {
       }
     }, 2000);
 
-    // 播放進度發送（每 1 秒）
+    // 播放進度發送（每 1 秒）- 只有房主才發送
     const progressInterval = setInterval(() => {
-      if (ws.readyState === WebSocket.OPEN && state.src && playerRef.current) {
+      const currentState = latestStateRef.current;
+      const currentHostId = latestHostIdRef.current;
+      
+      if (ws.readyState === WebSocket.OPEN && currentState.src && playerRef.current && currentHostId === userId) {
         try {
           const currentTime = playerRef.current.currentTime || 0;
           const duration = playerRef.current.duration || 0;
@@ -572,10 +700,10 @@ const Room = () => {
           ws.send(JSON.stringify({
             type: 'video_state',
             state: {
-              playing: state.playing,
+              playing: currentState.playing,
               played: currentTime,
               duration: duration,
-              playbackRate: state.playbackRate
+              playbackRate: currentState.playbackRate
             }
           }));
         } catch (error) {
@@ -587,11 +715,9 @@ const Room = () => {
     return () => {
       clearInterval(heartbeatInterval);
       clearInterval(progressInterval);
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.close();
-      }
+      ws.close(); // Always close
     };
-  }, [roomId, userId, username, avatar, state.src, state.playing, state.playbackRate]);
+  }, [roomId, userId, username, avatar]); // Removed state dependencies
 
   // 定時從 server 拉取最新播放狀態（每 1 秒）
   useEffect(() => {
@@ -604,12 +730,20 @@ const Room = () => {
           const data = await res.json();
           const serverState = data.videoState;
           
-          setQueue(data.queue || []);
-          setHistory(data.history || []);
-          setMessages(data.messages || []);
+          updateQueue(data.queue || []);
+          updateHistory(data.history || []);
+          updateMessages(data.messages || []);
+          
+          // 更新用戶列表和房主信息（但不要在 WebSocket 連接正常時覆蓋）
+          if (data.users) {
+            updateRoomUsers(data.users);
+          }
+          if (data.hostId !== undefined) {
+            updateHostId(data.hostId);
+          }
           
           // 更新 server 視頻狀態用於顯示
-          setServerVideoState({
+          updateServerVideoState({
             played: serverState.played,
             lastUpdated: serverState.lastUpdated,
             playing: serverState.playing,
@@ -663,9 +797,32 @@ const Room = () => {
             // 只有時間差異大於容忍度且允許同步才強制同步，避免頻繁跳動
             if (timeDiff > tolerance && canAutoSync) {
               console.log(`HTTP Sync: diff=${timeDiff.toFixed(2)}s, tolerance=${tolerance}s, seeking to ${currentServerTime.toFixed(2)}s`);
+              isAutoSyncingRef.current = true;
               playerRef.current.currentTime = currentServerTime;
               lastAutoSyncTimeRef.current = Date.now(); // 記錄自動同步時間
-              // 不重置 lastSeekTimeRef，避免連鎖反應
+              
+              // 當 seek 完成後發送確認
+              const sendSeekAck = () => {
+                if (serverState.pendingSeekId && wsRef.current?.readyState === WebSocket.OPEN) {
+                  console.log(`Sending seek_ack for ${serverState.pendingSeekId} (HTTP sync)`);
+                  wsRef.current.send(JSON.stringify({
+                    type: 'seek_ack',
+                    seekId: serverState.pendingSeekId
+                  }));
+                  pendingSeekIdRef.current = serverState.pendingSeekId;
+                }
+                isAutoSyncingRef.current = false;
+                playerRef.current?.removeEventListener('seeked', sendSeekAck);
+              };
+              
+              playerRef.current.addEventListener('seeked', sendSeekAck, { once: true });
+              
+              // 備用：如果 seeked 事件沒觸發
+              setTimeout(() => {
+                if (isAutoSyncingRef.current) {
+                  sendSeekAck();
+                }
+              }, 100);
             } else if (timeDiff > tolerance) {
               console.log(`HTTP Sync skipped: diff=${timeDiff.toFixed(2)}s but synced ${timeSinceLastAutoSync}ms ago`);
             }
@@ -703,10 +860,15 @@ const Room = () => {
         console.log('syncToRoom: Server state:', serverState);
         console.log('syncToRoom: playerRef.current:', playerRef.current);
         
-        setQueue(data.queue || []);
-        setHistory(data.history || []);
-        setRoomUsers(data.users || []);
-        setMessages(data.messages || []);
+        updateQueue(data.queue || []);
+        updateHistory(data.history || []);
+        updateRoomUsers(data.users || []);
+        updateMessages(data.messages || []);
+        
+        // 更新房主信息
+        if (data.hostId !== undefined) {
+          updateHostId(data.hostId);
+        }
 
         // 計算當前伺服器應該的播放時間（考慮時間外推）
         let currentServerTime = serverState.played;
@@ -733,8 +895,12 @@ const Room = () => {
         
         if (playerRef.current) {
           console.log('syncToRoom: Seeking to', currentServerTime, 'seconds');
+          isAutoSyncingRef.current = true; // 標記為自動同步
           playerRef.current.currentTime = currentServerTime;
           lastSeekTimeRef.current = Date.now(); // 記錄手動同步時間
+          setTimeout(() => {
+            isAutoSyncingRef.current = false;
+          }, 100);
         } else {
           console.error('syncToRoom: playerRef.current is null!');
         }
@@ -746,9 +912,13 @@ const Room = () => {
     }
   };
 
-  // 通過 WebSocket 發送播放狀態更新
-  const updateServerState = (updates: Partial<PlayerState> & { duration?: number }) => {
+  // 通過 WebSocket 發送播放狀態更新 - 只有房主才能控制
+  const updateServerState = (updates: Partial<PlayerState> & { duration?: number; isSeek?: boolean }) => {
     if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+    if (hostId !== userId) {
+      console.log('Not host, cannot update video state');
+      return; // 非房主不能控制
+    }
     
     wsRef.current.send(JSON.stringify({
       type: 'video_state',
@@ -757,7 +927,8 @@ const Room = () => {
         played: updates.played || 0,
         duration: updates.duration || state.duration,
         playbackRate: updates.playbackRate || state.playbackRate
-      }
+      },
+      isSeek: updates.isSeek || false
     }));
   };
 
@@ -892,6 +1063,10 @@ const Room = () => {
   };
 
   const handlePlay = () => {
+    if (hostId !== userId) {
+      // 非房主不能控制，靜默忽略
+      return;
+    }
     console.log('onPlay');
     setState(prevState => ({ ...prevState, playing: true }));
     lastSeekTimeRef.current = Date.now(); // 記錄播放狀態變化時間，避免立即同步
@@ -911,6 +1086,10 @@ const Room = () => {
   };
 
   const handlePause = () => {
+    if (hostId !== userId) {
+      // 非房主不能控制，靜默忽略
+      return;
+    }
     console.log('onPause');
     setState(prevState => ({ ...prevState, playing: false }));
     lastSeekTimeRef.current = Date.now(); // 記錄暫停狀態變化時間，避免立即同步
@@ -956,6 +1135,15 @@ const Room = () => {
   };
 
   const handleSeeking = () => {
+    // 如果是自動同步觸發的，不顯示警告
+    if (isAutoSyncingRef.current) {
+      return;
+    }
+    
+    if (hostId !== userId) {
+      // 非房主不能控制，靜默忽略
+      return;
+    }
     console.log('onSeeking');
     setState(prevState => ({ ...prevState, seeking: true }));
     isUserSeekingRef.current = true; // 標記用戶正在操作
@@ -981,6 +1169,15 @@ const Room = () => {
   };
 
   const handleSeeked = () => {
+    // 如果是自動同步觸發的，不顯示警告
+    if (isAutoSyncingRef.current) {
+      return;
+    }
+    
+    if (hostId !== userId) {
+      // 非房主不能控制，靜默忽略
+      return;
+    }
     console.log('onSeeked');
     setState(prevState => ({ ...prevState, seeking: false }));
     
@@ -998,7 +1195,8 @@ const Room = () => {
         played: currentTime,
         playing: state.playing,
         duration: duration,
-        playbackRate: state.playbackRate
+        playbackRate: state.playbackRate,
+        isSeek: true  // 標記這是一個跳轉操作
       });
     }
   };
@@ -1053,25 +1251,17 @@ const Room = () => {
   }, [pendingAudioUrl]);
   */
 
-  const [showInviteModal, setShowInviteModal] = useState(false);
   const [selectedCompanionsToAdd, setSelectedCompanionsToAdd] = useState<AICompanion[]>([]);
 
   const handleAddCompanions = async () => {
     if (selectedCompanionsToAdd.length === 0) return;
-
-    // Check room limit (6)
-    if (roomUsers.length + selectedCompanionsToAdd.length > 6) {
-      setSearchError('房間人數上限為 6 人 (含智慧影伴)');
-      setTimeout(() => setSearchError(''), 3000);
-      return;
-    }
 
     try {
       for (const companion of selectedCompanionsToAdd) {
         await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/ai-companion`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(companion)
+          body: JSON.stringify({ ...companion, addedBy: userId })
         });
       }
       setShowInviteModal(false);
@@ -1081,62 +1271,25 @@ const Room = () => {
     }
   };
 
+  const handleRemoveCompanion = async (companionName: string) => {
+    if (!roomId) return;
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/ai-companion/${encodeURIComponent(companionName)}?userId=${userId}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      console.error('Failed to remove companion:', err);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#0f0f0f] text-white overflow-hidden font-sans selection:bg-primary selection:text-primary-content">
       <Header 
         roomName={roomName}
-        userCount={roomUsers.length}
-        onPlaylistClick={() => {
-          setSidebarTab('playlist');
-          setShowSidebar(true);
-        }}
-        onChatClick={() => {
-          setSidebarTab('chat');
-          setShowSidebar(true);
-        }}
-        onShareClick={async () => {
-          try {
-            const url = window.location.href;
-            
-            // 嘗試使用 Clipboard API
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              await navigator.clipboard.writeText(url);
-              setSearchError('✅ 連結已複製到剪貼簿！');
-            } else {
-              // 備用方案：使用傳統的複製方法
-              const textArea = document.createElement('textarea');
-              textArea.value = url;
-              textArea.style.position = 'fixed';
-              textArea.style.left = '-999999px';
-              textArea.style.top = '-999999px';
-              document.body.appendChild(textArea);
-              textArea.focus();
-              textArea.select();
-              
-              try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                  setSearchError('✅ 連結已複製到剪貼簿！');
-                } else {
-                  setSearchError('❌ 複製失敗，請手動複製連結');
-                }
-              } catch (err) {
-                console.error('Failed to copy:', err);
-                setSearchError('❌ 複製失敗，請手動複製連結');
-              } finally {
-                document.body.removeChild(textArea);
-              }
-            }
-            
-            setTimeout(() => setSearchError(''), 3000);
-          } catch (error) {
-            console.error('Failed to copy URL:', error);
-            setSearchError('❌ 複製失敗，請手動複製連結');
-            setTimeout(() => setSearchError(''), 3000);
-          }
-        }}
-        isCameraEnabled={isCameraEnabled}
-        onToggleCamera={toggleCamera}
+        userCount={userCount}
+        onPlaylistClick={handlePlaylistClick}
+        onChatClick={handleChatClick}
+        onShareClick={handleShareClick}
         isMicEnabled={isMicEnabled}
         onToggleMic={toggleMic}
         serverVideoState={serverVideoState}
@@ -1278,6 +1431,18 @@ const Room = () => {
               ) : (
                  // Player Section
                  <>
+                    {/* Host Control Warning */}
+                    {hostControlWarning && (
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="bg-yellow-500/90 text-black px-6 py-3 rounded-lg shadow-xl font-medium flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                            <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+                          </svg>
+                          {hostControlWarning}
+                        </div>
+                      </div>
+                    )}
+                    
                     <ReactPlayer
                       ref={setPlayerRef}
                       className="react-player"
@@ -1290,6 +1455,8 @@ const Room = () => {
                       light={light}
                       loop={loop}
                       playbackRate={playbackRate}
+                      volume={undefined}
+                      muted={undefined}
                       onReady={handlePlayerReady}
                       onPlay={handlePlay}
                       onPause={handlePause}
@@ -1309,97 +1476,126 @@ const Room = () => {
 
             {/* UserDock (Seating Area) - Fixed at bottom of this section */}
             <UserDock 
-              currentUser={{ id: userId, username, avatar, lastSeen: Date.now() }}
+              currentUser={currentUser}
               users={roomUsers}
               emotion={emotion}
               isFocused={isFocused}
               messages={messages}
-              onInvite={() => setShowInviteModal(true)}
-              onEmotionSelect={(selectedEmotion) => {
-                setEmotion(selectedEmotion);
-                emotionRef.current = selectedEmotion;
-                // Send immediate update via WS if connected
-                if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-                  wsRef.current.send(JSON.stringify({
-                    type: 'emotion',
-                    emotion: selectedEmotion
-                  }));
-                }
-              }}
+              hostId={hostId}
+              mutedUserIds={mutedUserIds}
+              onToggleMute={toggleMuteUser}
+              onInvite={handleInvite}
+              onEmotionSelect={handleEmotionSelect}
+              onRemoveCompanion={handleRemoveCompanion}
             />
 
-            {/* Voice Input Control (Bottom Right of Main Stage) */}
-            <div className="absolute bottom-6 right-6 z-50 flex items-end gap-4">
+            {/* Controls: Text Input, Voice, Emoji */}
+            <div className="absolute bottom-6 right-6 z-50 flex flex-col items-end gap-4 pointer-events-none">
               
-              {suggestions.length > 0 && (
-                <div className="flex flex-col gap-2 animate-in slide-in-from-right-4 items-end">
-                  {suggestions.map((text, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleSuggestionClick(text)}
-                      className="btn btn-sm bg-[#1a1a1a] border-white/10 text-white hover:bg-primary hover:border-primary shadow-xl"
-                    >
-                      {text}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <div className="flex flex-col items-end gap-2">
-                <button
-                  onClick={toggleRecording}
-                  className={`btn btn-circle btn-lg shadow-xl border-white/10 transition-all ${isRecording ? 'btn-error animate-pulse' : 'btn-neutral'}`}
-                  title={isRecording ? "Stop Recording" : "Start Recording"}
-                >
-                  {isRecording ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                      <path fillRule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                      <path d="M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z" />
-                      <path d="M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.509l.24 2.091h2.96a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1 0-1.5h2.96l.24-2.091A6.751 6.751 0 0 1 5.25 12.75v-1.5A.75.75 0 0 1 6 10.5Z" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-
-              {/* Emoji Control */}
-              <div className="relative flex flex-col items-center">
+              {/* Emoji Button (Independent) */}
+              <div className="relative pointer-events-auto">
                  {showEmojiMenu && (
-                    <div className="absolute bottom-full mb-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                      <div className="bg-[#1e1f22] border border-white/10 rounded-full p-2 shadow-xl flex flex-col gap-2">
-                        <button 
-                          onClick={() => handleEmojiSelect('Laughing')}
-                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
-                          title="Laughing"
-                        >
-                          😂
-                        </button>
-                        <button 
-                          onClick={() => handleEmojiSelect('Sad')}
-                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
-                          title="Sad"
-                        >
-                          😭
-                        </button>
-                        <button 
-                          onClick={() => handleEmojiSelect('Surprise')}
-                          className="w-10 h-10 flex items-center justify-center text-2xl hover:bg-white/10 rounded-full transition-colors"
-                          title="Surprise"
-                        >
-                          😯
-                        </button>
+                    <div className="absolute bottom-full right-0 mb-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                      <div className="bg-[#1e1f22] border border-white/10 rounded-2xl p-2 shadow-xl flex gap-2">
+                        {['😂', '😭', '😯', '😠', '❤️', '👍'].map(emoji => (
+                          <button 
+                            key={emoji}
+                            onClick={() => handleEmojiSelect(emoji)}
+                            className="w-10 h-10 flex items-center justify-center text-xl hover:bg-white/10 rounded-xl transition-colors"
+                          >
+                            {emoji}
+                          </button>
+                        ))}
                       </div>
                     </div>
                  )}
                  <button
                     onClick={() => setShowEmojiMenu(!showEmojiMenu)}
-                    className="btn btn-circle btn-lg btn-neutral shadow-xl border-white/10"
-                    title="Set Emotion"
+                    className="btn btn-circle btn-lg bg-[#1a1a1a]/90 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-primary hover:text-white hover:border-primary transition-all"
+                    title="發送表情"
                  >
-                    <span className="text-2xl">😊</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm2.023 6.828a.75.75 0 1 0-1.06-1.06 3.75 3.75 0 0 1-5.304 0 .75.75 0 0 0-1.06 1.06 5.25 5.25 0 0 0 7.424 0Z" clipRule="evenodd" />
+                    </svg>
                  </button>
               </div>
+
+              {/* Expandable Input Bar Container */}
+              <div className="flex items-center justify-end pointer-events-auto relative">
+                
+                {/* Expandable Input Bar */}
+                <div className={`flex items-center gap-2 bg-[#1a1a1a]/90 backdrop-blur-md p-2 rounded-2xl border border-white/10 shadow-2xl transition-all duration-300 origin-right ${isInputBarExpanded ? 'w-[500px] opacity-100 mr-2' : 'w-0 opacity-0 overflow-hidden p-0 border-0'}`}>
+                  
+                  {/* Text Input */}
+                  <input
+                    type="text"
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && inputText.trim()) {
+                        handleSendMessage(inputText);
+                        setInputText('');
+                      }
+                    }}
+                    placeholder="輸入訊息..."
+                    className="flex-1 bg-transparent border-none focus:outline-none text-white px-4 py-2 min-w-0"
+                  />
+                  
+                  {/* Send Button (only if text) */}
+                  {inputText.trim() && (
+                    <button
+                      onClick={() => {
+                        handleSendMessage(inputText);
+                        setInputText('');
+                      }}
+                      className="btn btn-circle btn-sm btn-primary text-white"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                        <path d="M3.105 2.289a.75.75 0 0 0-.826.95l1.414 4.925A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95 28.896 28.896 0 0 0 15.293-7.154.75.75 0 0 0 0-1.115A28.897 28.897 0 0 0 3.105 2.289Z" />
+                      </svg>
+                    </button>
+                  )}
+
+                  <div className="w-px h-8 bg-white/10 mx-1"></div>
+
+                  {/* Voice Button */}
+                  <button
+                    onClick={toggleMic}
+                    className={`btn btn-circle btn-md transition-all ${isRecording ? 'btn-error animate-pulse text-white' : 'btn-ghost text-gray-400 hover:text-white'}`}
+                    title={isRecording ? "停止錄音" : "開始錄音"}
+                  >
+                    {isProcessingAudio ? (
+                      <span className="loading loading-spinner loading-xs"></span>
+                    ) : isRecording ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                        <path fillRule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                        <path d="M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z" />
+                        <path d="M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.509l.24 2.091h2.96a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1 0-1.5h2.96l.24-2.091A6.751 6.751 0 0 1 5.25 12.75v-1.5A.75.75 0 0 1 6 10.5Z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+
+                {/* Toggle Button (Input) */}
+                <button
+                  onClick={() => setIsInputBarExpanded(!isInputBarExpanded)}
+                  className={`btn btn-circle btn-lg bg-[#1a1a1a]/90 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-primary hover:text-white hover:border-primary transition-all ${isInputBarExpanded ? 'btn-neutral' : ''}`}
+                >
+                  {isInputBarExpanded ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
+                      <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
             </div>
           </div>
 
@@ -1413,7 +1609,7 @@ const Room = () => {
                   ✕
                 </button>
                 <Sidebar 
-                   currentUser={{ id: userId, username, avatar, lastSeen: Date.now() }}
+                   currentUser={currentUser}
                    roomUsers={roomUsers}
                    messages={messages}
                    queue={queue}
@@ -1438,6 +1634,8 @@ const Room = () => {
                      localStorage.setItem('video_agent_avatar', newAvatar);
                    }}
                    hideChat={false}
+                   spoilerPreference={spoilerPreference as 'show_all' | 'hide_spoilers'}
+                   mutedUserIds={mutedUserIds}
                  />
              </div>
           </div>
@@ -1478,13 +1676,6 @@ const Room = () => {
 
       {/* Local Video Preview & AI Status (Hidden but active) */}
       <div className="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none -z-50">
-        <video 
-          ref={videoRef} 
-          autoPlay 
-          playsInline 
-          muted 
-          className="w-full h-full"
-        />
       </div>
 
 
@@ -1517,7 +1708,10 @@ const Room = () => {
                         </button>
                     </div>
                     <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
-                        <AICompanionSelector onSelect={setSelectedCompanionsToAdd} />
+                        <AICompanionSelector 
+                            onSelect={setSelectedCompanionsToAdd} 
+                            existingCompanionNames={roomUsers.filter(u => u.isAi).map(u => u.username)}
+                        />
                     </div>
                 </div>
             </div>

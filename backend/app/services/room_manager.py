@@ -57,6 +57,8 @@ def init_demo_rooms():
             lastUpdated=now
         )
     )
+    test_room.createdAt = now
+    test_room.lastRealUserSeenAt = now
     
     test_room.currentVideo = CurrentVideo(
         videoId="dQw4w9WgXcQ",
@@ -123,6 +125,8 @@ def init_demo_rooms():
                 lastUpdated=now
             )
         )
+        new_room.createdAt = now
+        new_room.lastRealUserSeenAt = 0.0  # 初始為0，等待真實用戶加入
         
         new_room.currentVideo = CurrentVideo(
             videoId=video_info["videoId"],
@@ -139,7 +143,8 @@ def init_demo_rooms():
                 new_room.users[user_id] = {
                     "username": f"User_{random.randint(1000, 9999)}",
                     "avatar": f"https://api.dicebear.com/7.x/avataaars/svg?seed={user_id}",
-                    "lastSeen": now
+                    "lastSeen": now,
+                    "isAi": True  # 標記 mock 用戶為 AI，不算真實用戶
                 }
         
         rooms[room_id] = new_room
@@ -156,6 +161,26 @@ def cleanup_users(room: RoomInternal):
     }
     # Messages are now persisted, no cleanup based on time
     # room.messages = [m for m in room.messages if now - m.timestamp < 15]
+
+def assign_new_host(room: RoomInternal):
+    """為房間分配新的房主（最早加入的非AI用戶）"""
+    # 找出所有非AI的真實用戶，按加入時間排序
+    real_users = [
+        (uid, info) 
+        for uid, info in room.users.items() 
+        if not info.get('isAi', False)
+    ]
+    
+    if real_users:
+        # 按加入時間排序，選擇最早加入的
+        real_users.sort(key=lambda x: x[1].get('joinedAt', 0))
+        new_host_id = real_users[0][0]
+        room.hostId = new_host_id
+        return new_host_id
+    else:
+        # 沒有真實用戶，清空房主
+        room.hostId = None
+        return None
 
 def get_room_response(room: RoomInternal) -> Room:
     cleanup_users(room)
@@ -206,7 +231,8 @@ def get_room_response(room: RoomInternal) -> Room:
         queue=room.queue,
         history=room.history,
         messages=room.messages,
-        aiCompanions=room.aiCompanions
+        aiCompanions=room.aiCompanions,
+        hostId=room.hostId
     )
 
 async def update_mock_emotions():
@@ -215,18 +241,32 @@ async def update_mock_emotions():
     while True:
         await asyncio.sleep(random.uniform(3, 8))
         
-        # 暫時停用自動刪除空房間的功能
-        # Cleanup empty rooms (except demo rooms and permanent test room)
-        # permanent_room_id = "test-room-permanent"
-        # for room_id in list(rooms.keys()):
-        #     if room_id == permanent_room_id:
-        #         continue  # 永久測試房間不刪除
-        #     
-        #     room = rooms[room_id]
-        #     cleanup_users(room)
-        #     if len(room.users) == 0:
-        #         del rooms[room_id]
-        #         continue
+        # 檢查並關閉空房間（5分鐘無真實用戶）
+        now = datetime.now().timestamp()
+        permanent_room_id = "test-room-permanent"
+        for room_id in list(rooms.keys()):
+            if room_id == permanent_room_id:
+                continue  # 永久測試房間不刪除
+            
+            room = rooms[room_id]
+            cleanup_users(room)
+            
+            # 檢查是否有真實用戶
+            has_real_users = any(not info.get('isAi', False) for info in room.users.values())
+            
+            if has_real_users:
+                # 更新最後有真實用戶的時間
+                room.lastRealUserSeenAt = now
+            else:
+                # 沒有真實用戶，檢查是否超過5分鐘
+                # 如果 lastRealUserSeenAt 是 0，使用 createdAt 作為起始時間
+                reference_time = room.lastRealUserSeenAt if room.lastRealUserSeenAt > 0 else room.createdAt
+                
+                if reference_time > 0 and (now - reference_time) > 300:  # 5分鐘 = 300秒
+                    print(f"Closing empty room {room_id} after 5 minutes of no real users (last seen: {reference_time}, created: {room.createdAt})")
+                    del rooms[room_id]
+                    save_rooms()
+                    continue
 
         for room in rooms.values():
             # Update mock users emotions
@@ -288,7 +328,9 @@ async def update_ai_random_emotions():
                             "avatar": info['avatar'],
                             "lastSeen": info['lastSeen'],
                             "emotion": info.get('emotion'),
-                            "isAi": info.get('isAi', False)
+                            "isAi": info.get('isAi', False),
+                            "addedBy": info.get('addedBy'),
+                            "addedByUsername": info.get('addedByUsername')
                         }
                         for uid, info in room.users.items()
                     ]
@@ -310,7 +352,9 @@ async def update_ai_random_emotions():
                             "avatar": info['avatar'],
                             "lastSeen": info['lastSeen'],
                             "emotion": info.get('emotion'),
-                            "isAi": info.get('isAi', False)
+                            "isAi": info.get('isAi', False),
+                            "addedBy": info.get('addedBy'),
+                            "addedByUsername": info.get('addedByUsername')
                         }
                         for uid, info in room.users.items()
                     ]

@@ -16,18 +16,22 @@ router = APIRouter()
 
 @router.get("/rooms", response_model=List[Room])
 async def get_rooms():
-    return [get_room_response(room) for room in rooms.values()]
+    return [get_room_response(room) for room in rooms.values() if not room.isPrivate]
 
 @router.post("/rooms", response_model=Room)
 async def create_room(request: CreateRoomRequest):
     room_id = str(uuid.uuid4())
+    now = datetime.now().timestamp()
     new_room = RoomInternal(
         id=room_id,
         name=request.name,
         description=request.description,
         videoState=VideoState(),
-        aiCompanions=request.aiCompanions
+        aiCompanions=request.aiCompanions,
+        isPrivate=request.isPrivate
     )
+    new_room.createdAt = now
+    new_room.lastRealUserSeenAt = now
     
     if request.aiCompanions:
         for companion in request.aiCompanions:
@@ -36,12 +40,13 @@ async def create_room(request: CreateRoomRequest):
             new_room.users[ai_user_id] = {
                 "username": companion.name,
                 "avatar": companion.avatar,
-                "lastSeen": datetime.now().timestamp(),
+                "lastSeen": now,
                 "emotion": "neutral",
                 "isAi": True,
                 "style": companion.style,
                 "catchphrase_1": companion.catchphrase_1,
-                "catchphrase_2": companion.catchphrase_2
+                "catchphrase_2": companion.catchphrase_2,
+                "joinedAt": now
             }
     
     if request.initialPlaylist:
@@ -74,11 +79,21 @@ async def join_room(room_id: str, request: HeartbeatRequest):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     
+    now = datetime.now().timestamp()
     rooms[room_id].users[request.userId] = {
         'username': request.username or 'Guest',
         'avatar': request.avatar or 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + request.userId,
-        'lastSeen': datetime.now().timestamp()
+        'lastSeen': now,
+        'joinedAt': now
     }
+    
+    # 更新最後真實用戶時間
+    rooms[room_id].lastRealUserSeenAt = now
+    
+    # 如果還沒有房主，設置當前用戶為房主
+    if not rooms[room_id].hostId:
+        rooms[room_id].hostId = request.userId
+    
     save_rooms()
     return get_room_response(rooms[room_id])
 
@@ -297,6 +312,11 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
     
     room = rooms[room_id]
     
+    # Check if companion already exists
+    for u in room.users.values():
+        if u.get('isAi') and u.get('username') == companion.name:
+             raise HTTPException(status_code=400, detail="Companion already exists in the room")
+
     # Add AI companion as a user
     ai_user_id = f"ai-companion-{uuid.uuid4()}"
     room.users[ai_user_id] = {
@@ -307,7 +327,9 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
         "isAi": True,
         "style": companion.style,
         "catchphrase_1": companion.catchphrase_1,
-        "catchphrase_2": companion.catchphrase_2
+        "catchphrase_2": companion.catchphrase_2,
+        "addedBy": companion.addedBy,
+        "addedByUsername": companion.addedByUsername
     }
     
     # Update room's aiCompanions field
@@ -316,4 +338,78 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
     room.aiCompanions.append(companion)
     
     save_rooms()
+    
+    # Broadcast user update
+    await manager.broadcast({
+        "type": "users_update",
+        "users": [
+            {
+                "id": uid,
+                "username": info['username'],
+                "avatar": info['avatar'],
+                "lastSeen": info['lastSeen'],
+                "emotion": info.get('emotion'),
+                "isAi": info.get('isAi', False),
+                "addedBy": info.get('addedBy'),
+                "addedByUsername": info.get('addedByUsername')
+            }
+            for uid, info in room.users.items()
+        ],
+        "hostId": room.hostId
+    }, room_id)
+
+    return get_room_response(room)
+
+@router.delete("/rooms/{room_id}/ai-companion/{companion_name}")
+async def remove_ai_companion(room_id: str, companion_name: str, userId: str):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    
+    room = rooms[room_id]
+    
+    # Find the companion in users
+    target_uid = None
+    target_user = None
+    for uid, u in room.users.items():
+        if u.get('isAi') and u.get('username') == companion_name:
+            target_uid = uid
+            target_user = u
+            break
+            
+    if not target_uid:
+        raise HTTPException(status_code=404, detail="Companion not found")
+        
+    # Check ownership
+    # Allow if user is the one who added it OR user is host
+    if target_user.get('addedBy') != userId and room.hostId != userId:
+        raise HTTPException(status_code=403, detail="Not authorized to remove this companion")
+        
+    # Remove from users
+    del room.users[target_uid]
+    
+    # Remove from aiCompanions list
+    if room.aiCompanions:
+        room.aiCompanions = [c for c in room.aiCompanions if c.name != companion_name]
+        
+    save_rooms()
+    
+    # Broadcast user update
+    await manager.broadcast({
+        "type": "users_update",
+        "users": [
+            {
+                "id": uid,
+                "username": info['username'],
+                "avatar": info['avatar'],
+                "lastSeen": info['lastSeen'],
+                "emotion": info.get('emotion'),
+                "isAi": info.get('isAi', False),
+                "addedBy": info.get('addedBy'),
+                "addedByUsername": info.get('addedByUsername')
+            }
+            for uid, info in room.users.items()
+        ],
+        "hostId": room.hostId
+    }, room_id)
+    
     return get_room_response(room)

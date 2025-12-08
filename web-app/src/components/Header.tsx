@@ -7,10 +7,6 @@ interface HeaderProps {
   onPlaylistClick?: () => void;
   onChatClick?: () => void;
   onShareClick?: () => void;
-  isCameraEnabled?: boolean;
-  onToggleCamera?: () => void;
-  isMicEnabled?: boolean;
-  onToggleMic?: () => void;
   serverVideoState?: {
     played: number;
     lastUpdated: number;
@@ -20,16 +16,12 @@ interface HeaderProps {
   currentTime?: number;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
+const HeaderComponent: React.FC<HeaderProps> = ({ 
   roomName, 
   userCount, 
   onPlaylistClick,
   onChatClick,
   onShareClick,
-  isCameraEnabled,
-  onToggleCamera,
-  isMicEnabled,
-  onToggleMic,
   serverVideoState,
   currentTime
 }) => {
@@ -116,43 +108,6 @@ const Header: React.FC<HeaderProps> = ({
             )}
 
             <div className="flex items-center gap-2">
-               {onToggleMic && (
-                 <button 
-                   onClick={onToggleMic} 
-                   className={`btn btn-circle btn-sm ${isMicEnabled ? 'btn-error text-white' : 'btn-ghost text-gray-400 hover:text-error'} tooltip tooltip-bottom`} 
-                   data-tip={isMicEnabled ? "關閉麥克風" : "開啟麥克風 (VAD)"}
-                 >
-                   {isMicEnabled ? (
-                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                       <path d="M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z" />
-                       <path d="M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.291h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.291a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z" />
-                     </svg>
-                   ) : (
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                     </svg>
-                   )}
-                 </button>
-               )}
-               {onToggleCamera && (
-                 <button 
-                   onClick={onToggleCamera} 
-                   className={`btn btn-circle btn-sm ${isCameraEnabled ? 'btn-primary text-white' : 'btn-ghost text-gray-400 hover:text-primary'} tooltip tooltip-bottom`} 
-                   data-tip={isCameraEnabled ? "關閉鏡頭" : "連結鏡頭"}
-                 >
-                   {isCameraEnabled ? (
-                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                       <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                       <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
-                     </svg>
-                   ) : (
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                       <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 12h.008v.008H12V12Z" />
-                     </svg>
-                   )}
-                 </button>
-               )}
                {onChatClick && (
                <button onClick={onChatClick} className="btn btn-ghost btn-circle btn-sm text-gray-400 hover:text-primary tooltip tooltip-bottom" data-tip="聊天室">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -179,5 +134,21 @@ const Header: React.FC<HeaderProps> = ({
     </div>
   );
 };
+
+const Header = React.memo(HeaderComponent, (prevProps, nextProps) => {
+  // 自定义比较函数，只在真正需要的 props 改变时才重新渲染
+  return (
+    prevProps.roomName === nextProps.roomName &&
+    prevProps.userCount === nextProps.userCount &&
+    prevProps.onPlaylistClick === nextProps.onPlaylistClick &&
+    prevProps.onChatClick === nextProps.onChatClick &&
+    prevProps.onShareClick === nextProps.onShareClick &&
+    prevProps.onToggleCamera === nextProps.onToggleCamera &&
+    prevProps.currentTime === nextProps.currentTime &&
+    prevProps.serverVideoState?.played === nextProps.serverVideoState?.played &&
+    prevProps.serverVideoState?.playing === nextProps.serverVideoState?.playing &&
+    prevProps.serverVideoState?.playbackRate === nextProps.serverVideoState?.playbackRate
+  );
+});
 
 export default Header;

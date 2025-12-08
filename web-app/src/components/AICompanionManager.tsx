@@ -204,7 +204,7 @@ const AICompanionManager = () => {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4">
         {isLoading ? (
           <div className="text-center py-12 bg-white/5 rounded-2xl border border-white/5">
             <span className="loading loading-spinner loading-lg text-purple-500"></span>

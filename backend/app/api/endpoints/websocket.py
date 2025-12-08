@@ -3,11 +3,100 @@ from datetime import datetime
 import uuid
 
 from app.services.connection_manager import manager
-from app.services.room_manager import rooms, save_rooms
-from app.models.room import Message, CurrentVideo, VideoItem
-from app.services.ai_generator import generate_companion_response
+from app.services.room_manager import rooms, save_rooms, assign_new_host
+from app.models.room import Message, CurrentVideo, VideoItem, AICompanion
+from app.services.ai_generator import generate_companion_response, analyze_message
 
 router = APIRouter()
+
+async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name: str, user_content: str, video_title: str, context_type: str = "chat"):
+    import asyncio
+    
+    # Set typing status
+    if room_id in rooms and ai_uid in rooms[room_id].users:
+        rooms[room_id].users[ai_uid]['emotion'] = '💬'
+        await manager.broadcast({
+            "type": "users_update",
+            "users": [
+                {
+                    "id": uid,
+                    "username": info['username'],
+                    "avatar": info['avatar'],
+                    "lastSeen": info['lastSeen'],
+                    "emotion": info.get('emotion'),
+                    "isAi": info.get('isAi', False),
+                    "addedBy": info.get('addedBy'),
+                    "addedByUsername": info.get('addedByUsername')
+                }
+                for uid, info in rooms[room_id].users.items()
+            ],
+            "hostId": rooms[room_id].hostId
+        }, room_id)
+
+    await asyncio.sleep(1.0) # Slightly longer delay for chat
+
+    try:
+        response_text = await generate_companion_response(
+            companion_name=ai_info['username'],
+            companion_style=ai_info.get('style', '友善的角色'),
+            user_name=user_name,
+            user_input=user_content,
+            context_type=context_type,
+            video_context=video_title
+        )
+        
+        if room_id in rooms:
+            # Clear typing status
+            if ai_uid in rooms[room_id].users:
+                rooms[room_id].users[ai_uid]['emotion'] = None
+            
+            current_played = rooms[room_id].videoState.played
+            
+            ai_message = Message(
+                id=str(uuid.uuid4()),
+                userId=ai_uid,
+                username=ai_info['username'],
+                content=response_text,
+                timestamp=datetime.now().timestamp(),
+                videoTitle=video_title,
+                videoTimestamp=current_played
+            )
+            
+            rooms[room_id].messages.append(ai_message)
+            # Keep only last 50 messages
+            if len(rooms[room_id].messages) > 50:
+                rooms[room_id].messages.pop(0)
+            
+            save_rooms()
+            
+            await manager.broadcast({
+                "type": "new_message",
+                "message": ai_message.dict()
+            }, room_id)
+            
+            # Broadcast user update to clear emotion
+            await manager.broadcast({
+                "type": "users_update",
+                "users": [
+                    {
+                        "id": uid,
+                        "username": info['username'],
+                        "avatar": info['avatar'],
+                        "lastSeen": info['lastSeen'],
+                        "emotion": info.get('emotion'),
+                        "isAi": info.get('isAi', False),
+                        "addedBy": info.get('addedBy'),
+                        "addedByUsername": info.get('addedByUsername')
+                    }
+                    for uid, info in rooms[room_id].users.items()
+                ],
+                "hostId": rooms[room_id].hostId
+            }, room_id)
+
+    except Exception as e:
+        print(f"Error generating AI response: {e}")
+        if room_id in rooms and ai_uid in rooms[room_id].users:
+            rooms[room_id].users[ai_uid]['emotion'] = None
 
 @router.websocket("/ws/{room_id}/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
@@ -28,14 +117,34 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
             
             if event_type == "join":
                 # Update user info
+                now = datetime.now().timestamp()
                 user_data = data.get("user", {})
+                is_ai = user_data.get('isAi', False)
+                
+                # 保留原有的 joinedAt 時間戳（如果存在）
+                existing_user = rooms[room_id].users.get(user_id)
+                joined_at = existing_user.get('joinedAt') if existing_user else now
+                
                 rooms[room_id].users[user_id] = {
                     'username': user_data.get('username', 'Guest'),
                     'avatar': user_data.get('avatar', ''),
-                    'lastSeen': datetime.now().timestamp(),
-                    'emotion': user_data.get('emotion')
+                    'lastSeen': now,
+                    'emotion': user_data.get('emotion'),
+                    'spoilerPreference': user_data.get('spoilerPreference', 'show_all'),
+                    'isAi': is_ai,
+                    'joinedAt': joined_at  # 保持原有的加入時間
                 }
-                # Broadcast updated user list
+                
+                # 更新最後真實用戶時間
+                if not is_ai:
+                    rooms[room_id].lastRealUserSeenAt = now
+                
+                # 如果還沒有房主且當前用戶不是AI，設置為房主
+                if not rooms[room_id].hostId and not is_ai:
+                    rooms[room_id].hostId = user_id
+                    print(f"Setting initial host for room {room_id}: {user_id}")
+                
+                # Broadcast updated user list with hostId
                 await manager.broadcast({
                     "type": "users_update",
                     "users": [
@@ -44,10 +153,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                             "username": info['username'],
                             "avatar": info['avatar'],
                             "lastSeen": info['lastSeen'],
-                            "emotion": info.get('emotion')
+                            "emotion": info.get('emotion'),
+                            "spoilerPreference": info.get('spoilerPreference', 'show_all'),
+                            "isAi": info.get('isAi', False),
+                            "addedBy": info.get('addedBy'),
+                            "addedByUsername": info.get('addedByUsername')
                         }
                         for uid, info in rooms[room_id].users.items()
-                    ]
+                    ],
+                    "hostId": rooms[room_id].hostId
                 }, room_id)
 
             elif event_type == "emotion":
@@ -66,10 +180,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                 "username": info['username'],
                                 "avatar": info['avatar'],
                                 "lastSeen": info['lastSeen'],
-                                "emotion": info.get('emotion')
+                                "emotion": info.get('emotion'),
+                                "isAi": info.get('isAi', False),
+                                "addedBy": info.get('addedBy'),
+                                "addedByUsername": info.get('addedByUsername')
                             }
                             for uid, info in rooms[room_id].users.items()
-                        ]
+                        ],
+                        "hostId": rooms[room_id].hostId
                     }, room_id)
 
                     # AI Response Logic (Only if emotion changed and is not None)
@@ -98,10 +216,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                         "avatar": info['avatar'],
                                         "lastSeen": info['lastSeen'],
                                         "emotion": info.get('emotion'),
-                                        "isAi": info.get('isAi', False)
+                                        "isAi": info.get('isAi', False),
+                                        "addedBy": info.get('addedBy'),
+                                        "addedByUsername": info.get('addedByUsername')
                                     }
                                     for uid, info in rooms[room_id].users.items()
-                                ]
+                                ],
+                                "hostId": rooms[room_id].hostId
                             }, room_id)
                             
                             # 延遲 0.5 秒
@@ -146,10 +267,13 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                             "avatar": info['avatar'],
                                             "lastSeen": info['lastSeen'],
                                             "emotion": info.get('emotion'),
-                                            "isAi": info.get('isAi', False)
+                                            "isAi": info.get('isAi', False),
+                                            "addedBy": info.get('addedBy'),
+                                            "addedByUsername": info.get('addedByUsername')
                                         }
                                         for uid, info in rooms[room_id].users.items()
-                                    ]
+                                    ],
+                                    "hostId": rooms[room_id].hostId
                                 }, room_id)
                             except Exception as e:
                                 print(f"Failed to generate AI response: {e}")
@@ -160,12 +284,40 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
             elif event_type == "chat":
                 content = data.get("content")
                 username = data.get("username")
+                
+                room = rooms[room_id]
+                video_title = room.currentVideo.title if room.currentVideo else None
+                
+                # Get AI companions
+                ai_users = {uid: u for uid, u in room.users.items() if u.get('isAi')}
+                ai_companions = []
+                for u in ai_users.values():
+                    try:
+                        ai_companions.append(AICompanion(
+                            name=u.get('username', 'Unknown'),
+                            style=u.get('style', ''),
+                            catchphrase_1=u.get('catchphrase_1'),
+                            catchphrase_2=u.get('catchphrase_2'),
+                            avatar=u.get('avatar', '')
+                        ))
+                    except:
+                        pass
+
+                # Analyze message
+                analysis_result = await analyze_message(content, video_title, ai_companions)
+                
+                is_spoiler = analysis_result.get("is_spoiler", False)
+                spoiler_reason = analysis_result.get("reason")
+                selected_companion_name = analysis_result.get("selected_companion")
+                
                 message = Message(
                     id=str(uuid.uuid4()),
                     userId=user_id,
                     username=username,
                     content=content,
-                    timestamp=datetime.now().timestamp()
+                    timestamp=datetime.now().timestamp(),
+                    isSpoiler=is_spoiler,
+                    spoilerReason=spoiler_reason
                 )
                 rooms[room_id].messages.append(message)
                 # Keep only last 50 messages
@@ -177,9 +329,43 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                     "message": message.dict()
                 }, room_id)
 
+                # Trigger AI response if selected
+                if selected_companion_name:
+                    target_uid = None
+                    target_info = None
+                    for uid, u in ai_users.items():
+                        if u.get('username') == selected_companion_name:
+                            target_uid = uid
+                            target_info = u
+                            break
+                    
+                    if target_uid and target_info:
+                        import asyncio
+                        asyncio.create_task(handle_ai_response(
+                            room_id, target_uid, target_info, username, content, video_title
+                        ))
+
             elif event_type == "video_state":
+                # 只有房主才能控制視頻進度
+                if rooms[room_id].hostId != user_id:
+                    # 非房主用戶嘗試控制，忽略請求
+                    continue
+                    
                 state = data.get("state")
                 current_state = rooms[room_id].videoState
+                is_seek = data.get("isSeek", False)  # 標記是否為跳轉操作
+                
+                # 檢測是否為跳轉（played 變化超過 2 秒）
+                if state.get("played") is not None:
+                    time_diff = abs(state["played"] - current_state.played)
+                    if time_diff > 2.0 or is_seek:
+                        # 這是一個跳轉操作，生成新的 seekId
+                        seek_id = str(uuid.uuid4())
+                        current_state.pendingSeekId = seek_id
+                        rooms[room_id].seekAcknowledgments[seek_id] = set()
+                        # 房主自己自動確認
+                        rooms[room_id].seekAcknowledgments[seek_id].add(user_id)
+                        print(f"Seek detected in room {room_id}: seekId={seek_id}, played={state['played']}")
                 
                 # 更新所有狀態
                 if state.get("playing") is not None:
@@ -204,10 +390,60 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                         "duration": current_state.duration,
                         "playbackRate": current_state.playbackRate,
                         "lastUpdated": current_state.lastUpdated,
-                        "lastUpdatedBy": current_state.lastUpdatedBy
+                        "lastUpdatedBy": current_state.lastUpdatedBy,
+                        "pendingSeekId": current_state.pendingSeekId
                     },
                     "sender": user_id
                 }, room_id)
+
+            elif event_type == "seek_ack":
+                # 用戶確認已完成跳轉同步
+                seek_id = data.get("seekId")
+                if not seek_id:
+                    continue
+                
+                room = rooms[room_id]
+                
+                # 記錄此用戶已完成同步
+                if seek_id in room.seekAcknowledgments:
+                    room.seekAcknowledgments[seek_id].add(user_id)
+                    
+                    # 檢查是否所有非 AI 用戶都已確認
+                    non_ai_users = [uid for uid, info in room.users.items() if not info.get('isAi', False)]
+                    acked_users = room.seekAcknowledgments[seek_id]
+                    
+                    print(f"Seek ack from {user_id} for seekId={seek_id}. Acked: {len(acked_users)}/{len(non_ai_users)}")
+                    
+                    # 如果所有非 AI 用戶都已確認，自動恢復播放
+                    if all(uid in acked_users for uid in non_ai_users):
+                        print(f"All users synced for seekId={seek_id}, auto-resuming playback")
+                        
+                        # 清除 pendingSeekId
+                        if room.videoState.pendingSeekId == seek_id:
+                            room.videoState.pendingSeekId = None
+                        
+                        # 自動恢復播放
+                        room.videoState.playing = True
+                        room.videoState.lastUpdated = datetime.now().timestamp()
+                        
+                        # 廣播恢復播放
+                        await manager.broadcast({
+                            "type": "video_state_update",
+                            "state": {
+                                "playing": True,
+                                "played": room.videoState.played,
+                                "duration": room.videoState.duration,
+                                "playbackRate": room.videoState.playbackRate,
+                                "lastUpdated": room.videoState.lastUpdated,
+                                "lastUpdatedBy": room.hostId,
+                                "pendingSeekId": None
+                            },
+                            "sender": "system",
+                            "autoResumed": True
+                        }, room_id)
+                        
+                        # 清理舊的確認記錄
+                        del room.seekAcknowledgments[seek_id]
 
             elif event_type == "play_video":
                 video = data.get("video")
@@ -249,8 +485,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_id)
         if room_id in rooms and user_id in rooms[room_id].users:
+            was_host = (rooms[room_id].hostId == user_id)
             del rooms[room_id].users[user_id]
-            # Broadcast user left
+            
+            # 如果離開的是房主，重新分配房主
+            if was_host:
+                new_host = assign_new_host(rooms[room_id])
+                print(f"Host {user_id} left room {room_id}, new host: {new_host}")
+            
+            # Broadcast user left with updated hostId
             await manager.broadcast({
                 "type": "users_update",
                 "users": [
@@ -259,8 +502,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                         "username": info['username'],
                         "avatar": info['avatar'],
                         "lastSeen": info['lastSeen'],
-                        "emotion": info.get('emotion')
+                        "emotion": info.get('emotion'),
+                        "isAi": info.get('isAi', False),
+                        "addedBy": info.get('addedBy'),
+                        "addedByUsername": info.get('addedByUsername')
                     }
                     for uid, info in rooms[room_id].users.items()
-                ]
+                ],
+                "hostId": rooms[room_id].hostId
             }, room_id)
+            
+            save_rooms()

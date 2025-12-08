@@ -9,6 +9,7 @@ class VideoState(BaseModel):
     playbackRate: float = 1.0
     lastUpdated: float = 0.0
     lastUpdatedBy: Optional[str] = None
+    pendingSeekId: Optional[str] = None  # 追蹤當前等待同步的 seek 操作
 
 class CurrentVideo(BaseModel):
     videoId: str
@@ -30,6 +31,8 @@ class AICompanion(BaseModel):
     catchphrase_2: Optional[str] = None
     avatar: str
     category: Optional[str] = "其他"
+    addedBy: Optional[str] = None
+    addedByUsername: Optional[str] = None
 
 class Message(BaseModel):
     id: str
@@ -39,6 +42,8 @@ class Message(BaseModel):
     timestamp: float
     videoTitle: Optional[str] = None
     videoTimestamp: Optional[float] = None
+    isSpoiler: bool = False
+    spoilerReason: Optional[str] = None
 
 class User(BaseModel):
     id: str
@@ -47,11 +52,13 @@ class User(BaseModel):
     lastSeen: float
     emotion: Optional[str] = None
     isAi: bool = False
+    spoilerPreference: str = "show_all"  # "show_all" or "hide_spoilers"
 
 class Room(BaseModel):
     id: str
     name: str
     description: Optional[str] = None
+    isPrivate: bool = False
     userCount: int = 0
     users: List[User] = []
     videoState: VideoState
@@ -60,32 +67,42 @@ class Room(BaseModel):
     history: List[VideoItem] = []
     messages: List[Message] = []
     aiCompanions: List[AICompanion] = []
+    hostId: Optional[str] = None
 
 class RoomInternal:
-    def __init__(self, id, name, videoState, description=None, aiCompanions=None):
+    def __init__(self, id, name, videoState, description=None, aiCompanions=None, isPrivate=False):
         self.id = id
         self.name = name
         self.description = description
+        self.isPrivate = isPrivate
         self.videoState = videoState
         self.currentVideo: Optional[CurrentVideo] = None
-        self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp, emotion, isAi}
+        self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp, emotion, isAi, joinedAt}
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []
         self.messages: List[Message] = []
         self.aiCompanions = aiCompanions or []
+        self.hostId: Optional[str] = None  # 房主ID
+        self.createdAt: float = 0.0  # 房間創建時間
+        self.lastRealUserSeenAt: float = 0.0  # 最後一次有真實用戶的時間
+        self.seekAcknowledgments: Dict[str, set] = {}  # seekId -> set of user_ids who acknowledged
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "description": self.description,
+            "isPrivate": self.isPrivate,
             "videoState": self.videoState.dict(),
             "currentVideo": self.currentVideo.dict() if self.currentVideo else None,
             "users": self.users,
             "queue": [v.dict() for v in self.queue],
             "history": [v.dict() for v in self.history],
             "messages": [m.dict() for m in self.messages],
-            "aiCompanions": [c.dict() for c in self.aiCompanions] if self.aiCompanions else []
+            "aiCompanions": [c.dict() for c in self.aiCompanions] if self.aiCompanions else [],
+            "hostId": self.hostId,
+            "createdAt": self.createdAt,
+            "lastRealUserSeenAt": self.lastRealUserSeenAt
         }
 
     @classmethod
@@ -98,7 +115,8 @@ class RoomInternal:
             name=data["name"],
             videoState=video_state,
             description=data.get("description"),
-            aiCompanions=ai_companions
+            aiCompanions=ai_companions,
+            isPrivate=data.get("isPrivate", False)
         )
         
         if data.get("currentVideo"):
@@ -108,12 +126,16 @@ class RoomInternal:
         room.queue = [VideoItem(**v) for v in data.get("queue", [])]
         room.history = [VideoItem(**v) for v in data.get("history", [])]
         room.messages = [Message(**m) for m in data.get("messages", [])]
+        room.hostId = data.get("hostId")
+        room.createdAt = data.get("createdAt", 0.0)
+        room.lastRealUserSeenAt = data.get("lastRealUserSeenAt", 0.0)
         
         return room
 
 class CreateRoomRequest(BaseModel):
     name: str
     description: Optional[str] = None
+    isPrivate: bool = False
     initialPlaylist: Optional[List[VideoItem]] = []
     aiCompanions: Optional[List[AICompanion]] = []
 

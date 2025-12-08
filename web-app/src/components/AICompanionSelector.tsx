@@ -4,11 +4,12 @@ import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
 
 interface Props {
   onSelect: (companions: AICompanion[]) => void;
+  existingCompanionNames?: string[];
 }
 
 const ITEMS_PER_PAGE = 50;
 
-const AICompanionSelector = ({ onSelect }: Props) => {
+const AICompanionSelector = ({ onSelect, existingCompanionNames = [] }: Props) => {
   const [presets, setPresets] = useState<AICompanion[]>([]);
   const [customCompanions, setCustomCompanions] = useState<AICompanion[]>([]);
   const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
@@ -60,6 +61,8 @@ const AICompanionSelector = ({ onSelect }: Props) => {
   };
 
   const toggleSelection = (companion: AICompanion) => {
+    if (existingCompanionNames.includes(companion.name)) return;
+
     const isSelected = selectedCompanions.some(c => c.name === companion.name);
     let newSelection: AICompanion[];
     
@@ -143,7 +146,7 @@ const AICompanionSelector = ({ onSelect }: Props) => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2">
+      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3">
         {/* Create New Card - Only show on first page */}
         {currentPage === 1 && (
           <div 
@@ -155,22 +158,26 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                 <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
               </svg>
             </div>
-            <span className="text-xs font-medium text-gray-400 group-hover:text-white">自訂生成</span>
+            <span className="text-sm font-medium text-gray-400 group-hover:text-white">自訂生成</span>
           </div>
         )}
 
         {displayItems.map((companion) => {
           const isSelected = selectedCompanions.some(c => c.name === companion.name);
+          const isAlreadyAdded = existingCompanionNames.includes(companion.name);
+
           return (
             <div 
               key={companion.name}
-              className="flex flex-col gap-1 group cursor-pointer"
-              onClick={() => setViewingCompanion(companion)}
+              className={`flex flex-col gap-1 group ${isAlreadyAdded ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+              onClick={() => !isAlreadyAdded && setViewingCompanion(companion)}
             >
               <div className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all ${
                 isSelected 
                   ? 'border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]' 
-                  : 'border-transparent hover:border-white/20'
+                  : isAlreadyAdded
+                    ? 'border-gray-600'
+                    : 'border-transparent hover:border-white/20'
               }`}>
                 <img 
                   src={optimizeAvatarUrl(companion.avatar, avatarSizes.thumbnail)} 
@@ -187,8 +194,15 @@ const AICompanionSelector = ({ onSelect }: Props) => {
                     </svg>
                   </div>
                 )}
+
+                {/* Already Added Indicator */}
+                {isAlreadyAdded && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-xs font-bold text-white bg-black/50 px-2 py-1 rounded-full border border-white/20">已加入</span>
+                  </div>
+                )}
               </div>
-              <span className="text-[10px] text-center text-gray-400 group-hover:text-white truncate px-1">
+              <span className="text-xs font-medium text-center text-gray-400 group-hover:text-white truncate px-1">
                 {companion.name}
               </span>
             </div>
