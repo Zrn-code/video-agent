@@ -25,6 +25,7 @@ class VideoItem(BaseModel):
     addedBy: Optional[str] = None
 
 class AICompanion(BaseModel):
+    id: Optional[str] = None
     name: str
     style: str
     catchphrase_1: Optional[str] = None
@@ -45,6 +46,24 @@ class Message(BaseModel):
     isSpoiler: bool = False
     spoilerReason: Optional[str] = None
 
+class ForumComment(BaseModel):
+    id: str
+    userId: str
+    username: str
+    content: str
+    timestamp: float
+
+class ForumThread(BaseModel):
+    id: str
+    title: str
+    content: str
+    authorId: str
+    authorName: str
+    createdAt: float
+    updatedAt: float
+    status: str = "open" # open, closed, completed
+    comments: List[ForumComment] = []
+
 class User(BaseModel):
     id: str
     username: str
@@ -53,6 +72,7 @@ class User(BaseModel):
     emotion: Optional[str] = None
     isAi: bool = False
     spoilerPreference: str = "show_all"  # "show_all" or "hide_spoilers"
+    hasScript: bool = False
 
 class Room(BaseModel):
     id: str
@@ -66,6 +86,7 @@ class Room(BaseModel):
     queue: List[VideoItem] = []
     history: List[VideoItem] = []
     messages: List[Message] = []
+    forumThreads: List[ForumThread] = []
     aiCompanions: List[AICompanion] = []
     hostId: Optional[str] = None
 
@@ -81,6 +102,7 @@ class RoomInternal:
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []
         self.messages: List[Message] = []
+        self.forumThreads: List[ForumThread] = []
         self.aiCompanions = aiCompanions or []
         self.hostId: Optional[str] = None  # 房主ID
         self.createdAt: float = 0.0  # 房間創建時間
@@ -99,6 +121,7 @@ class RoomInternal:
             "queue": [v.dict() for v in self.queue],
             "history": [v.dict() for v in self.history],
             "messages": [m.dict() for m in self.messages],
+            "forumThreads": [t.dict() for t in self.forumThreads],
             "aiCompanions": [c.dict() for c in self.aiCompanions] if self.aiCompanions else [],
             "hostId": self.hostId,
             "createdAt": self.createdAt,
@@ -126,6 +149,7 @@ class RoomInternal:
         room.queue = [VideoItem(**v) for v in data.get("queue", [])]
         room.history = [VideoItem(**v) for v in data.get("history", [])]
         room.messages = [Message(**m) for m in data.get("messages", [])]
+        room.forumThreads = [ForumThread(**t) for t in data.get("forumThreads", [])]
         room.hostId = data.get("hostId")
         room.createdAt = data.get("createdAt", 0.0)
         room.lastRealUserSeenAt = data.get("lastRealUserSeenAt", 0.0)
@@ -155,6 +179,20 @@ class UserProfile(BaseModel):
     userId: str
     username: str
     avatar: str
+
+class CreateThreadRequest(BaseModel):
+    title: str
+    content: str
+    authorId: str
+    authorName: str
+
+class CreateCommentRequest(BaseModel):
+    content: str
+    userId: str
+    username: str
+
+class UpdateThreadStatusRequest(BaseModel):
+    status: str
 
 class HeartbeatRequest(BaseModel):
     userId: str

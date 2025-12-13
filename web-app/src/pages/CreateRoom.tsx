@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import AICompanionSelector from '../components/AICompanionSelector';
 import type { VideoItem, YouTubeVideo, AICompanion } from '../types';
 import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
+import { PRESET_VIDEOS } from '../constants';
 
 const CreateRoom = () => {
   const navigate = useNavigate();
@@ -31,6 +32,9 @@ const CreateRoom = () => {
   const [roomPrivacy, setRoomPrivacy] = useState<'public' | 'private'>('public');
   const [playlist, setPlaylist] = useState<VideoItem[]>([]);
   const [selectedCompanions, setSelectedCompanions] = useState<AICompanion[]>([]);
+  const [spoilerPreference, setSpoilerPreference] = useState<'show_all' | 'hide_spoilers'>(() => {
+    return (localStorage.getItem('video_agent_spoiler_preference') as 'show_all' | 'hide_spoilers') || 'show_all';
+  });
   
   // Search State
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +45,8 @@ const CreateRoom = () => {
   useEffect(() => {
     if (userName) localStorage.setItem('video_agent_username', userName);
     if (userAvatar) localStorage.setItem('video_agent_avatar', userAvatar);
-  }, [userName, userAvatar]);
+    localStorage.setItem('video_agent_spoiler_preference', spoilerPreference);
+  }, [userName, userAvatar, spoilerPreference]);
 
   const randomizeAvatar = () => {
     const newSeed = Math.random().toString(36).substr(2, 9);
@@ -72,6 +77,16 @@ const CreateRoom = () => {
       title: video.snippet.title,
       channelTitle: video.snippet.channelTitle,
       thumbnailUrl: video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default.url
+    };
+    setPlaylist([...playlist, newItem]);
+  };
+
+  const addPresetToPlaylist = (video: typeof PRESET_VIDEOS[0]) => {
+    const newItem: VideoItem = {
+      videoId: video.id,
+      title: video.title,
+      channelTitle: video.category,
+      thumbnailUrl: `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`
     };
     setPlaylist([...playlist, newItem]);
   };
@@ -155,135 +170,157 @@ const CreateRoom = () => {
             
             {/* Step 1: Identity & Room Settings */}
             {step === 1 && (
-                <div className="h-full flex flex-col gap-5 animate-fade-in">
-                    {/* Top Section: User Identity */}
-                    <div className="bg-gradient-to-br from-purple-900/20 via-[#121212] to-blue-900/20 rounded-2xl border border-white/10 p-6 shadow-2xl">
-                        <div className="flex items-center gap-6">
+                <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-y-auto pb-4 animate-fade-in">
+                    {/* Left Column: User Identity */}
+                    <div className="bg-gradient-to-br from-purple-900/20 via-[#121212] to-blue-900/20 rounded-2xl border border-white/10 p-6 shadow-2xl flex flex-col justify-center">
+                        <div className="flex flex-col items-center gap-6 text-center">
                             {/* Avatar */}
-                            <div className="flex-shrink-0">
-                                <div className="relative group">
-                                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500/30 group-hover:border-purple-500/60 transition-all duration-500 bg-gradient-to-br from-purple-900/50 to-blue-900/50 shadow-2xl shadow-purple-500/20">
-                                        <img src={optimizeAvatarUrl(userAvatar, avatarSizes.small)} alt="Avatar" loading="lazy" className="w-full h-full object-cover" />
-                                    </div>
-                                    <button 
-                                        onClick={randomizeAvatar} 
-                                        className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform border-2 border-[#121212]"
-                                        title="隨機頭像"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-white">
-                                            <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clipRule="evenodd" />
-                                        </svg>
-                                    </button>
+                            <div className="relative group">
+                                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-purple-500/30 group-hover:border-purple-500/60 transition-all duration-500 bg-gradient-to-br from-purple-900/50 to-blue-900/50 shadow-2xl shadow-purple-500/20">
+                                    <img src={optimizeAvatarUrl(userAvatar, avatarSizes.medium)} alt="Avatar" loading="lazy" className="w-full h-full object-cover" />
                                 </div>
+                                <button 
+                                    onClick={randomizeAvatar} 
+                                    className="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform border-4 border-[#121212]"
+                                    title="隨機頭像"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-white">
+                                        <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
                             </div>
 
                             {/* User Info */}
-                            <div className="flex-1">
-                                <label className="block font-bold text-xl text-purple-400 mb-2 uppercase tracking-wide">您的身份</label>
-                                <input 
-                                    type="text" 
-                                    placeholder="輸入您的暱稱..." 
-                                    className="input bg-black/40 border-white/10 focus:border-purple-500/50 focus:bg-black/60 w-full rounded-xl text-lg transition-all h-12 px-5 placeholder:text-gray-600 font-medium" 
-                                    value={userName} 
-                                    onChange={(e) => setUserName(e.target.value)} 
-                                />
-                                <p className="text-sm text-gray-500 mt-1.5 flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                                        <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
-                                    </svg>
-                                    這個名稱會顯示給房間內的其他成員
-                                </p>
+                            <div className="w-full max-w-md space-y-4">
+                                <div>
+                                    <label className="block font-bold text-xl text-purple-400 mb-2 uppercase tracking-wide">您的身份</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="輸入您的暱稱..." 
+                                        className="input bg-black/40 border-white/10 focus:border-purple-500/50 focus:bg-black/60 w-full rounded-xl text-lg transition-all h-12 px-5 placeholder:text-gray-600 font-medium text-center" 
+                                        value={userName} 
+                                        onChange={(e) => setUserName(e.target.value)} 
+                                    />
+                                    <p className="text-sm text-gray-500 mt-2">這個名稱會顯示給房間內的其他成員</p>
+                                </div>
+
+                                {/* Spoiler Preference */}
+                                <div className="bg-black/20 rounded-xl p-4 border border-white/5 text-left">
+                                    <label className="flex items-center gap-3 cursor-pointer group">
+                                        <div className="relative flex-shrink-0">
+                                            <input 
+                                                type="checkbox" 
+                                                className="sr-only peer"
+                                                checked={spoilerPreference === 'hide_spoilers'}
+                                                onChange={(e) => setSpoilerPreference(e.target.checked ? 'hide_spoilers' : 'show_all')}
+                                            />
+                                            <div className="w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-purple-600 transition-colors"></div>
+                                            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                                        </div>
+                                        <div>
+                                            <span className="block text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+                                                開啟防暴雷模式
+                                            </span>
+                                            <span className="block text-xs text-gray-500">
+                                                自動模糊聊天室中的劇透內容
+                                            </span>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Bottom Section: Room Settings */}
-                    <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-xl flex-1 min-h-0">
-                        <div className="space-y-6">
-                            {/* Room Info Section */}
-                            <div>
-                                <div className="flex items-center gap-2 mb-5">
-                                    <div className="w-9 h-9 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-purple-400">
-                                            <path fillRule="evenodd" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25Zm4.03 6.28a.75.75 0 0 0-1.06-1.06L4.97 9.47a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 0 0 1.06-1.06L6.56 10l1.72-1.72Zm4.5-1.06a.75.75 0 1 0-1.06 1.06L13.44 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06l2.25-2.25a.75.75 0 0 0 0-1.06l-2.25-2.25Z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-base font-bold text-xl text-white">房間設定</h3>
+                    {/* Right Column: Room Settings */}
+                    <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-xl flex flex-col justify-center">
+                        <div className="space-y-8 max-w-md mx-auto w-full">
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-purple-400">
+                                        <path fillRule="evenodd" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25Zm4.03 6.28a.75.75 0 0 0-1.06-1.06L4.97 9.47a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 0 0 1.06-1.06L6.56 10l1.72-1.72Zm4.5-1.06a.75.75 0 1 0-1.06 1.06L13.44 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06l2.25-2.25a.75.75 0 0 0 0-1.06l-2.25-2.25Z" clipRule="evenodd" />
+                                    </svg>
                                 </div>
-                                
-                                <div className="grid grid-cols-1 gap-5">
-                                    <div className="form-control">
-                                        <label className="label pb-1.5">
-                                            <span className="label-text text-gray-400 font-medium">房間名稱</span>
-                                            <span className="label-text-alt text-purple-400 text-xs">必填</span>
-                                        </label>
-                                        <input 
-                                            type="text" 
-                                            placeholder="例如：週五電影夜 🎬" 
-                                            className="input bg-black/40 border-white/10 focus:border-purple-500/50 w-full rounded-xl transition-all px-4 h-20 text-sm" 
-                                            value={newRoomName} 
-                                            onChange={(e) => setNewRoomName(e.target.value)} 
-                                        />
-                                    </div>
+                                <h3 className="text-2xl font-bold text-white">房間設定</h3>
+                            </div>
+                            
+                            <div className="space-y-6">
+                                <div className="form-control">
+                                    <label className="label pb-2">
+                                        <span className="label-text text-gray-400 font-medium text-base">房間名稱</span>
+                                        <span className="label-text-alt text-purple-400 text-xs bg-purple-500/10 px-2 py-0.5 rounded">必填</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="例如：週五電影夜 🎬" 
+                                        className="input bg-black/40 border-white/10 focus:border-purple-500/50 w-full rounded-xl transition-all px-4 h-14 text-base" 
+                                        value={newRoomName} 
+                                        onChange={(e) => setNewRoomName(e.target.value)} 
+                                    />
+                                </div>
 
-                                    <div className="form-control">
-                                        <label className="label pb-2">
-                                            <span className="label-text text-gray-400 font-medium">隱私設定</span>
-                                        </label>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <button
-                                                onClick={() => setRoomPrivacy('public')}
-                                                className={`relative p-3 rounded-xl border-2 transition-all group ${
-                                                    roomPrivacy === 'public'
-                                                        ? 'border-purple-500 bg-purple-500/10'
-                                                        : 'border-white/10 bg-white/5 hover:border-white/20'
-                                                }`}
-                                            >
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                                                        roomPrivacy === 'public' ? 'bg-purple-500/20' : 'bg-white/5'
-                                                    }`}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${roomPrivacy === 'public' ? 'text-purple-400' : 'text-gray-400'}`}>
-                                                            <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <span className={`text-s font-medium ${roomPrivacy === 'public' ? 'text-white' : 'text-gray-400'}`}>公開</span>
+                                <div className="form-control">
+                                    <label className="label pb-3">
+                                        <span className="label-text text-gray-400 font-medium text-base">隱私設定</span>
+                                    </label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            onClick={() => setRoomPrivacy('public')}
+                                            className={`relative p-4 rounded-xl border-2 transition-all group text-left ${
+                                                roomPrivacy === 'public'
+                                                    ? 'border-purple-500 bg-purple-500/10'
+                                                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                                            }`}
+                                        >
+                                            <div className="flex items-start gap-3">
+                                                <div className={`w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center transition-colors ${
+                                                    roomPrivacy === 'public' ? 'bg-purple-500/20' : 'bg-white/5'
+                                                }`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-5 h-5 ${roomPrivacy === 'public' ? 'text-purple-400' : 'text-gray-400'}`}>
+                                                        <path d="M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM1.49 15.326a.78.78 0 0 1-.358-.442 3 3 0 0 1 4.308-3.516 6.484 6.484 0 0 0-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 0 1-2.07-.655ZM16.44 15.98a4.97 4.97 0 0 0 2.07-.654.78.78 0 0 0 .357-.442 3 3 0 0 0-4.308-3.517 6.484 6.484 0 0 1 1.907 3.96 2.32 2.32 0 0 1-.026.654ZM18 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM5.304 16.19a.844.844 0 0 1-.277-.71 5 5 0 0 1 9.947 0 .843.843 0 0 1-.277.71A6.975 6.975 0 0 1 10 18a6.974 6.974 0 0 1-4.696-1.81Z" />
+                                                    </svg>
                                                 </div>
-                                                {roomPrivacy === 'public' && (
-                                                    <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5 text-white">
-                                                            <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </button>
-                                            <button
-                                                onClick={() => setRoomPrivacy('private')}
-                                                className={`relative p-3 rounded-xl border-2 transition-all group ${
-                                                    roomPrivacy === 'private'
-                                                        ? 'border-purple-500 bg-purple-500/10'
-                                                        : 'border-white/10 bg-white/5 hover:border-white/20'
-                                                }`}
-                                            >
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                                                        roomPrivacy === 'private' ? 'bg-purple-500/20' : 'bg-white/5'
-                                                    }`}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${roomPrivacy === 'private' ? 'text-purple-400' : 'text-gray-400'}`}>
-                                                            <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                    <span className={`text-s font-medium ${roomPrivacy === 'private' ? 'text-white' : 'text-gray-400'}`}>私密</span>
+                                                <div>
+                                                    <span className={`block font-bold mb-0.5 ${roomPrivacy === 'public' ? 'text-white' : 'text-gray-300'}`}>公開</span>
+                                                    <span className="text-xs text-gray-500 leading-tight block">所有人皆可加入</span>
                                                 </div>
-                                                {roomPrivacy === 'private' && (
-                                                    <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5 text-white">
-                                                            <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </button>
-                                        </div>
+                                            </div>
+                                            {roomPrivacy === 'public' && (
+                                                <div className="absolute top-2 right-2 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/40">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 text-white">
+                                                        <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </button>
+                                        <button
+                                            onClick={() => setRoomPrivacy('private')}
+                                            className={`relative p-4 rounded-xl border-2 transition-all group text-left ${
+                                                roomPrivacy === 'private'
+                                                    ? 'border-purple-500 bg-purple-500/10'
+                                                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                                            }`}
+                                        >
+                                            <div className="flex items-start gap-3">
+                                                <div className={`w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center transition-colors ${
+                                                    roomPrivacy === 'private' ? 'bg-purple-500/20' : 'bg-white/5'
+                                                }`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-5 h-5 ${roomPrivacy === 'private' ? 'text-purple-400' : 'text-gray-400'}`}>
+                                                        <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <span className={`block font-bold mb-0.5 ${roomPrivacy === 'private' ? 'text-white' : 'text-gray-300'}`}>私密</span>
+                                                    <span className="text-xs text-gray-500 leading-tight block">僅邀請可加入</span>
+                                                </div>
+                                            </div>
+                                            {roomPrivacy === 'private' && (
+                                                <div className="absolute top-2 right-2 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/40">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 text-white">
+                                                        <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -305,6 +342,19 @@ const CreateRoom = () => {
                                     </svg>
                                 </div>
                                 <input type="text" placeholder="搜尋 YouTube 影片..." className="input input-lg pl-12 bg-black/20 border-white/5 focus:border-purple-500/50 w-full text-white rounded-2xl transition-all" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && searchYoutube(searchQuery)} autoFocus />
+                                {searchQuery && (
+                                    <button 
+                                        onClick={() => {
+                                            setSearchQuery('');
+                                            setSearchResults([]);
+                                        }}
+                                        className="absolute right-16 top-3 btn btn-sm btn-circle btn-ghost text-gray-400 hover:text-white"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                        </svg>
+                                    </button>
+                                )}
                                 <button onClick={() => searchYoutube(searchQuery)} className="absolute right-3 top-3 btn btn-sm btn-ghost text-gray-400 hover:text-white" disabled={isSearching}>
                                     {isSearching ? <span className="loading loading-spinner loading-xs"></span> : '搜尋'}
                                 </button>
@@ -330,14 +380,42 @@ const CreateRoom = () => {
                                         </div>
                                     ))}
                                 </div>
-                            ) : (
+                            ) : searchQuery ? (
                                 <div className="h-full flex flex-col items-center justify-center text-gray-500 space-y-4">
                                     <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 opacity-50">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                         </svg>
                                     </div>
-                                    <p className="text-base font-medium">輸入關鍵字開始搜尋影片</p>
+                                    <p className="text-base font-medium">找不到相關影片</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <h3 className="text-gray-400 font-medium px-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-purple-500">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z" clipRule="evenodd" />
+                                        </svg>
+                                        精選影片
+                                    </h3>
+                                    {PRESET_VIDEOS.map((video) => (
+                                        <div key={video.id} className="flex gap-4 p-4 hover:bg-white/5 rounded-2xl group transition-all border border-transparent hover:border-white/5 bg-white/[0.02]">
+                                            <div className="relative flex-shrink-0 w-40 aspect-video">
+                                                <img src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`} alt={video.title} className="w-full h-full object-cover rounded-xl shadow-lg" />
+                                                <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">
+                                                    {video.length}
+                                                </div>
+                                            </div>
+                                            <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+                                                <div>
+                                                    <h4 className="text-base font-medium text-white line-clamp-2 mb-1 group-hover:text-purple-400 transition-colors leading-snug">{video.title}</h4>
+                                                    <p className="text-sm text-gray-400 truncate">{video.category}</p>
+                                                </div>
+                                                <div className="flex justify-end">
+                                                    <button onClick={() => addPresetToPlaylist(video)} className="btn btn-sm btn-primary rounded-xl opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0 shadow-lg shadow-purple-500/20">加入清單</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             )}
                         </div>

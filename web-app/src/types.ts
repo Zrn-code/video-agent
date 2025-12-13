@@ -47,6 +47,27 @@ export interface RoomUser {
   isAi?: boolean;
   spoilerPreference?: 'show_all' | 'hide_spoilers';
   addedBy?: string;
+  hasScript?: boolean;
+}
+
+export interface ForumComment {
+  id: string;
+  userId: string;
+  username: string;
+  content: string;
+  timestamp: number;
+}
+
+export interface ForumThread {
+  id: string;
+  title: string;
+  content: string;
+  authorId: string;
+  authorName: string;
+  createdAt: number;
+  updatedAt: number;
+  status: 'open' | 'closed' | 'completed';
+  comments: ForumComment[];
 }
 
 export interface AICompanion {

@@ -11,6 +11,7 @@ interface User {
   isAi?: boolean;
   addedBy?: string;
   addedByUsername?: string;
+  hasScript?: boolean;
 }
 
 interface UserDockProps {
@@ -28,13 +29,12 @@ interface UserDockProps {
 }
 
 const getEmotionEmoji = (emotion?: string, isAi?: boolean) => {
-  // 如果是 AI，emotion 可能直接包含 emoji
-  if (isAi && emotion) {
-    // 檢查是否為直接的 emoji
-    const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
-    if (emojiRegex.test(emotion)) {
-      return emotion;
-    }
+  if (!emotion) return null;
+
+  // 檢查是否為直接的 emoji (適用於 AI 和一般用戶)
+  const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+  if (emojiRegex.test(emotion)) {
+    return emotion;
   }
   
   // 標準情緒映射
@@ -66,22 +66,12 @@ const UserSeat: React.FC<{
   onRemove?: () => void;
   addedByUsername?: string;
 }> = React.memo(({ user, isMe, isHost, activeMessage, lastMessage, emotion, isMuted, onToggleMute, canRemove, onRemove, addedByUsername }) => {
-  const [visibleEmoji, setVisibleEmoji] = useState<string | null>(null);
+  const [visibleEmoji, setVisibleEmoji] = useState<string | null>(() => getEmotionEmoji(emotion, user.isAi));
   const [showHistory, setShowHistory] = useState(false);
-  const prevEmotionRef = useRef<string | undefined>(emotion);
 
   useEffect(() => {
-    if (emotion !== prevEmotionRef.current) {
-      // 只有當情緒改變時才更新
-      const emoji = getEmotionEmoji(emotion, user.isAi);
-      if (emoji) {
-        setVisibleEmoji(emoji);
-      } else {
-        // 如果新情緒是 null/undefined，立即清除
-        setVisibleEmoji(null);
-      }
-      prevEmotionRef.current = emotion;
-    }
+    const emoji = getEmotionEmoji(emotion, user.isAi);
+    setVisibleEmoji(emoji || null);
   }, [emotion, user.isAi]);
 
   const messageToDisplay = isMuted 
@@ -154,6 +144,15 @@ const UserSeat: React.FC<{
           </button>
         )}
         
+        {/* Script Indicator */}
+        {user.hasScript && (
+          <div className="absolute bottom-1 right-1 z-20 p-0.5 rounded-full bg-blue-500/80 text-white" title="此影伴有對應此影片的腳本">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+              <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-4.12-4.122A1.5 1.5 0 0 0 11.378 2H4.5Zm2.25 8.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Zm0 3a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Z" clipRule="evenodd" />
+            </svg>
+          </div>
+        )}
+
         {/* Avatar Container */}
         <div className="absolute inset-0 flex items-center justify-center">
            <div className="relative">

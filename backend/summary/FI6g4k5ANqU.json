@@ -1,0 +1,986 @@
+{
+    "global_summary": {
+        "brief_summary": "In a thrilling matchup at the 8th World Cup Youth Baseball Championship, Samurai Japan faced off against host team Chinese Taipei. Japan's aggressive base running and a pivotal home run by Waisan Taiji propelled them to a significant lead, despite Chinese Taipei's determined efforts with timely hits and impressive defensive plays. Ultimately, Japan secured a 7-2 victory, marking their third win in the group stage.",
+        "key_themes": [
+            "WBSC Youth Baseball Championship: Japan vs. Chinese Taipei",
+            "Key Offensive Plays: Stolen bases, walks, singles, and a game-changing home run",
+            "Defensive Highlights: Double plays, rundowns, and a spectacular diving catch",
+            "Commentary on Player Performance and Strategic Decisions"
+        ],
+        "overall_mood": "Excited and Competitive"
+    },
+    "segments": [
+        {
+            "start_time": "00:00",
+            "end_time": "00:02",
+            "visual_action": "A white flag with a blue and red emblem and Olympic rings waves against a cloudy sky. Green stadium seating with spectators is visible in the background.",
+            "dialogue_summary": "The commentator expresses excitement about Taiwan's presence on the world stage.",
+            "grounding_quote": "台灣站上世界舞台",
+            "mood": "Excited",
+            "commentary_hook": "The flag features both the Olympic rings and a national emblem, which is interesting."
+        },
+        {
+            "start_time": "00:02",
+            "end_time": "00:04",
+            "visual_action": "A white flag with a red circle in the center, representing Japan, waves against a backdrop of green trees.",
+            "dialogue_summary": "The commentator continues to praise the teams.",
+            "grounding_quote": "中華好棒世界好棒",
+            "mood": "Proud",
+            "commentary_hook": "The Japanese flag is simple yet iconic."
+        },
+        {
+            "start_time": "00:04",
+            "end_time": "00:08",
+            "visual_action": "Four young Japanese baseball players in dark blue and red uniforms stand on the field, holding their caps over their hearts during the anthem ceremony. A 'JAPAN ANTHEM CEREMONY' graphic is on screen.",
+            "dialogue_summary": "The commentator announces the 8th World Cup Youth Baseball Championship in 2025.",
+            "grounding_quote": "第八屆世界盃少棒",
+            "mood": "Formal",
+            "commentary_hook": "The young players look very serious and focused during the anthem."
+        },
+        {
+            "start_time": "00:08",
+            "end_time": "00:11",
+            "visual_action": "A white banner with 'SAMURAI JAPAN' in black text hangs in the stadium. The background shows green stadium seating and a blue banner with 'BASEBALL WORLD CUP'.",
+            "dialogue_summary": "The commentator states that the Samurai Japan team will face the host team, Chinese Taipei.",
+            "grounding_quote": "Samurai Japan日本隊",
+            "mood": "Anticipatory",
+            "commentary_hook": "The 'Samurai Japan' banner adds a cool, traditional touch to the team's branding."
+        },
+        {
+            "start_time": "00:11",
+            "end_time": "00:13",
+            "visual_action": "A line of young Chinese Taipei baseball players in white and blue uniforms stand on the field, saluting during their anthem ceremony. A 'CHINESE TAIPEI ANTHEM CEREMONY' graphic is on screen.",
+            "dialogue_summary": "The commentator reiterates the matchup between Japan and Chinese Taipei.",
+            "grounding_quote": "中華隊的比賽",
+            "mood": "Formal",
+            "commentary_hook": "The Chinese Taipei uniforms are predominantly white with blue accents."
+        },
+        {
+            "start_time": "00:13",
+            "end_time": "00:17",
+            "visual_action": "A wide shot of the baseball field shows a Japanese batter in a dark uniform at home plate and a Chinese Taipei pitcher in a white uniform on the mound. The pitcher throws, and the batter hits the ball.",
+            "dialogue_summary": "The crowd cheers as the pitcher throws and the batter makes contact.",
+            "grounding_quote": "打到了遊擊方向",
+            "mood": "Energetic",
+            "commentary_hook": "The stadium is quite full, indicating a popular game."
+        },
+        {
+            "start_time": "00:17",
+            "end_time": "00:22",
+            "visual_action": "The ball is hit towards the shortstop (Lin Kai-cheng) who fields it. He attempts a throw to first base, but the Japanese runner slides in safely. The umpire signals safe.",
+            "dialogue_summary": "The commentator describes the play, noting the shortstop's effort but the runner's successful slide.",
+            "grounding_quote": "已經來不及了",
+            "mood": "Disappointed",
+            "commentary_hook": "The shortstop made a quick play but couldn't get the runner out."
+        },
+        {
+            "start_time": "00:22",
+            "end_time": "00:28",
+            "visual_action": "A Japanese player in a dark uniform stands on first base, looking towards the dugout. A Chinese Taipei player in a white uniform stands nearby, looking down. An umpire walks past.",
+            "dialogue_summary": "The commentator notes the distance of the throw and the effort required.",
+            "grounding_quote": "要費了一番功夫",
+            "mood": "Reflective",
+            "commentary_hook": "The Japanese player's uniform has 'JAPAN' written across the chest."
+        },
+        {
+            "start_time": "00:28",
+            "end_time": "00:31",
+            "visual_action": "A golden 'WBSC' logo with a red stripe appears on screen, then transitions to a close-up of a Japanese batter in a dark helmet and uniform, preparing to bat.",
+            "dialogue_summary": "VISUAL_UNCLEAR",
+            "grounding_quote": "VISUAL_UNCLEAR",
+            "mood": "Neutral",
+            "commentary_hook": "The WBSC logo is prominently displayed, highlighting the international nature of the event."
+        },
+        {
+            "start_time": "00:31",
+            "end_time": "00:36",
+            "visual_action": "A replay shows the Japanese runner (Waisan Taiji) quickly running to first base and sliding in safely, avoiding the tag from the Chinese Taipei first baseman. The first baseman is wearing number 88.",
+            "dialogue_summary": "The commentator praises the runner's speed and anticipates his disruptive potential on base.",
+            "grounding_quote": "腳程真的很快",
+            "mood": "Impressed",
+            "commentary_hook": "The runner's slide was perfectly timed to avoid the tag."
+        },
+        {
+            "start_time": "00:36",
+            "end_time": "00:40",
+            "visual_action": "A golden 'WBSC' logo with a red stripe appears on screen, then transitions to a close-up of the Japanese runner on first base, looking around. A Chinese Taipei player stands next to him.",
+            "dialogue_summary": "The commentator warns about the runner's 'destructive power' on base.",
+            "grounding_quote": "壘上的破壞力",
+            "mood": "Cautious",
+            "commentary_hook": "The Japanese player has a focused, determined expression."
+        },
+        {
+            "start_time": "00:40",
+            "end_time": "00:46",
+            "visual_action": "The Chinese Taipei pitcher throws. The Japanese runner on first base steals second. The catcher throws to second, but the runner slides in safely before the tag. The umpire signals safe.",
+            "dialogue_summary": "The commentators excitedly describe the stolen base, noting the successful slide.",
+            "grounding_quote": "這球傳二壘",
+            "mood": "Excited",
+            "commentary_hook": "The runner's head-first slide was very aggressive."
+        },
+        {
+            "start_time": "00:46",
+            "end_time": "00:50",
+            "visual_action": "The Japanese runner stands on second base, clapping his hands. The Chinese Taipei second baseman looks disappointed. The umpire stands nearby.",
+            "dialogue_summary": "The commentator notes that the throw was just 'half a step' too late.",
+            "grounding_quote": "快了半步",
+            "mood": "Disappointed",
+            "commentary_hook": "The Japanese player's celebration is subtle but confident."
+        },
+        {
+            "start_time": "00:50",
+            "end_time": "00:56",
+            "visual_action": "A wide replay shot from behind home plate shows the pitcher throwing, the runner stealing second, and the catcher's throw arriving just after the runner slides in safely.",
+            "dialogue_summary": "VISUAL_UNCLEAR",
+            "grounding_quote": "VISUAL_UNCLEAR",
+            "mood": "Neutral",
+            "commentary_hook": "The replay clearly shows how close the play at second base was."
+        },
+        {
+            "start_time": "00:56",
+            "end_time": "01:02",
+            "visual_action": "A close-up replay shows the Japanese runner sliding into second base as the Chinese Taipei second baseman attempts the tag. The runner is clearly safe.",
+            "dialogue_summary": "The commentator emphasizes the runner's incredible speed.",
+            "grounding_quote": "腳程是真的快",
+            "mood": "Impressed",
+            "commentary_hook": "The dirt flying up from the slide adds to the intensity of the replay."
+        },
+        {
+            "start_time": "01:02",
+            "end_time": "01:06",
+            "visual_action": "The Chinese Taipei pitcher stands on the mound, preparing to throw. The Japanese batter is at home plate. The catcher is in position.",
+            "dialogue_summary": "The commentator notes that the catcher's throw was good, but the runner was too fast.",
+            "grounding_quote": "接傳都沒問題",
+            "mood": "Neutral",
+            "commentary_hook": "The catcher's gear is very detailed, showing the protective padding."
+        },
+        {
+            "start_time": "01:06",
+            "end_time": "01:10",
+            "visual_action": "The pitcher throws, and the batter hits a slow ground ball towards the shortstop. The shortstop attempts to field it but misses, and the ball rolls into the outfield.",
+            "dialogue_summary": "The commentator describes the hit and the shortstop's missed attempt.",
+            "grounding_quote": "沒攔到",
+            "mood": "Disappointed",
+            "commentary_hook": "The ball took an unexpected bounce, making it difficult for the shortstop."
+        },
+        {
+            "start_time": "01:10",
+            "end_time": "01:14",
+            "visual_action": "The Japanese runner from second base advances to third base safely as the ball rolls into the outfield. The Chinese Taipei third baseman waits for the ball.",
+            "dialogue_summary": "The commentator notes the runner stopping at third and attributes the play to a bit of bad luck for Chinese Taipei.",
+            "grounding_quote": "運氣稍微差了",
+            "mood": "Frustrated",
+            "commentary_hook": "The runner's quick decision to advance to third paid off."
+        },
+        {
+            "start_time": "01:14",
+            "end_time": "01:19",
+            "visual_action": "The Japanese runner stands on third base, looking towards the dugout. Chinese Taipei players look on with disappointment. An umpire stands nearby.",
+            "dialogue_summary": "The commentator acknowledges the good hit despite the unfortunate outcome for Chinese Taipei.",
+            "grounding_quote": "打的是真的很好",
+            "mood": "Resigned",
+            "commentary_hook": "The Japanese player on third base is wearing number 5."
+        },
+        {
+            "start_time": "01:19",
+            "end_time": "01:22",
+            "visual_action": "A Chinese Taipei player in a white uniform and blue cap stands on the field, adjusting his glove and looking around.",
+            "dialogue_summary": "The commentator expresses regret over the missed play, mentioning the player's smaller stature.",
+            "grounding_quote": "個子比較小",
+            "mood": "Regretful",
+            "commentary_hook": "The player's glove is a classic brown leather color."
+        },
+        {
+            "start_time": "01:22",
+            "end_time": "01:26",
+            "visual_action": "A golden 'WBSC' logo with a red stripe appears on screen, then transitions to a wide replay shot from behind home plate, showing the pitcher throwing and the batter hitting the ball that the shortstop jumped for.",
+            "dialogue_summary": "The commentator suggests that if the ball was slightly higher, it would have been caught.",
+            "grounding_quote": "高一點點就接",
+            "mood": "Analytical",
+            "commentary_hook": "The netting in front of the camera provides a unique perspective of the field."
+        },
+        {
+            "start_time": "01:26",
+            "end_time": "01:30",
+            "visual_action": "A close-up replay shows the Chinese Taipei shortstop jumping to try and catch the hit ball, but it goes just over his outstretched glove and lands on the ground.",
+            "dialogue_summary": "The commentator confirms the ball touched the glove but wasn't caught.",
+            "grounding_quote": "碰到手套了",
+            "mood": "Frustrated",
+            "commentary_hook": "The shortstop's full-extension jump shows his commitment to the play."
+        },
+        {
+            "start_time": "01:30",
+            "end_time": "01:34",
+            "visual_action": "The Japanese runner stands on third base, looking towards the dugout. A Chinese Taipei player stands nearby. An umpire is also present.",
+            "dialogue_summary": "The commentator refers to the coach's strategy of pitching to the outside corner.",
+            "grounding_quote": "配在外角",
+            "mood": "Analytical",
+            "commentary_hook": "The Japanese player's helmet has a small 'J' logo on the front."
+        },
+        {
+            "start_time": "01:34",
+            "end_time": "01:39",
+            "visual_action": "The Chinese Taipei pitcher throws a high ball, and the Japanese batter takes a walk. The umpire signals a ball.",
+            "dialogue_summary": "The commentator notes the high pitch resulting in a walk.",
+            "grounding_quote": "高了",
+            "mood": "Neutral",
+            "commentary_hook": "The batter calmly watches the high pitch go by."
+        },
+        {
+            "start_time": "01:39",
+            "end_time": "01:44",
+            "visual_action": "The Japanese batter walks to first base. Runners advance, and the bases are now loaded. The umpire signals the walk.",
+            "dialogue_summary": "The commentator states that the batter received a walk.",
+            "grounding_quote": "四壞球保送",
+            "mood": "Neutral",
+            "commentary_hook": "The batter's number 7 is clearly visible on his back as he jogs to first."
+        },
+        {
+            "start_time": "01:44",
+            "end_time": "01:48",
+            "visual_action": "The Chinese Taipei pitcher stands on the mound, preparing to throw. The Japanese batter is at home plate. The catcher is in position.",
+            "dialogue_summary": "The commentator identifies the next batter as Jizhong Zhenzhijie, the fourth batter.",
+            "grounding_quote": "第四棒",
+            "mood": "Anticipatory",
+            "commentary_hook": "The scoreboard in the background shows 'JAPAN' and 'TPE' with scores."
+        },
+        {
+            "start_time": "01:48",
+            "end_time": "01:53",
+            "visual_action": "The pitcher throws, and the batter hits a ground ball towards the shortstop. The shortstop fields it but fumbles, allowing the runner from second to reach third safely. The runner from first also advances to second.",
+            "dialogue_summary": "The commentator describes the play, noting the shortstop's fumble and the runners advancing.",
+            "grounding_quote": "已經來不及了",
+            "mood": "Frustrated",
+            "commentary_hook": "The shortstop's quick reaction was hampered by the fumble."
+        },
+        {
+            "start_time": "01:53",
+            "end_time": "01:56",
+            "visual_action": "The Japanese runner stands on second base, looking towards the dugout. Chinese Taipei players look on with disappointment. An umpire stands nearby.",
+            "dialogue_summary": "The commentator expresses regret, stating that it was a missed opportunity for a double play.",
+            "grounding_quote": "這個球可惜了",
+            "mood": "Regretful",
+            "commentary_hook": "The Japanese player on second base is wearing number 5."
+        },
+        {
+            "start_time": "01:56",
+            "end_time": "02:00",
+            "visual_action": "A replay shows the pitcher throwing, the batter hitting a ground ball, and the shortstop (Lin Kai-cheng) attempting to field it but fumbling, allowing the ball to get past him.",
+            "dialogue_summary": "The commentator notes that if the ball was caught cleanly, it could have been a double play.",
+            "grounding_quote": "有機會雙殺的",
+            "mood": "Analytical",
+            "commentary_hook": "The slow-motion replay highlights the shortstop's difficulty with the grounder."
+        },
+        {
+            "start_time": "02:00",
+            "end_time": "02:03",
+            "visual_action": "A replay shows the Japanese runner from first base running to second as the shortstop fumbles the ball. The runner reaches second safely.",
+            "dialogue_summary": "The commentator describes the play as a 'fatal error' by the shortstop.",
+            "grounding_quote": "要命的失誤",
+            "mood": "Disappointed",
+            "commentary_hook": "The runner's speed was a key factor in reaching second safely."
+        },
+        {
+            "start_time": "02:03",
+            "end_time": "02:08",
+            "visual_action": "The Chinese Taipei pitcher throws a high ball, and the Japanese batter takes a walk. The umpire signals a ball.",
+            "dialogue_summary": "The commentator notes the high pitch resulting in another walk.",
+            "grounding_quote": "四壞球保送",
+            "mood": "Neutral",
+            "commentary_hook": "The batter's number 24 is visible on his back."
+        },
+        {
+            "start_time": "02:08",
+            "end_time": "02:13",
+            "visual_action": "The Japanese batter walks to first base, forcing all runners to advance. The runner from third scores a run. The umpire signals the run.",
+            "dialogue_summary": "The commentator exclaims that another run has been scored.",
+            "grounding_quote": "再送一分了",
+            "mood": "Frustrated",
+            "commentary_hook": "The Japanese team now has two runs on the scoreboard."
+        },
+        {
+            "start_time": "02:13",
+            "end_time": "02:19",
+            "visual_action": "Japanese players in dark uniforms gather near home plate, high-fiving and celebrating the scored run. The batter who walked is smiling and being congratulated.",
+            "dialogue_summary": "The commentator expresses gratitude to the Japanese team for the gifted run.",
+            "grounding_quote": "謝謝日本隊",
+            "mood": "Sarcastic",
+            "commentary_hook": "The Japanese players show great team spirit in their celebration."
+        },
+        {
+            "start_time": "02:19",
+            "end_time": "02:26",
+            "visual_action": "The Chinese Taipei pitcher throws, and the Japanese batter hits a soft pop-up. The Chinese Taipei first baseman catches the ball for an out. The umpire signals the out.",
+            "dialogue_summary": "The commentator describes the play as a soft fly ball caught for an out.",
+            "grounding_quote": "接殺出局",
+            "mood": "Relieved",
+            "commentary_hook": "The first baseman made an easy catch for the out."
+        },
+        {
+            "start_time": "02:26",
+            "end_time": "02:30",
+            "visual_action": "The Chinese Taipei pitcher stands on the mound, preparing to throw. The Japanese batter is at home plate. The catcher is in position.",
+            "dialogue_summary": "The commentator mentions the count as two balls and one strike.",
+            "grounding_quote": "兩好兩壞",
+            "mood": "Neutral",
+            "commentary_hook": "The pitcher's wind-up is smooth and controlled."
+        },
+        {
+            "start_time": "02:30",
+            "end_time": "02:35",
+            "visual_action": "The pitcher throws, and the batter hits a ground ball towards the shortstop. The shortstop fields it cleanly, throws to second for an out, and the second baseman quickly throws to first for a double play. The umpire signals both outs.",
+            "dialogue_summary": "The commentator excitedly describes the double play, noting the quick throws.",
+            "grounding_quote": "無情雙殺",
+            "mood": "Excited",
+            "commentary_hook": "The double play was executed perfectly, a great defensive play."
+        },
+        {
+            "start_time": "02:35",
+            "end_time": "02:39",
+            "visual_action": "Chinese Taipei players in white uniforms celebrate the double play, high-fiving and cheering. The Japanese players walk off the field.",
+            "dialogue_summary": "The commentator notes that Japan scored two runs in the top of the first, which is still an acceptable result for Chinese Taipei.",
+            "grounding_quote": "還可以接受的結果",
+            "mood": "Relieved",
+            "commentary_hook": "The contrast between the celebrating Taiwanese players and the dejected Japanese players is stark."
+        },
+        {
+            "start_time": "02:39",
+            "end_time": "02:43",
+            "visual_action": "A wide shot of the stadium shows the crowd cheering and waving blue thundersticks. Chinese Taipei players are seen celebrating on the field.",
+            "dialogue_summary": "The commentator reiterates the score, with Japan leading 2-0.",
+            "grounding_quote": "日本隊拿下兩分",
+            "mood": "Energetic",
+            "commentary_hook": "The crowd's enthusiasm is palpable, with many waving blue sticks."
+        },
+        {
+            "start_time": "02:43",
+            "end_time": "02:47",
+            "visual_action": "The Chinese Taipei pitcher stands on the mound, preparing to throw. The Japanese batter is at home plate. The catcher is in position.",
+            "dialogue_summary": "The commentator mentions the count as three balls and two strikes.",
+            "grounding_quote": "兩好兩壞",
+            "mood": "Neutral",
+            "commentary_hook": "The pitcher's uniform has 'T.C. CHANG' and number 29 on the back."
+        },
+        {
+            "start_time": "02:47",
+            "end_time": "02:50",
+            "visual_action": "The pitcher throws, and the batter hits a line drive into the outfield. The ball bounces and rolls towards the outfield wall.",
+            "dialogue_summary": "The commentator describes the hit as a line drive that gets past the infield.",
+            "grounding_quote": "打穿了",
+            "mood": "Excited",
+            "commentary_hook": "The ball travels quickly into the gap in the outfield."
+        },
+        {
+            "start_time": "02:50",
+            "end_time": "02:54",
+            "visual_action": "The Japanese runner from first base advances to second base as the ball rolls to the outfield wall. The Chinese Taipei outfielder retrieves the ball.",
+            "dialogue_summary": "The commentator identifies the batter as Wu Meng-chieh, who hit a single, and notes the runner stopping at first.",
+            "grounding_quote": "停留在二壘",
+            "mood": "Neutral",
+            "commentary_hook": "The outfield wall has various sponsor logos, including 'DAISO JAPAN'."
+        },
+        {
+            "start_time": "02:54",
+            "end_time": "02:58",
+            "visual_action": "The Chinese Taipei runner stands on first base, looking towards the dugout. Japanese players are on the field. An umpire stands nearby.",
+            "dialogue_summary": "The commentator praises the Japanese team's quick return throw.",
+            "grounding_quote": "回傳球很好",
+            "mood": "Impressed",
+            "commentary_hook": "The Chinese Taipei player on first base is wearing number 12."
+        },
+        {
+            "start_time": "02:58",
+            "end_time": "03:01",
+            "visual_action": "A Chinese Taipei batter in a white uniform and blue helmet stands at home plate, holding a green bat. The catcher is in position.",
+            "dialogue_summary": "The commentator mentions the count as two balls and two strikes.",
+            "grounding_quote": "兩好兩壞",
+            "mood": "Neutral",
+            "commentary_hook": "The batter's green bat stands out against his white uniform."
+        },
+        {
+            "start_time": "03:01",
+            "end_time": "03:05",
+            "visual_action": "The pitcher throws, and the batter hits a ground ball that goes through the infield into the outfield. The Japanese outfielders chase the ball.",
+            "dialogue_summary": "The commentator describes the hit as a single by Wu Meng-chieh.",
+            "grounding_quote": "打出安打",
+            "mood": "Excited",
+            "commentary_hook": "The ball was hit perfectly between the infielders."
+        },
+        {
+            "start_time": "03:05",
+            "end_time": "03:10",
+            "visual_action": "The Chinese Taipei runner stands on first base, looking towards the dugout. Japanese players are on the field. An umpire stands nearby.",
+            "dialogue_summary": "The commentator notes that Chinese Taipei is also generating offense.",
+            "grounding_quote": "也有攻勢",
+            "mood": "Optimistic",
+            "commentary_hook": "The Chinese Taipei player on first base is wearing number 12."
+        },
+        {
+            "start_time": "03:10",
+            "end_time": "03:12",
+            "visual_action": "A red, white, and blue flag, likely representing Chinese Taipei, waves against a dark blue sky above the stadium lights.",
+            "dialogue_summary": "VISUAL_UNCLEAR",
+            "grounding_quote": "VISUAL_UNCLEAR",
+            "mood": "Neutral",
+            "commentary_hook": "The flag is illuminated by the stadium lights against the evening sky."
+        },
+        {
+            "start_time": "03:12",
+            "end_time": "03:16",
+            "visual_action": "The Chinese Taipei pitcher throws a high ball, and the Japanese batter takes a walk. The umpire signals a ball.",
+            "dialogue_summary": "The commentator notes the high pitch resulting in a walk.",
+            "grounding_quote": "選掉",
+            "mood": "Neutral",
+            "commentary_hook": "The batter's number 17 is visible on his back."
+        },
+        {
+            "start_time": "03:16",
+            "end_time": "03:21",
+            "visual_action": "The Japanese batter walks to first base, forcing all runners to advance. The bases are now loaded for Chinese Taipei. The umpire signals the walk.",
+            "dialogue_summary": "The commentator highlights the bases-loaded scoring opportunity for Chinese Taipei.",
+            "grounding_quote": "滿壘的得分機會",
+            "mood": "Anticipatory",
+            "commentary_hook": "The Chinese Taipei team now has runners on all three bases."
+        },
+        {
+            "start_time": "03:21",
+            "end_time": "03:26",
+            "visual_action": "Chinese Taipei players are on base, and a coach (L.J. WU, #29) talks to the batter at home plate. Another player (Xie Chen-jun) walks towards the plate.",
+            "dialogue_summary": "The commentator identifies the next batter as Xie Chen-jun, the starting pitcher.",
+            "grounding_quote": "先發投手米老鼠",
+            "mood": "Anticipatory",
+            "commentary_hook": "The coach is giving instructions to the batter, possibly a pep talk."
+        },
+        {
+            "start_time": "03:26",
+            "end_time": "03:31",
+            "visual_action": "The pitcher throws a high ball, and the batter takes a walk. This forces the runner from third base to score a run. The umpire signals the run.",
+            "dialogue_summary": "The commentator exclaims that another run has been scored due to the walk.",
+            "grounding_quote": "送分了",
+            "mood": "Excited",
+            "commentary_hook": "The Japanese pitcher's control seems to be an issue, leading to walks."
+        },
+        {
+            "start_time": "03:31",
+            "end_time": "03:38",
+            "visual_action": "Chinese Taipei players in white uniforms gather near home plate, high-fiving and celebrating the scored run. The batter who walked is smiling and being congratulated.",
+            "dialogue_summary": "The commentator sarcastically thanks the Japanese team for the gifted run.",
+            "grounding_quote": "謝謝日本隊",
+            "mood": "Sarcastic",
+            "commentary_hook": "The players are very animated in their celebration, showing their excitement."
+        },
+        {
+            "start_time": "03:38",
+            "end_time": "03:46",
+            "visual_action": "The pitcher throws, and the batter hits a soft ground ball towards the second baseman. The second baseman fields it cleanly, throws to first base, and the runner is out. The umpire signals the out.",
+            "dialogue_summary": "The commentator describes the play, noting the soft grounder and the out at first base.",
+            "grounding_quote": "遭到刺殺",
+            "mood": "Neutral",
+            "commentary_hook": "The second baseman made a routine play to get the out."
+        },
+        {
+            "start_time": "03:46",
+            "end_time": "03:50",
+            "visual_action": "A Chinese Taipei player stands on first base, looking towards the dugout. Japanese players are on the field. An umpire stands nearby.",
+            "dialogue_summary": "The commentator states that Chinese Taipei got one run back, making the score 2-1 with Japan leading.",
+            "grounding_quote": "要回了一分",
+            "mood": "Neutral",
+            "commentary_hook": "The Chinese Taipei player on first base is wearing number 77."
+        },
+        {
+            "start_time": "03:50",
+            "end_time": "03:54",
+            "visual_action": "A graphic scoreboard appears, showing 'JAPAN 2' and 'CHINESE TAIPEI 1' in the first inning. A Japanese player in a dark uniform walks off the field.",
+            "dialogue_summary": "The commentator confirms the score, with Japan temporarily leading 2-1.",
+            "grounding_quote": "日本隊暫時領先",
+            "mood": "Neutral",
+            "commentary_hook": "The scoreboard clearly indicates the current score and inning."
+        },
+        {
+            "start_time": "03:54",
+            "end_time": "03:58",
+            "visual_action": "The Chinese Taipei pitcher throws, and the Japanese batter hits a line drive into the outfield. The ball bounces and rolls towards the outfield wall.",
+            "dialogue_summary": "The commentator describes the hit as a line drive that gets past the infield.",
+            "grounding_quote": "這邊打起來",
+            "mood": "Excited",
+            "commentary_hook": "The ball was hit with considerable force into the outfield."
+        },
+        {
+            "start_time": "03:58",
+            "end_time": "04:02",
+            "visual_action": "The Japanese runner from first base advances to second base as the ball rolls to the outfield wall. The Chinese Taipei outfielder retrieves the ball.",
+            "dialogue_summary": "The commentator describes the hit as an 'over-the-wall' single.",
+            "grounding_quote": "形成了一隻安打",
+            "mood": "Neutral",
+            "commentary_hook": "The outfielder had to run a long distance to get to the ball."
+        },
+        {
+            "start_time": "04:02",
+            "end_time": "04:06",
+            "visual_action": "The Japanese runner stands on second base, looking towards the dugout. Chinese Taipei players are on the field. An umpire stands nearby.",
+            "dialogue_summary": "The commentator identifies the batter as He Jin-yong-kua, who is now on second base.",
+            "grounding_quote": "來到二壘",
+            "mood": "Neutral",
+            "commentary_hook": "The Japanese player on second base is wearing number 88."
+        },
+        {
+            "start_time": "04:06",
+            "end_time": "04:09",
+            "visual_action": "Two Japanese coaches in dark uniforms and caps are seen in the dugout, watching the game intently.",
+            "dialogue_summary": "The commentator praises the skill of the hit.",
+            "grounding_quote": "技巧很好",
+            "mood": "Impressed",
+            "commentary_hook": "The coaches appear focused, analyzing the game."
+        },
+        {
+            "start_time": "04:09",
+            "end_time": "04:14",
+            "visual_action": "The pitcher throws, and the batter hits a ground ball directly to the pitcher. The pitcher fields it cleanly and throws to second base for an out. The runner from first is out.",
+            "dialogue_summary": "The commentator describes the play, noting the pitcher fielding the ball and throwing to second for an out.",
+            "grounding_quote": "有機會抓",
+            "mood": "Excited",
+            "commentary_hook": "The pitcher showed good reflexes to field the ball."
+        },
+        {
+            "start_time": "04:14",
+            "end_time": "04:20",
+            "visual_action": "The runner from first base attempts to advance but is caught in a rundown between first and second base. The Chinese Taipei players successfully tag him out. The umpire signals the out.",
+            "dialogue_summary": "The commentator excitedly describes the rundown and the successful tag out.",
+            "grounding_quote": "哪裡跑",
+            "mood": "Excited",
+            "commentary_hook": "The runner was caught in a classic baseball rundown, unable to escape."
+        },
+        {
+            "start_time": "04:20",
+            "end_time": "04:26",
+            "visual_action": "Chinese Taipei players in white uniforms celebrate the out, high-fiving and cheering. The Japanese player walks off the field.",
+            "dialogue_summary": "The commentator praises the well-executed play, noting it was a direct tag out without many throws.",
+            "grounding_quote": "做得很好",
+            "mood": "Proud",
+            "commentary_hook": "The players' smiles show their satisfaction with the defensive play."
+        },
+        {
+            "start_time": "04:26",
+            "end_time": "04:29",
+            "visual_action": "A Japanese runner stands on first base, looking towards the pitcher. A Chinese Taipei player stands nearby, ready for action.",
+            "dialogue_summary": "VISUAL_UNCLEAR",
+            "grounding_quote": "VISUAL_UNCLEAR",
+            "mood": "Neutral",
+            "commentary_hook": "The Japanese runner is poised to steal a base."
+        },
+        {
+            "start_time": "04:29",
+            "end_time": "04:34",
+            "visual_action": "The pitcher throws, and the Japanese runner on first base steals second. The catcher throws to second, and the Chinese Taipei second baseman tags the runner out. The umpire signals the out.",
+            "dialogue_summary": "The commentator excitedly describes the stolen base attempt and the successful tag out.",
+            "grounding_quote": "哪裡跑",
+            "mood": "Excited",
+            "commentary_hook": "The catcher's throw was strong and accurate, catching the runner."
+        },
+        {
+            "start_time": "04:34",
+            "end_time": "04:40",
+            "visual_action": "Chinese Taipei players in white uniforms celebrate the out, high-fiving and cheering. The Japanese player walks off the field, looking disappointed.",
+            "dialogue_summary": "The commentator praises the catcher's play, noting the runner was caught stealing.",
+            "grounding_quote": "遭到阻殺出局",
+            "mood": "Proud",
+            "commentary_hook": "The Japanese player's disappointed expression is clear as he leaves the field."
+        },
+        {
+            "start_time": "04:40",
+            "end_time": "04:43",
+            "visual_action": "A wide shot of the stadium shows the crowd cheering and clapping. Chinese Taipei players are seen celebrating on the field.",
+            "dialogue_summary": "The commentator announces the end of Japan's offensive inning.",
+            "grounding_quote": "日本隊的進攻",
+            "mood": "Energetic",
+            "commentary_hook": "The crowd's applause is a mix of cheers and claps."
+        },
+        {
+            "start_time": "04:43",
+            "end_time": "04:47",
+            "visual_action": "The Chinese Taipei pitcher throws a changeup. The Japanese batter hits a high fly ball into the outfield.",
+            "dialogue_summary": "The commentator describes the pitch as an outside fastball and the hit as a high fly ball.",
+            "grounding_quote": "變化球撈起來",
+            "mood": "Neutral",
+            "commentary_hook": "The batter's swing looks powerful, sending the ball high."
+        },
+        {
+            "start_time": "04:47",
+            "end_time": "04:52",
+            "visual_action": "The ball flies deep into the outfield. The Chinese Taipei outfielder chases it, running backwards, but the ball lands for a hit near the wall.",
+            "dialogue_summary": "The commentator describes the long fly ball that lands for a hit.",
+            "grounding_quote": "飛的夠遠",
+            "mood": "Impressed",
+            "commentary_hook": "The outfielder's long run shows how far the ball traveled."
+        },
+        {
+            "start_time": "04:52",
+            "end_time": "04:56",
+            "visual_action": "The Japanese runner stands on first base, looking towards the dugout. A Chinese Taipei player stands nearby. An umpire stands nearby.",
+            "dialogue_summary": "The commentator observes that the center fielder seemed to be playing too close to the infield.",
+            "grounding_quote": "守得比較近",
+            "mood": "Analytical",
+            "commentary_hook": "The Japanese player on first base is wearing number 88."
+        },
+        {
+            "start_time": "04:56",
+            "end_time": "04:59",
+            "visual_action": "A Chinese Taipei player in a white uniform and blue cap stands in the outfield, looking towards the dugout.",
+            "dialogue_summary": "The commentator notes that the wind also played a role and that the ball landed behind the center fielder.",
+            "grounding_quote": "又封的助力",
+            "mood": "Analytical",
+            "commentary_hook": "The player's focused gaze suggests he's still thinking about the play."
+        },
+        {
+            "start_time": "05:00",
+            "end_time": "05:03",
+            "visual_action": "A young male baseball player in a white and blue uniform with number 17 and a blue cap stands on the field, looking around. The background is a dark green wall. A scoreboard is visible in the bottom right.",
+            "dialogue_summary": "Commentators discuss the player's position and the game.",
+            "grounding_quote": "中外野手的左後方",
+            "mood": "Neutral",
+            "commentary_hook": "The player's focused expression."
+        },
+        {
+            "start_time": "05:03",
+            "end_time": "05:07",
+            "visual_action": "A quick transition to a WBSC logo, then a replay of a player in a white and blue uniform (number 56) pitching. The camera then shows a player in a dark blue and red uniform swinging a bat, with a catcher and umpire behind him. The batter hits the ball.",
+            "dialogue_summary": "The commentators analyze a hit, noting the ball was cut.",
+            "grounding_quote": "這個球切到",
+            "mood": "Analytical",
+            "commentary_hook": "The slow-motion replay of the bat hitting the ball."
+        },
+        {
+            "start_time": "05:07",
+            "end_time": "05:11",
+            "visual_action": "The batter (dark blue and red uniform) runs towards first base after hitting the ball. The catcher (white and blue uniform) is on his knees. The umpire stands behind the catcher. Other players are visible in the background.",
+            "dialogue_summary": "The commentators continue to discuss the direction of the hit.",
+            "grounding_quote": "球吹的方向",
+            "mood": "Observational",
+            "commentary_hook": "The batter's quick sprint after the hit."
+        },
+        {
+            "start_time": "05:11",
+            "end_time": "05:15",
+            "visual_action": "A wide shot of the baseball field from behind the net. Players are running on the field. The ball is hit towards the outfield. A player in a white and blue uniform runs to catch it.",
+            "dialogue_summary": "Commentators praise the hit.",
+            "grounding_quote": "打得很好",
+            "mood": "Appreciative",
+            "commentary_hook": "The long shot showing the entire field and the ball's trajectory."
+        },
+        {
+            "start_time": "05:15",
+            "end_time": "05:18",
+            "visual_action": "A WBSC logo transition. Then, a shot of the crowd in the stands, mostly adults, some wearing 'JAPAN' shirts, cheering.",
+            "dialogue_summary": "Commentators continue to praise the player's technique.",
+            "grounding_quote": "延伸做得非常好",
+            "mood": "Enthusiastic",
+            "commentary_hook": "The diverse crowd in the stands, some holding blue cheering sticks."
+        },
+        {
+            "start_time": "05:18",
+            "end_time": "05:24",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform swings and hits the ball. The ball is hit towards the outfield. A player in a white and blue uniform catches the ball.",
+            "dialogue_summary": "Commentators describe the hit and the catch, noting it was a good play.",
+            "grounding_quote": "打到了中間方向",
+            "mood": "Focused",
+            "commentary_hook": "The quick transition from pitch to catch."
+        },
+        {
+            "start_time": "05:24",
+            "end_time": "05:30",
+            "visual_action": "A player in a dark blue and red uniform slides into second base, but is tagged out by a player in a white and blue uniform. The ball is then thrown to first base, where another player in a dark blue and red uniform is tagged out. The players in dark blue and red uniforms look disappointed.",
+            "dialogue_summary": "A double play occurs, with runners tagged out at second and first base.",
+            "grounding_quote": "爆頭就沒有了",
+            "mood": "Dramatic",
+            "commentary_hook": "The close-up of the slide and tag at second base."
+        },
+        {
+            "start_time": "05:30",
+            "end_time": "05:37",
+            "visual_action": "A player in a white and blue uniform (number 56) pitches. The batter in a dark blue and red uniform hits the ball. A wide shot shows the ball hit towards the outfield. A runner from third base runs towards home plate. The catcher attempts to catch the ball but drops it, allowing the runner to score.",
+            "dialogue_summary": "A batter hits, and a runner scores due to a dropped ball by the catcher.",
+            "grounding_quote": "爆頭就沒有了",
+            "mood": "Disappointed",
+            "commentary_hook": "The catcher's visible frustration after dropping the ball."
+        },
+        {
+            "start_time": "05:37",
+            "end_time": "05:41",
+            "visual_action": "Players in dark blue and red uniforms celebrate, high-fiving each other. A player in a white and blue uniform (number 56) looks on with a neutral expression.",
+            "dialogue_summary": "Commentators remark that the opposing team should be thanked for the 'gift' run.",
+            "grounding_quote": "送分了",
+            "mood": "Frustrated",
+            "commentary_hook": "The contrast between the celebrating team and the stoic player."
+        },
+        {
+            "start_time": "05:41",
+            "end_time": "05:49",
+            "visual_action": "A player in a white and blue uniform (number 56) pitches. The batter in a dark blue and red uniform hits the ball directly to the pitcher. The pitcher fields the ball and throws it to first base for an out.",
+            "dialogue_summary": "The pitcher fields a hit and makes an easy out at first base.",
+            "grounding_quote": "沒有問題了",
+            "mood": "Routine",
+            "commentary_hook": "The pitcher's quick reaction to field the ball."
+        },
+        {
+            "start_time": "05:49",
+            "end_time": "05:53",
+            "visual_action": "The pitcher (number 56) walks off the mound with a neutral expression. The scoreboard shows the score: Japan 3, Chinese Taipei 1.",
+            "dialogue_summary": "Commentators confirm the end of the inning and the score.",
+            "grounding_quote": "再天得一分",
+            "mood": "Reflective",
+            "commentary_hook": "The scoreboard clearly displaying the updated score."
+        },
+        {
+            "start_time": "05:53",
+            "end_time": "06:04",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits the ball. The ball is hit towards first base. The first baseman (white and blue uniform) fields the ball and tags the runner out. Another runner from third base attempts to score but is tagged out at home plate. Players in dark blue and red uniforms celebrate.",
+            "dialogue_summary": "A batter hits, leading to an out at first, but a runner from third scores.",
+            "grounding_quote": "換回一分",
+            "mood": "Mixed",
+            "commentary_hook": "The close-up of the runner sliding into first base and being tagged."
+        },
+        {
+            "start_time": "06:04",
+            "end_time": "06:14",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball to the third baseman. The third baseman fields the ball and throws to first base for an out. A runner from third base attempts to steal home but is tagged out.",
+            "dialogue_summary": "A ground ball results in a double play, with a runner tagged out attempting to steal home.",
+            "grounding_quote": "沒有機會了",
+            "mood": "Intense",
+            "commentary_hook": "The runner's attempt to steal home and the quick tag."
+        },
+        {
+            "start_time": "06:14",
+            "end_time": "06:23",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball to the shortstop. The shortstop fields the ball and throws to first base for an out.",
+            "dialogue_summary": "A ground ball to the shortstop results in an out at first base.",
+            "grounding_quote": "要快傳一壘",
+            "mood": "Focused",
+            "commentary_hook": "The speed of the shortstop's throw to first base."
+        },
+        {
+            "start_time": "06:23",
+            "end_time": "06:35",
+            "visual_action": "A player in a white and blue uniform (number 84) is at bat. The pitcher (dark blue and red uniform) throws. The batter bunts the ball. The catcher fields the ball and throws to first base, but the throw is wild, allowing the runner to reach base safely. Players in white and blue uniforms celebrate.",
+            "dialogue_summary": "A successful bunt leads to an error by the catcher, allowing the batter to reach base.",
+            "grounding_quote": "點的很好",
+            "mood": "Exhilarated",
+            "commentary_hook": "The unexpected bunt and the catcher's misplay."
+        },
+        {
+            "start_time": "06:35",
+            "end_time": "06:46",
+            "visual_action": "Replay of the bunt. The batter bunts the ball, the catcher fields it, but the throw is off target. The batter reaches first base safely.",
+            "dialogue_summary": "Replay and commentary highlight the excellent bunt and the catcher's difficulty.",
+            "grounding_quote": "太刁鑽了",
+            "mood": "Impressed",
+            "commentary_hook": "The slow-motion replay emphasizing the precision of the bunt."
+        },
+        {
+            "start_time": "06:46",
+            "end_time": "06:59",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a high pop-up. The first baseman catches the ball for an out. A runner from third base attempts to score but is held up.",
+            "dialogue_summary": "A pop-up results in an out, and a runner is held at third base.",
+            "grounding_quote": "這分要給",
+            "mood": "Strategic",
+            "commentary_hook": "The umpire's signal for the out."
+        },
+        {
+            "start_time": "06:59",
+            "end_time": "07:05",
+            "visual_action": "Replay of the pop-up. The batter hits the ball high, and the first baseman catches it. The runner from third base is shown hesitating.",
+            "dialogue_summary": "Commentators explain the decision to let the runner score, as there was no one to cover home plate.",
+            "grounding_quote": "本壘也沒有人",
+            "mood": "Explanatory",
+            "commentary_hook": "The replay showing the runner's hesitation."
+        },
+        {
+            "start_time": "07:05",
+            "end_time": "07:16",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball to the second baseman. The second baseman fields the ball and throws to first base for an out. The runner from first base attempts to advance to second but is tagged out.",
+            "dialogue_summary": "A ground ball leads to a double play, with commentators expressing disbelief.",
+            "grounding_quote": "怎麼可能",
+            "mood": "Shocked",
+            "commentary_hook": "The quick double play catching the runners off guard."
+        },
+        {
+            "start_time": "07:16",
+            "end_time": "07:27",
+            "visual_action": "Players in dark blue and red uniforms celebrate the double play. The scoreboard shows the score: Japan 4, Chinese Taipei 2.",
+            "dialogue_summary": "Commentators praise the 'magnificent' double play and its impact on the game.",
+            "grounding_quote": "雙殺守備",
+            "mood": "Celebratory",
+            "commentary_hook": "The jubilant celebration of the players."
+        },
+        {
+            "start_time": "07:27",
+            "end_time": "07:35",
+            "visual_action": "Replay of the double play. The batter hits, the second baseman fields, throws to first for an out, then the first baseman throws to second for another out.",
+            "dialogue_summary": "Replay and commentary on the double play and the score.",
+            "grounding_quote": "兩分的落後",
+            "mood": "Analytical",
+            "commentary_hook": "The precise execution of the double play in slow motion."
+        },
+        {
+            "start_time": "07:35",
+            "end_time": "07:47",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball past the shortstop into the outfield. The runner from first base advances to third, and the batter reaches second base.",
+            "dialogue_summary": "A hit to the outfield allows runners to advance, with one scoring.",
+            "grounding_quote": "來不及了",
+            "mood": "Fast-paced",
+            "commentary_hook": "The ball rolling past the outstretched glove of the shortstop."
+        },
+        {
+            "start_time": "07:47",
+            "end_time": "07:55",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball to the third baseman. The third baseman fields the ball and throws to first base for an out.",
+            "dialogue_summary": "A ground ball to third base results in an out at first.",
+            "grounding_quote": "傳一壘就好",
+            "mood": "Routine",
+            "commentary_hook": "The third baseman's clean field and throw."
+        },
+        {
+            "start_time": "07:55",
+            "end_time": "08:04",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a long fly ball to deep right field. The ball goes over the fence for a home run.",
+            "dialogue_summary": "A batter hits a home run, causing commentators to exclaim in excitement.",
+            "grounding_quote": "不用看了",
+            "mood": "Ecstatic",
+            "commentary_hook": "The ball soaring over the outfield fence."
+        },
+        {
+            "start_time": "08:04",
+            "end_time": "08:17",
+            "visual_action": "The batter (dark blue and red uniform) rounds the bases, celebrating his home run. He points to the sky. The scoreboard updates to Japan 7, Chinese Taipei 2.",
+            "dialogue_summary": "Commentators continue to express excitement about the home run and the increased lead.",
+            "grounding_quote": "突然Home Run",
+            "mood": "Triumphant",
+            "commentary_hook": "The batter's joyful celebration as he rounds the bases."
+        },
+        {
+            "start_time": "08:17",
+            "end_time": "08:31",
+            "visual_action": "Replay of the home run. The batter swings powerfully, and the ball flies over the fence. The batter celebrates.",
+            "dialogue_summary": "Commentators praise the power of the hit and the increased score difference.",
+            "grounding_quote": "五分差距了",
+            "mood": "Impressed",
+            "commentary_hook": "The slow-motion replay of the powerful swing."
+        },
+        {
+            "start_time": "08:31",
+            "end_time": "08:43",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a fly ball to right field. The right fielder (white and blue uniform) makes a diving catch near the fence.",
+            "dialogue_summary": "A right fielder makes a spectacular diving catch.",
+            "grounding_quote": "Nice catch",
+            "mood": "Thrilled",
+            "commentary_hook": "The incredible diving catch by the outfielder."
+        },
+        {
+            "start_time": "08:43",
+            "end_time": "08:59",
+            "visual_action": "The right fielder (white and blue uniform) stands up after the diving catch, looking calm. Replay of the diving catch, showing the player sliding and rolling on the ground.",
+            "dialogue_summary": "Commentators praise the outfielder's calm demeanor and the impressive catch.",
+            "grounding_quote": "讓人覺得很感動",
+            "mood": "Admiring",
+            "commentary_hook": "The slow-motion replay of the player's acrobatic catch and fall."
+        },
+        {
+            "start_time": "08:59",
+            "end_time": "09:06",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform swings and misses for a strikeout.",
+            "dialogue_summary": "The batter strikes out.",
+            "grounding_quote": "三振出局",
+            "mood": "Decisive",
+            "commentary_hook": "The umpire's clear strikeout signal."
+        },
+        {
+            "start_time": "09:06",
+            "end_time": "09:16",
+            "visual_action": "Players in dark blue and red uniforms walk off the field. The scoreboard shows the final score for the inning: Japan 7, Chinese Taipei 2. Replay of the home run from earlier.",
+            "dialogue_summary": "Commentators summarize the inning, highlighting the home run that extended Japan's lead.",
+            "grounding_quote": "五分領先",
+            "mood": "Conclusive",
+            "commentary_hook": "The replay of the home run serving as a summary of the inning's key event."
+        },
+        {
+            "start_time": "09:16",
+            "end_time": "09:26",
+            "visual_action": "A player in a white and blue uniform pitches. The batter in a dark blue and red uniform hits a ground ball to the shortstop. The shortstop fields the ball, throws to second for an out, and then the second baseman throws to first for another out, completing a double play.",
+            "dialogue_summary": "A ground ball leads to a double play, with commentators noting the error.",
+            "grounding_quote": "不要再跑",
+            "mood": "Intense",
+            "commentary_hook": "The quick succession of outs in the double play."
+        },
+        {
+            "start_time": "09:26",
+            "end_time": "09:34",
+            "visual_action": "Players in dark blue and red uniforms celebrate the double play. A player in a white and blue uniform (number 98) is at bat, looking disappointed.",
+            "dialogue_summary": "Commentators celebrate the double play.",
+            "grounding_quote": "來了",
+            "mood": "Jubilant",
+            "commentary_hook": "The contrast between the celebrating team and the disappointed batter."
+        },
+        {
+            "start_time": "09:34",
+            "end_time": "09:47",
+            "visual_action": "Replay of the double play. The batter hits, the shortstop fields, throws to second, then to first.",
+            "dialogue_summary": "Commentators discuss the error by the shortstop, calling it 'rare' for the Japanese team.",
+            "grounding_quote": "很少見",
+            "mood": "Analytical",
+            "commentary_hook": "The slow-motion replay highlighting the shortstop's misplay."
+        },
+        {
+            "start_time": "10:00",
+            "end_time": "10:04",
+            "visual_action": "A young baseball player in a dark blue and red uniform with 'JAPAN' on it fields a ground ball near second base. He quickly throws the ball towards first base. Another player in a white and blue uniform slides headfirst into first base, but is tagged out. A second Japanese player runs in the background.",
+            "dialogue_summary": "The announcer describes the shortstop's second opportunity to handle the ball, noting that he fully controlled the play.",
+            "grounding_quote": "完全掌握住了",
+            "mood": "Intense",
+            "commentary_hook": "The player sliding into first base creates a dramatic moment."
+        },
+        {
+            "start_time": "10:04",
+            "end_time": "10:08",
+            "visual_action": "A wide shot from behind home plate shows a pitcher in a dark blue and red uniform on the mound, winding up and throwing the ball. A batter in a white and blue uniform swings at the pitch. The catcher is crouched behind the batter. The stands are visible in the background, filled with spectators. A scoreboard graphic shows 'JAPAN 7, TPE 2'.",
+            "dialogue_summary": "The announcer describes the pitch, which results in a softly hit ground ball.",
+            "grounding_quote": "軟弱的滾地球",
+            "mood": "Anticipatory",
+            "commentary_hook": "The scoreboard clearly displays the current game score and inning."
+        },
+        {
+            "start_time": "10:08",
+            "end_time": "10:13",
+            "visual_action": "The camera follows the soft ground ball as it rolls towards the second baseman in a dark blue and red uniform. He fields the ball cleanly, then throws it to first base. A player in a white and blue uniform slides into first base, but is called out by the umpire, who stands nearby.",
+            "dialogue_summary": "The announcer details the play, from the second baseman fielding the ball to the throw to first base, confirming the out.",
+            "grounding_quote": "還是出局",
+            "mood": "Decisive",
+            "commentary_hook": "The umpire's clear 'out' signal is visible."
+        },
+        {
+            "start_time": "10:13",
+            "end_time": "10:24",
+            "visual_action": "The Japanese baseball team players, wearing dark blue and red uniforms, celebrate their victory on the field, high-fiving and hugging each other. One player has a noticeable dirt stain on the back of his white pants. A player from the opposing team (Chinese Taipei) in a white and blue uniform walks away. A scoreboard graphic appears, showing 'FINAL JAPAN 7, CHINESE TAIPEI 2'.",
+            "dialogue_summary": "The announcer declares the end of the game, with Japan winning 7-2 against Chinese Taipei, securing their third win in the group stage.",
+            "grounding_quote": "日本隊7比2",
+            "mood": "Triumphant",
+            "commentary_hook": "The dirt stain on the player's pants suggests a hard-fought game."
+        },
+        {
+            "start_time": "10:24",
+            "end_time": "10:28",
+            "visual_action": "A shot of the crowd in the stadium shows numerous spectators, many of whom are cheering and clapping. Several people are holding blue and white cheering sticks. The scoreboard graphic from the previous scene remains visible in the lower left corner.",
+            "dialogue_summary": "The announcer continues to summarize the game's outcome and its implications for the team standings.",
+            "grounding_quote": "兩勝一半",
+            "mood": "Celebratory",
+            "commentary_hook": "The vibrant blue and white cheering sticks add to the festive atmosphere."
+        },
+        {
+            "start_time": "10:28",
+            "end_time": "10:33",
+            "visual_action": "The screen transitions to an animated logo sequence. Various colorful, translucent cubes (red, blue, green, pink, orange, purple) float and then assemble into a stylized 'P' shape. The text '公視+' appears below the logo, followed by 'Download on the App Store' and 'Google Play' buttons.",
+            "dialogue_summary": "No dialogue, only sound effects of clinking cubes and a final chime.",
+            "grounding_quote": "VISUAL_UNCLEAR",
+            "mood": "Commercial",
+            "commentary_hook": "The animated cubes forming the logo are visually engaging."
+        }
+    ]
+}

@@ -1,0 +1,952 @@
+{
+    "lines": [
+        {
+            "timestamp": "00:00",
+            "speaker": "Speaker 1",
+            "text": "翔廷金台灣站上世界舞台,中華好棒,世界好棒。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "00:04",
+            "speaker": "Speaker 1",
+            "text": "2025年第八屆世界盃少棒錦標賽,由",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:09",
+            "speaker": "Speaker 1",
+            "text": "Samurai Japan日本隊要對上的是Team Taiwan地主中華隊的比賽。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:13",
+            "speaker": "Speaker 1",
+            "text": "慢的這邊打到了遊擊方向,遊擊手接到林凱成,墊步再傳已經來不及了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "00:24",
+            "speaker": "Speaker 2",
+            "text": "因為這個距離比較遠,尤其守林凱城傳已來,要費了一番功夫。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:30",
+            "speaker": "Speaker 2",
+            "text": "外山太極的腳程真的很快。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:32",
+            "speaker": "Speaker 1",
+            "text": "沒錯。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:33",
+            "speaker": "Speaker 2",
+            "text": "接下來外山太極站上壘包,就要開始謹慎",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:37",
+            "speaker": "Speaker 1",
+            "text": "注意到他在壘上的破壞力。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:40",
+            "speaker": "Speaker 2",
+            "text": "對。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:41",
+            "speaker": "Speaker 1",
+            "text": "跑了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "00:42",
+            "speaker": "Speaker 2",
+            "text": "跑了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "00:43",
+            "speaker": "Speaker 1",
+            "text": "這球傳二壘。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "00:47",
+            "speaker": "Speaker 2",
+            "text": "在快了半步。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:51",
+            "speaker": "Speaker 1",
+            "text": "傳。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "00:57",
+            "speaker": "Speaker 1",
+            "text": "這腳程是真的快。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:02",
+            "speaker": "Speaker 2",
+            "text": "而且補手李全恩接傳都沒問題。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:03",
+            "speaker": "Speaker 1",
+            "text": "沒錯。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:06",
+            "speaker": "Speaker 1",
+            "text": "慢的這邊帶起來,挑起來沒攔到,二壘上的跑者現在到三壘以後停下來,哇,這個球運氣稍微差了一點,但是四點大吃打的是真的很好。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "01:19",
+            "speaker": "Speaker 2",
+            "text": "這個球可惜了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:21",
+            "speaker": "Speaker 2",
+            "text": "以前個子比較小了一點哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:23",
+            "speaker": "Speaker 1",
+            "text": "沒錯。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:23",
+            "speaker": "Speaker 2",
+            "text": "高一點點就接得到了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:28",
+            "speaker": "Speaker 1",
+            "text": "確實像",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:28",
+            "speaker": "Speaker 2",
+            "text": "有碰到手套了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:30",
+            "speaker": "Speaker 1",
+            "text": "確實像教練所說的,就是把這球配在外角。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:35",
+            "speaker": "Speaker 2",
+            "text": "啊。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:38",
+            "speaker": "Speaker 1",
+            "text": "高了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "01:40",
+            "speaker": "Speaker 1",
+            "text": "失壞球保送。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:45",
+            "speaker": "Speaker 1",
+            "text": "對到的是集中真實界,第四棒。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:47",
+            "speaker": "Speaker 1",
+            "text": "出棒這邊,接到,哎呀,遊擊手擋一下,這邊傳二壘已經來不及了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "01:55",
+            "speaker": "Speaker 2",
+            "text": "這個球可惜了哦。",
+            "tone": "Disappointed"
+        },
+        {
+            "timestamp": "01:56",
+            "speaker": "Speaker 2",
+            "text": "第一時間如果接到是有機會雙殺的哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "01:58",
+            "speaker": "Speaker 1",
+            "text": "哇,遊擊手林凱成。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "02:01",
+            "speaker": "Speaker 1",
+            "text": "發生了一次要命的失誤。",
+            "tone": "Disappointed"
+        },
+        {
+            "timestamp": "02:05",
+            "speaker": "Speaker 1",
+            "text": "又是高球,是壞球保送。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "02:10",
+            "speaker": "Speaker 1",
+            "text": "哇,這邊又要再送一分了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "02:20",
+            "speaker": "Speaker 1",
+            "text": "接到這邊不太理想,內野的小飛球遭到接殺出局。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "02:27",
+            "speaker": "Speaker 2",
+            "text": "你好好兩塊。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "02:30",
+            "speaker": "Speaker 1",
+            "text": "哎喲,這邊遊擊接到手套裡,傳一壘,回不去,無情雙殺。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "02:38",
+            "speaker": "Speaker 1",
+            "text": "那麼在一局上半,日本隊拿下兩分是對我們來說,還可以接受的結果。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "02:43",
+            "speaker": "Speaker 2",
+            "text": "對。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "02:45",
+            "speaker": "Speaker 1",
+            "text": "出棒這邊,打穿了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "02:49",
+            "speaker": "Speaker 1",
+            "text": "吳夢傑打出安打。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:07",
+            "speaker": "Speaker 1",
+            "text": "中華隊也有攻勢哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:12",
+            "speaker": "Speaker 1",
+            "text": "選掉。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "03:15",
+            "speaker": "Speaker 1",
+            "text": "四壞球保送。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:16",
+            "speaker": "Speaker 1",
+            "text": "這樣子輪到我們是一個滿壘的得分機會。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "03:22",
+            "speaker": "Speaker 2",
+            "text": "換到謝晨郡。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:23",
+            "speaker": "Speaker 1",
+            "text": "對,下一棒就是今天的先發投手米老鼠謝陳俊了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:27",
+            "speaker": "Speaker 2",
+            "text": "李星了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:29",
+            "speaker": "Speaker 1",
+            "text": "哇,謝晨俊說不要了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "03:32",
+            "speaker": "Speaker 2",
+            "text": "送分。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:32",
+            "speaker": "Speaker 1",
+            "text": "先謝謝日本隊。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "03:34",
+            "speaker": "Speaker 2",
+            "text": "阿利卡多過塞馬。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:41",
+            "speaker": "Speaker 1",
+            "text": "這球出棒打成了一個軟弱的滾地球,二壘手要來處理接到傳向一壘,林書元遭到刺殺,但是在",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:48",
+            "speaker": "Speaker 1",
+            "text": "一局下半,中華隊要回了一分,兩隊剩下一分差距,二比一,日本隊暫時領先。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:54",
+            "speaker": "Speaker 2",
+            "text": "沒錯。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "03:55",
+            "speaker": "Speaker 1",
+            "text": "再來同樣的位置,這邊,哎喲。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:00",
+            "speaker": "Speaker 1",
+            "text": "這邊形成了一隻奧巴的安打。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:03",
+            "speaker": "Speaker 1",
+            "text": "打者和金永誇現在來到二壘。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:06",
+            "speaker": "Speaker 1",
+            "text": "哇,這一球打的技巧很好。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:08",
+            "speaker": "Speaker 2",
+            "text": "蠻好的哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:10",
+            "speaker": "Speaker 1",
+            "text": "投手正面,這邊抓,要來逼退,逼回去就好了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:19",
+            "speaker": "Speaker 1",
+            "text": "出殺,有。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:20",
+            "speaker": "Speaker 2",
+            "text": "嗯,Nice play。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:21",
+            "speaker": "Speaker 1",
+            "text": "哇,做得很好,不用傳很多次,直接是逼回去兼觸殺。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:29",
+            "speaker": "Speaker 1",
+            "text": "跑了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:30",
+            "speaker": "Speaker 2",
+            "text": "盜。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:30",
+            "speaker": "Speaker 1",
+            "text": "盜,這邊追到,哪裡跑。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:35",
+            "speaker": "Speaker 1",
+            "text": "外山太極只能回去休息室,再次挑戰我們的捕手李權恩,遭到阻殺出局,也結束了這個半局日本隊的進攻。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:43",
+            "speaker": "Speaker 1",
+            "text": "對手是外角直球。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:45",
+            "speaker": "Speaker 1",
+            "text": "變化球撈起來,衝天炮,哇,但是一直往後面追,這一球飛的夠遠。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "04:54",
+            "speaker": "Speaker 1",
+            "text": "中外野手感覺起來守得比較近。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:56",
+            "speaker": "Speaker 2",
+            "text": "而且又又封的助力啊。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "04:57",
+            "speaker": "Speaker 1",
+            "text": "對,因為你可以看到這個落點甚至是在中外野手的左後方。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:04",
+            "speaker": "Speaker 2",
+            "text": "一開始你看感覺這個球切到,但是球吹的方向是往中左。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:12",
+            "speaker": "Speaker 1",
+            "text": "哇,四年大志這一球打得很好,他做這種棒子的延伸做得非常好。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:18",
+            "speaker": "Speaker 1",
+            "text": "有點偏甜,這邊打到了中間方向,接殺出局。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:25",
+            "speaker": "Speaker 1",
+            "text": "二壘上的跑者起跑,頓了一下,但是爆頭就沒有了,這一次是對面要跟我們說謝謝了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "05:40",
+            "speaker": "Speaker 2",
+            "text": "送分了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:46",
+            "speaker": "Speaker 1",
+            "text": "這球打到投手正面,沒有問題了,接到以後傳向一壘,形成了第三個出局數,三局上半日本隊再天得一分。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "05:53",
+            "speaker": "Speaker 1",
+            "text": "這球偏高的位置,扛出去以後打的並不是太理想,但是也只能選擇傳向一壘,日本隊換回一分。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:05",
+            "speaker": "Speaker 1",
+            "text": "這邊的球是這邊,又是軟弱的滾地球來找到三壘手,墊步以後傳向一壘,刺殺,這邊三壘有人偷跑,沒有上啊。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:14",
+            "speaker": "Speaker 2",
+            "text": "沒有機會了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:17",
+            "speaker": "Speaker 1",
+            "text": "中線,這邊打到遊擊,遊擊手接到以後要快傳一壘。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:21",
+            "speaker": "Speaker 2",
+            "text": "快了,外山太極速度很快,但是還是遭到刺殺。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:25",
+            "speaker": "Speaker 1",
+            "text": "那比賽從回原點。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:27",
+            "speaker": "Speaker 1",
+            "text": "最後兩分沒辦法從回原點。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:29",
+            "speaker": "Speaker 1",
+            "text": "點下去,點的很好。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:31",
+            "speaker": "Speaker 1",
+            "text": "哇,點到了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:33",
+            "speaker": "Speaker 1",
+            "text": "哇。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:34",
+            "speaker": "Speaker 1",
+            "text": "吳上層的這個偷點太漂亮了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:37",
+            "speaker": "Speaker 2",
+            "text": "這個太刁鑽了啦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:38",
+            "speaker": "Speaker 2",
+            "text": "這個經典了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:39",
+            "speaker": "Speaker 1",
+            "text": "哇,這一個點球讓捕手和金永誇, ankle breaker。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:46",
+            "speaker": "Speaker 2",
+            "text": "右邊年鋪,左邊也年鋪哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:48",
+            "speaker": "Speaker 1",
+            "text": "兩好一壞。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:50",
+            "speaker": "Speaker 1",
+            "text": "這個球高彈跳,要來強分數,看一下。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "06:56",
+            "speaker": "Speaker 1",
+            "text": "這分要給。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:58",
+            "speaker": "Speaker 1",
+            "text": "確定是讓分了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "06:59",
+            "speaker": "Speaker 1",
+            "text": "因為本壘也沒有人可以去接,你看到投手的補位好像也比三壘跑本壘的人還來得慢。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:08",
+            "speaker": "Speaker 1",
+            "text": "兩好一壞。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:10",
+            "speaker": "Speaker 1",
+            "text": "出棒,這裡有機會,哎呀,怎麼可能。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "07:18",
+            "speaker": "Speaker 2",
+            "text": "運氣。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:18",
+            "speaker": "Speaker 1",
+            "text": "怎麼會這樣。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "07:20",
+            "speaker": "Speaker 1",
+            "text": "精彩的一次接殺信大會,完成了一次的雙殺守備,也化解了中華隊在這個半局的進攻,但是沒有關係,中華隊在這個半局追回了一分,四比二,現在是兩分的落後。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:28",
+            "speaker": "Speaker 1",
+            "text": "對。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:29",
+            "speaker": "Speaker 1",
+            "text": "最後一分沒辦法從回原點。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:30",
+            "speaker": "Speaker 1",
+            "text": "點下去點的很好,哇,這個點球讓捕手和金永誇, ankle breaker。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:37",
+            "speaker": "Speaker 1",
+            "text": "太刁鑽了,經典了,哇,這一個點球讓捕手和金永誇, ankle breaker。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:40",
+            "speaker": "Speaker 1",
+            "text": "三壘方向接到以後墊步,只要選擇傳一壘就好,完成了第三個出局數,結束了五局上半日本隊的進攻。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:49",
+            "speaker": "Speaker 1",
+            "text": "速球,三壘方向,接到以後墊步,只要選擇傳一壘就好,完成了第三個出局數。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "07:56",
+            "speaker": "Speaker 1",
+            "text": "三壘方向接到以後墊步,只要選擇傳一壘就好,完成了第三個出局數。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:00",
+            "speaker": "Speaker 1",
+            "text": "哎喲。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:00",
+            "speaker": "Speaker 1",
+            "text": "這球高彈跳,要來搶分數,看一下。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:05",
+            "speaker": "Speaker 1",
+            "text": "這球高彈跳。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:08",
+            "speaker": "Speaker 1",
+            "text": "這個應該是不用看了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:10",
+            "speaker": "Speaker 1",
+            "text": "圖。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:12",
+            "speaker": "Speaker 1",
+            "text": "哇,外山太極,被他撈到,哇,這個球要跑去哪裡找?可能要去打擊區裡面找了,室內的。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:19",
+            "speaker": "Speaker 1",
+            "text": "現在長寬了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:20",
+            "speaker": "Speaker 1",
+            "text": "哇,這一棒一口氣將比分拉開到了五分差距了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:24",
+            "speaker": "Speaker 2",
+            "text": "這樣子中華隊就難追了啦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:25",
+            "speaker": "Speaker 1",
+            "text": "對。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:26",
+            "speaker": "Speaker 1",
+            "text": "外山太極,又打真的是比較有威力。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:30",
+            "speaker": "Speaker 2",
+            "text": "真的比較猛哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:34",
+            "speaker": "Speaker 1",
+            "text": "右邊點鋪,左邊也點鋪哦。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:38",
+            "speaker": "Speaker 1",
+            "text": "這個球高彈跳,要來搶分數,看一下。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:44",
+            "speaker": "Speaker 1",
+            "text": "三壘方向接到以後,墊步只要選擇傳一壘就好。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:49",
+            "speaker": "Speaker 1",
+            "text": "哎喲。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:50",
+            "speaker": "Speaker 1",
+            "text": "這球高彈跳。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:54",
+            "speaker": "Speaker 1",
+            "text": "外山太極。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:57",
+            "speaker": "Speaker 1",
+            "text": "又打真的是比較有威力。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "08:59",
+            "speaker": "Speaker 1",
+            "text": "哇。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:00",
+            "speaker": "Speaker 1",
+            "text": "這球打到投手正面。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:01",
+            "speaker": "Speaker 1",
+            "text": "三壘方向接到以後墊步,只要選擇傳一壘就好,完成了第三個出局數,也結束了六局上半日本隊的進攻,但是六局上半,日本隊靠著外山太極的全壘打。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:14",
+            "speaker": "Speaker 1",
+            "text": "是將比分拉開到了17比二,五分領先。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:16",
+            "speaker": "Speaker 2",
+            "text": "對方說再見。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:18",
+            "speaker": "Speaker 1",
+            "text": "出棒打到投手越過投手防線。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:22",
+            "speaker": "Speaker 1",
+            "text": "不要再跑,不要再跑。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:24",
+            "speaker": "Speaker 2",
+            "text": "來了,來了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:24",
+            "speaker": "Speaker 1",
+            "text": "哦。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:26",
+            "speaker": "Speaker 2",
+            "text": "來了。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:26",
+            "speaker": "Speaker 1",
+            "text": "哇。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:29",
+            "speaker": "Speaker 1",
+            "text": "場上有古將。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:33",
+            "speaker": "Speaker 1",
+            "text": "哇。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:35",
+            "speaker": "Speaker 1",
+            "text": "場上有五將。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:36",
+            "speaker": "Speaker 2",
+            "text": "嗯。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:37",
+            "speaker": "Speaker 1",
+            "text": "遊擊手發生致命大虧。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:40",
+            "speaker": "Speaker 1",
+            "text": "然後在日本隊看到遊擊手發生這樣失誤很少見。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:46",
+            "speaker": "Speaker 1",
+            "text": "然後在日本隊看到遊擊手發生這樣失誤很少見。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:48",
+            "speaker": "Speaker 1",
+            "text": "已經看兩顆了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "09:49",
+            "speaker": "Speaker 1",
+            "text": "出棒,中路地帶,再給遊擊手一次機會,我的天啊,這邊是無情雙殺。",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "09:59",
+            "speaker": "Speaker 1",
+            "text": "運氣沒有站在我們這邊。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "10:00",
+            "speaker": "Speaker 1",
+            "text": "遊擊手的第二次處理機會新大會就完全掌握住了。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "10:07",
+            "speaker": "Speaker 1",
+            "text": "這球碰成了一個軟弱的滾地球,來找到二壘手。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "10:11",
+            "speaker": "Speaker 1",
+            "text": "接到以後傳向一壘,還是出局。",
+            "tone": "Neutral"
+        },
+        {
+            "timestamp": "10:14",
+            "speaker": "Speaker 1",
+            "text": "那這場比賽就在這邊劃下句點,台日大戰,最終就是由日本隊7比2擊敗了中華隊,那也是日本隊收下了在分組的第三勝,而中華隊的第三勝並沒有開張,在戰績上面形成了兩勝一半。",
+            "tone": "Neutral"
+        }
+    ]
+}

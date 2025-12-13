@@ -6,11 +6,12 @@ from datetime import datetime
 from app.models.room import (
     Room, CreateRoomRequest, RoomInternal, VideoState, CurrentVideo, 
     HeartbeatRequest, ChatRequest, Message, UpdateStateRequest, VideoItem,
-    AICompanion
+    AICompanion, ForumThread, ForumComment, CreateThreadRequest, CreateCommentRequest, UpdateThreadStatusRequest
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
 from app.services.ai_generator import generate_companion_response
+from app.services.script_manager import script_manager
 
 router = APIRouter()
 
@@ -38,6 +39,7 @@ async def create_room(request: CreateRoomRequest):
             # Add AI companion as a user
             ai_user_id = f"ai-companion-{uuid.uuid4()}"
             new_room.users[ai_user_id] = {
+                "id": companion.id,
                 "username": companion.name,
                 "avatar": companion.avatar,
                 "lastSeen": now,
@@ -96,6 +98,95 @@ async def join_room(room_id: str, request: HeartbeatRequest):
     
     save_rooms()
     return get_room_response(rooms[room_id])
+
+@router.post("/rooms/{room_id}/forum/threads", response_model=ForumThread)
+async def create_forum_thread(room_id: str, request: CreateThreadRequest):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    
+    now = datetime.now().timestamp()
+    thread_id = str(uuid.uuid4())
+    new_thread = ForumThread(
+        id=thread_id,
+        title=request.title,
+        content=request.content,
+        authorId=request.authorId,
+        authorName=request.authorName,
+        createdAt=now,
+        updatedAt=now,
+        status="open",
+        comments=[]
+    )
+    
+    rooms[room_id].forumThreads.append(new_thread)
+    save_rooms()
+    
+    # Notify via WebSocket
+    await manager.broadcast({
+        "type": "forum_thread_created",
+        "thread": new_thread.dict()
+    }, room_id)
+    
+    return new_thread
+
+@router.get("/rooms/{room_id}/forum/threads", response_model=List[ForumThread])
+async def get_forum_threads(room_id: str):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    return rooms[room_id].forumThreads
+
+@router.post("/rooms/{room_id}/forum/threads/{thread_id}/comments", response_model=ForumComment)
+async def create_forum_comment(room_id: str, thread_id: str, request: CreateCommentRequest):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    
+    room = rooms[room_id]
+    thread = next((t for t in room.forumThreads if t.id == thread_id), None)
+    if not thread:
+        raise HTTPException(status_code=404, detail="Thread not found")
+        
+    now = datetime.now().timestamp()
+    comment_id = str(uuid.uuid4())
+    new_comment = ForumComment(
+        id=comment_id,
+        userId=request.userId,
+        username=request.username,
+        content=request.content,
+        timestamp=now
+    )
+    
+    thread.comments.append(new_comment)
+    thread.updatedAt = now
+    save_rooms()
+    
+    await manager.broadcast({
+        "type": "forum_comment_created",
+        "threadId": thread_id,
+        "comment": new_comment.dict()
+    }, room_id)
+    
+    return new_comment
+
+@router.put("/rooms/{room_id}/forum/threads/{thread_id}/status", response_model=ForumThread)
+async def update_forum_thread_status(room_id: str, thread_id: str, request: UpdateThreadStatusRequest):
+    if room_id not in rooms:
+        raise HTTPException(status_code=404, detail="Room not found")
+    
+    room = rooms[room_id]
+    thread = next((t for t in room.forumThreads if t.id == thread_id), None)
+    if not thread:
+        raise HTTPException(status_code=404, detail="Thread not found")
+        
+    thread.status = request.status
+    thread.updatedAt = datetime.now().timestamp()
+    save_rooms()
+    
+    await manager.broadcast({
+        "type": "forum_thread_updated",
+        "thread": thread.dict()
+    }, room_id)
+    
+    return thread
 
 @router.post("/rooms/{room_id}/heartbeat")
 async def heartbeat(room_id: str, request: HeartbeatRequest):
@@ -220,8 +311,44 @@ async def leave_room(room_id: str, request: HeartbeatRequest):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     
-    if request.userId in rooms[room_id].users:
-        del rooms[room_id].users[request.userId]
+    room = rooms[room_id]
+    is_host = room.hostId == request.userId
+    
+    if request.userId in room.users:
+        del room.users[request.userId]
+    
+    # Host migration
+    if is_host and room.users:
+        # Filter for real users (not AI)
+        real_users = [
+            (uid, u) for uid, u in room.users.items() 
+            if not u.get('isAi', False)
+        ]
+        
+        if real_users:
+            # Sort by joinedAt
+            real_users.sort(key=lambda x: x[1].get('joinedAt', float('inf')))
+            new_host_id = real_users[0][0]
+            room.hostId = new_host_id
+            
+            # Broadcast update
+            await manager.broadcast({
+                "type": "users_update",
+                "users": [
+                    {
+                        "id": uid,
+                        "username": info['username'],
+                        "avatar": info['avatar'],
+                        "lastSeen": info['lastSeen'],
+                        "emotion": info.get('emotion'),
+                        "isAi": info.get('isAi', False),
+                        "addedBy": info.get('addedBy'),
+                        "addedByUsername": info.get('addedByUsername')
+                    }
+                    for uid, info in room.users.items()
+                ],
+                "hostId": room.hostId
+            }, room_id)
     
     save_rooms()
 
@@ -238,7 +365,9 @@ async def update_room_state(room_id: str, state: UpdateStateRequest):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     
-    current_state = rooms[room_id].videoState
+    room = rooms[room_id]
+    current_state = room.videoState
+    previous_played = current_state.played
     
     if state.url is not None:
         current_state.url = state.url
@@ -252,6 +381,27 @@ async def update_room_state(room_id: str, state: UpdateStateRequest):
         current_state.playbackRate = state.playbackRate
         
     current_state.lastUpdated = datetime.now().timestamp()
+    
+    # Check for script triggers
+    # Only trigger if playing, and played time advanced forward by a reasonable amount (e.g. < 5s)
+    # This prevents triggering all events when seeking forward
+    if (current_state.playing and 
+        state.played is not None and 
+        room.currentVideo and 
+        previous_played < current_state.played and 
+        (current_state.played - previous_played) < 5.0):
+        
+        # print(f"Checking triggers for {room.currentVideo.videoId}: {previous_played:.2f} -> {current_state.played:.2f}")
+        
+        events = script_manager.get_triggered_events(
+            room.currentVideo.videoId, 
+            previous_played, 
+            current_state.played
+        )
+        
+        if events:
+            print(f"Found {len(events)} triggered events for video {room.currentVideo.videoId}")
+            await script_manager.handle_triggered_events(room_id, room, events)
     
     save_rooms()
     return current_state
@@ -320,6 +470,7 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
     # Add AI companion as a user
     ai_user_id = f"ai-companion-{uuid.uuid4()}"
     room.users[ai_user_id] = {
+        "id": companion.id, # Store the companion ID (e.g. "1", "2") for script matching
         "username": companion.name,
         "avatar": companion.avatar,
         "lastSeen": datetime.now().timestamp(),

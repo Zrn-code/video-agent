@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { VideoItem, Message } from '../types';
+import type { VideoItem, Message, ForumThread } from '../types';
 import { optimizeAvatarUrl, avatarSizes } from '../utils/imageOptimizer';
+import { PRESET_VIDEOS } from '../constants';
 import MessageItem from './MessageItem';
+import Forum from './Forum';
 
 interface User {
   id: string;
@@ -18,8 +20,8 @@ interface SidebarProps {
   queue: VideoItem[];
   history: VideoItem[];
   searchResults: VideoItem[];
-  activeTab: 'chat' | 'playlist';
-  onTabChange: (tab: 'chat' | 'playlist') => void;
+  activeTab: 'chat' | 'playlist' | 'forum';
+  onTabChange: (tab: 'chat' | 'playlist' | 'forum') => void;
   onSendMessage: (content: string) => void;
   onUpdateProfile?: (username: string, avatar: string) => void;
   onPlay: (video: VideoItem) => void;
@@ -29,6 +31,10 @@ interface SidebarProps {
   hideChat?: boolean;
   spoilerPreference?: 'show_all' | 'hide_spoilers';
   mutedUserIds?: string[];
+  forumThreads?: ForumThread[];
+  onCreateThread?: (title: string, content: string) => void;
+  onAddComment?: (threadId: string, content: string) => void;
+  onUpdateThreadStatus?: (threadId: string, status: string) => void;
 }
 
 
@@ -49,11 +55,15 @@ const Sidebar: React.FC<SidebarProps> = ({
   onSearch,
   hideChat = false,
   spoilerPreference = 'show_all',
-  mutedUserIds = []
+  mutedUserIds = [],
+  forumThreads = [],
+  onCreateThread,
+  onAddComment,
+  onUpdateThreadStatus
 }) => {
   const [chatInput, setChatInput] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const [playlistView, setPlaylistView] = useState<'queue' | 'history'>('queue');
+  const [playlistView, setPlaylistView] = useState<'queue' | 'add'>('queue');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -93,42 +103,27 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className="w-96 bg-[#1e1f22]/95 backdrop-blur-xl border-l border-white/10 flex flex-col h-full shadow-2xl rounded-l-3xl overflow-hidden my-2 mr-2">
-      {/* Tabs */}
-      <div className="flex border-b border-white/5 bg-[#151618]">
-        {!hideChat && (
-        <button
-          className={`flex-1 py-4 text-sm font-bold transition-all relative ${
-            activeTab === 'chat' 
-              ? 'text-white' 
-              : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
-          }`}
-          onClick={() => onTabChange('chat')}
-        >
-          聊天室
-          {activeTab === 'chat' && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
-          )}
-        </button>
-        )}
-        <button
-          className={`flex-1 py-4 text-sm font-bold transition-all relative ${
-            activeTab === 'playlist' 
-              ? 'text-white' 
-              : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
-          }`}
-          onClick={() => onTabChange('playlist')}
-        >
-          播放清單
-          {activeTab === 'playlist' && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
-          )}
-        </button>
+      {/* Header */}
+      <div className="flex items-center justify-center border-b border-white/5 bg-[#151618] py-4">
+        <h2 className="text-sm font-bold text-white">
+          {activeTab === 'chat' ? '聊天室' : activeTab === 'playlist' ? '播放清單' : '討論區'}
+        </h2>
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-hidden relative">
-        {activeTab === 'chat' ? (
-          <div className="h-full flex flex-col">
+        {activeTab === 'forum' && (
+          <Forum 
+            threads={forumThreads}
+            currentUser={currentUser}
+            onCreateThread={onCreateThread!}
+            onAddComment={onAddComment!}
+            onUpdateStatus={onUpdateThreadStatus!}
+          />
+        )}
+
+        {activeTab === 'chat' && (
+          <div className="absolute inset-0 flex flex-col">
             <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
               {messages
                 .filter(msg => !mutedUserIds.includes(msg.userId))
@@ -182,96 +177,147 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'playlist' && (
           <div className="h-full flex flex-col">
-            {/* Search Bar */}
-            <div className="p-3 bg-[#1e1f22] border-b border-white/5">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="搜尋 YouTube..."
-                  className="w-full bg-[#2b2d31] text-white text-sm rounded-lg pl-9 pr-9 py-2 focus:outline-none focus:ring-1 focus:ring-purple-500"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 absolute left-3 top-2.5 text-gray-500">
-                  <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-                </svg>
-                {(searchInput || searchResults.length > 0) && (
-                  <button 
-                    onClick={() => {
-                      setSearchInput('');
-                      onSearch('');
-                    }}
-                    className="absolute right-3 top-2.5 text-gray-500 hover:text-white"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                      <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
-                  </button>
-                )}
-              </div>
+            {/* Sub Tabs */}
+            <div className="flex border-b border-white/5 bg-[#1a1b1e]">
+              <button
+                className={`flex-1 py-3 text-xs font-medium transition-colors ${playlistView === 'queue' ? 'text-purple-400 bg-white/5 border-b-2 border-purple-500' : 'text-gray-500 hover:text-gray-300'}`}
+                onClick={() => setPlaylistView('queue')}
+              >
+                待播清單 ({queue.length})
+              </button>
+              <button
+                className={`flex-1 py-3 text-xs font-medium transition-colors ${playlistView === 'add' ? 'text-purple-400 bg-white/5 border-b-2 border-purple-500' : 'text-gray-500 hover:text-gray-300'}`}
+                onClick={() => setPlaylistView('add')}
+              >
+                新增影片
+              </button>
             </div>
 
-            {/* Sub Tabs (Only if not searching) */}
-            {searchResults.length === 0 && (
-              <div className="flex border-b border-white/5 bg-[#1a1b1e]">
-                <button
-                  className={`flex-1 py-2 text-xs font-medium transition-colors ${playlistView === 'queue' ? 'text-purple-400 bg-white/5' : 'text-gray-500 hover:text-gray-300'}`}
-                  onClick={() => setPlaylistView('queue')}
-                >
-                  待播清單 ({queue.length})
-                </button>
-                <button
-                  className={`flex-1 py-2 text-xs font-medium transition-colors ${playlistView === 'history' ? 'text-purple-400 bg-white/5' : 'text-gray-500 hover:text-gray-300'}`}
-                  onClick={() => setPlaylistView('history')}
-                >
-                  歷史紀錄 ({history.length})
-                </button>
+            {/* Search Bar (Only in Add View) */}
+            {playlistView === 'add' && (
+              <div className="p-3 bg-[#1e1f22] border-b border-white/5">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="搜尋 YouTube..."
+                    className="w-full bg-[#2b2d31] text-white text-sm rounded-lg pl-9 pr-9 py-2 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  />
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 absolute left-3 top-2.5 text-gray-500">
+                    <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
+                  </svg>
+                  {(searchInput || searchResults.length > 0) && (
+                    <button 
+                      onClick={() => {
+                        setSearchInput('');
+                        onSearch('');
+                      }}
+                      className="absolute right-3 top-2.5 text-gray-500 hover:text-white"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
             {/* List Content */}
             <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
-              {searchResults.length > 0 ? (
-                <div className="space-y-2">
-                  <div className="px-2 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">搜尋結果</div>
-                  {searchResults.map((item, index) => (
-                    <div key={`${item.videoId}-${index}`} className="group flex gap-3 p-2 rounded-lg hover:bg-[#2b2d31] transition-colors border border-transparent hover:border-white/5">
-                       <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black" onClick={() => onPlay(item)}>
-                          <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6"><path d="M8 5v14l11-7z" /></svg>
-                          </div>
-                       </div>
-                       <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                          <h4 className="text-xs font-medium text-gray-200 line-clamp-2 leading-tight mb-0.5" title={item.title}>{item.title}</h4>
-                          <div className="flex items-center justify-between mt-1">
-                            <span className="text-[10px] text-gray-500">{item.channelTitle}</span>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onAddToQueue(item);
-                                setSearchInput(''); // Clear search after adding
-                                onSearch(''); // Clear results
-                              }}
-                              className="text-purple-400 hover:text-purple-300 text-xs font-medium px-2 py-0.5 rounded bg-purple-500/10 hover:bg-purple-500/20 transition-colors"
-                            >
-                              + 加入
-                            </button>
-                          </div>
-                       </div>
+              {playlistView === 'add' ? (
+                searchResults.length > 0 ? (
+                  <div className="space-y-2">
+                    <div className="px-2 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">搜尋結果</div>
+                    {searchResults.map((item, index) => (
+                      <div key={`${item.videoId}-${index}`} className="group flex gap-3 p-2 rounded-lg hover:bg-[#2b2d31] transition-colors border border-transparent hover:border-white/5">
+                         <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black" onClick={() => onPlay(item)}>
+                            <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6"><path d="M8 5v14l11-7z" /></svg>
+                            </div>
+                         </div>
+                         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                            <h4 className="text-xs font-medium text-gray-200 line-clamp-2 leading-tight mb-0.5" title={item.title}>{item.title}</h4>
+                            <div className="flex items-center justify-between mt-1">
+                              <span className="text-[10px] text-gray-500">{item.channelTitle}</span>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onAddToQueue(item);
+                                  setSearchInput(''); // Clear search after adding
+                                  onSearch(''); // Clear results
+                                }}
+                                className="text-purple-400 hover:text-purple-300 text-xs font-medium px-2 py-0.5 rounded bg-purple-500/10 hover:bg-purple-500/20 transition-colors"
+                              >
+                                + 加入
+                              </button>
+                            </div>
+                         </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : searchInput ? (
+                   <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
+                      <p className="text-sm">找不到相關影片</p>
+                   </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="px-2 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-purple-500">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z" clipRule="evenodd" />
+                      </svg>
+                      精選影片
                     </div>
-                  ))}
-                </div>
-              ) : playlistView === 'queue' ? (
+                    {PRESET_VIDEOS.map((video) => (
+                      <div key={video.id} className="group flex gap-3 p-2 rounded-lg hover:bg-[#2b2d31] transition-colors border border-transparent hover:border-white/5">
+                         <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black">
+                            <img src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`} alt={video.title} className="w-full h-full object-cover" />
+                            <div className="absolute bottom-0.5 right-0.5 bg-black/80 text-white text-[8px] px-1 py-0.5 rounded font-mono">
+                                {video.length}
+                            </div>
+                         </div>
+                         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                            <h4 className="text-xs font-medium text-gray-200 line-clamp-2 leading-tight mb-0.5" title={video.title}>{video.title}</h4>
+                            <div className="flex items-center justify-between mt-1">
+                              <span className="text-[10px] text-gray-500 truncate max-w-[60px]">{video.category}</span>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const newItem: VideoItem = {
+                                    videoId: video.id,
+                                    title: video.title,
+                                    channelTitle: video.category,
+                                    thumbnailUrl: `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`,
+                                    addedBy: currentUser.username
+                                  };
+                                  onAddToQueue(newItem);
+                                }}
+                                className="text-purple-400 hover:text-purple-300 text-xs font-medium px-2 py-0.5 rounded bg-purple-500/10 hover:bg-purple-500/20 transition-colors"
+                              >
+                                + 加入
+                              </button>
+                            </div>
+                         </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : (
+                // Queue View
                 queue.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 opacity-50">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
                     </svg>
                     <p className="text-sm">播放清單是空的</p>
+                    <button onClick={() => setPlaylistView('add')} className="btn btn-xs btn-primary mt-2">新增影片</button>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -300,44 +346,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                               >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
                                   <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                                </svg>
-                              </button>
-                            </div>
-                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-              ) : (
-                // History View
-                history.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
-                    <p className="text-sm">沒有歷史紀錄</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {history.map((item, index) => (
-                      <div key={`${item.videoId}-${index}`} className="group flex gap-3 p-2 rounded-lg hover:bg-[#2b2d31] transition-colors border border-transparent hover:border-white/5 opacity-75 hover:opacity-100">
-                         <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black" onClick={() => onPlay(item)}>
-                            <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6"><path d="M8 5v14l11-7z" /></svg>
-                            </div>
-                         </div>
-                         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                            <h4 className="text-xs font-medium text-gray-300 line-clamp-2 leading-tight mb-0.5" title={item.title}>{item.title}</h4>
-                            <div className="flex items-center justify-between mt-1">
-                              <span className="text-[10px] text-gray-600">{item.channelTitle}</span>
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onAddToQueue(item);
-                                }}
-                                className="text-gray-500 hover:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                                title="Add to Queue"
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                                  <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
                                 </svg>
                               </button>
                             </div>

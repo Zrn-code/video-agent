@@ -6,7 +6,11 @@ interface HeaderProps {
   userCount?: number;
   onPlaylistClick?: () => void;
   onChatClick?: () => void;
+  onForumClick?: () => void;
   onShareClick?: () => void;
+  onCameraToggle?: () => void;
+  isCameraEnabled?: boolean;
+  cameraEmotion?: {emotion: string; emoji: string; score: number};
   serverVideoState?: {
     played: number;
     lastUpdated: number;
@@ -21,7 +25,11 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   userCount, 
   onPlaylistClick,
   onChatClick,
+  onForumClick,
   onShareClick,
+  onCameraToggle,
+  isCameraEnabled,
+  cameraEmotion,
   serverVideoState,
   currentTime
 }) => {
@@ -108,10 +116,44 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             )}
 
             <div className="flex items-center gap-2">
+               {onCameraToggle && (
+               <>
+                 <button 
+                   onClick={onCameraToggle} 
+                   className={`btn btn-ghost btn-circle btn-sm tooltip tooltip-bottom ${isCameraEnabled ? 'text-green-400 hover:text-green-300' : 'text-gray-400 hover:text-primary'}`}
+                   data-tip={isCameraEnabled ? '關閉相機' : '開啟相機'}
+                 >
+                   {isCameraEnabled ? (
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                       <path d="M3.25 4A2.25 2.25 0 001 6.25v7.5A2.25 2.25 0 003.25 16h7.5A2.25 2.25 0 0013 13.75v-7.5A2.25 2.25 0 0010.75 4h-7.5zM19 4.75a.75.75 0 00-1.28-.53l-3 3a.75.75 0 00-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 001.28-.53V4.75z" />
+                     </svg>
+                   ) : (
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                       <path d="M1 13.75V7.182L9.818 16H3.25A2.25 2.25 0 011 13.75zM13 6.235V2.576a.75.75 0 011.28-.53l3 3a.75.75 0 01.22.53v8.848a.75.75 0 01-1.28.53l-3-3a.75.75 0 01-.22-.53V6.235z" />
+                       <path d="M3.453 1.22a.75.75 0 00-1.06 1.06l15.5 15.5a.75.75 0 001.06-1.06l-15.5-15.5z" />
+                     </svg>
+                   )}
+                 </button>
+                 {isCameraEnabled && cameraEmotion && (
+                   <div className="flex items-center gap-1.5 px-2.5 py-1 bg-black/50 border border-white/10 rounded-full animate-in fade-in zoom-in duration-200">
+                     <span className="text-lg">{cameraEmotion.emoji}</span>
+                     <span className="text-xs text-gray-300 font-medium">{cameraEmotion.emotion}</span>
+                   </div>
+                 )}
+                 {console.log('🎨 Header render - isCameraEnabled:', isCameraEnabled, 'cameraEmotion:', cameraEmotion)}
+               </>
+               )}
                {onChatClick && (
                <button onClick={onChatClick} className="btn btn-ghost btn-circle btn-sm text-gray-400 hover:text-primary tooltip tooltip-bottom" data-tip="聊天室">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                    <path fillRule="evenodd" d="M10 2c-2.236 0-4.43.18-6.57.524C1.993 2.755 1 4.014 1 5.426v5.148c0 1.413.993 2.67 2.43 2.902.848.137 1.705.248 2.57.331v3.443a.75.75 0 0 0 1.28.53l3.58-3.579a.78.78 0 0 1 .527-.224 41.202 41.202 0 0 0 5.183-.5c1.437-.232 2.43-1.49 2.43-2.903V5.426c0-1.413-.993-2.67-2.43-2.902A41.289 41.289 0 0 0 10 2Z" clipRule="evenodd" />
+                 </svg>
+               </button>
+               )}
+               {onForumClick && (
+               <button onClick={onForumClick} className="btn btn-ghost btn-circle btn-sm text-gray-400 hover:text-primary tooltip tooltip-bottom" data-tip="討論區">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                   <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zm2.25 8.5a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0 3a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" clipRule="evenodd" />
                  </svg>
                </button>
                )}
@@ -142,9 +184,12 @@ const Header = React.memo(HeaderComponent, (prevProps, nextProps) => {
     prevProps.userCount === nextProps.userCount &&
     prevProps.onPlaylistClick === nextProps.onPlaylistClick &&
     prevProps.onChatClick === nextProps.onChatClick &&
+    prevProps.onForumClick === nextProps.onForumClick &&
     prevProps.onShareClick === nextProps.onShareClick &&
-    prevProps.onToggleCamera === nextProps.onToggleCamera &&
-    prevProps.currentTime === nextProps.currentTime &&
+    prevProps.onCameraToggle === nextProps.onCameraToggle &&
+    prevProps.isCameraEnabled === nextProps.isCameraEnabled &&
+    prevProps.cameraEmotion?.emotion === nextProps.cameraEmotion?.emotion &&
+    prevProps.cameraEmotion?.emoji === nextProps.cameraEmotion?.emoji &&
     prevProps.serverVideoState?.played === nextProps.serverVideoState?.played &&
     prevProps.serverVideoState?.playing === nextProps.serverVideoState?.playing &&
     prevProps.serverVideoState?.playbackRate === nextProps.serverVideoState?.playbackRate

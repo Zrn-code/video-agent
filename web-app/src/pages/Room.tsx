@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import UserDock from '../components/UserDock';
 import AICompanionSelector from '../components/AICompanionSelector';
-import type { VideoItem, YouTubeVideo, Message, AICompanion } from '../types';
+import type { VideoItem, YouTubeVideo, Message, AICompanion, ForumThread } from '../types';
 
 interface User {
   id: string;
@@ -84,6 +84,33 @@ const Room = () => {
   const [roomName, setRoomName] = useState<string>('');
   const [hostId, setHostId] = useState<string | undefined>(undefined);
   
+  // Camera states
+  const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+  const [cameraEmotion, setCameraEmotion] = useState<{emotion: string; emoji: string; score: number} | undefined>(undefined);
+  const videoElementRef = useRef<HTMLVideoElement | null>(null);
+  const cameraWsRef = useRef<WebSocket | null>(null);
+  const cameraIntervalRef = useRef<number | null>(null);
+  
+  // Debug camera emotion changes
+  useEffect(() => {
+    console.log('🔄 Camera emotion state changed:', cameraEmotion);
+  }, [cameraEmotion]);
+
+  // Debug script availability
+  useEffect(() => {
+    const aiUsers = roomUsers.filter(u => u.isAi);
+    if (aiUsers.length > 0) {
+      console.log('🤖 AI Companions status:', aiUsers.map(u => ({
+        name: u.username,
+        hasScript: u.hasScript
+      })));
+    }
+  }, [roomUsers]);
+  
+  useEffect(() => {
+    console.log('🎥 Camera enabled state changed:', isCameraEnabled);
+  }, [isCameraEnabled]);
+  
   // 更新用戶列表的優化函數
   const updateRoomUsers = React.useCallback((newUsers: User[]) => {
     // 比較用戶列表是否真的有變化（基於用戶ID而不是索引）
@@ -158,8 +185,9 @@ const Room = () => {
     }
   }, []);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<'chat' | 'playlist'>('chat');
+  const [sidebarTab, setSidebarTab] = useState<'chat' | 'playlist' | 'forum'>('chat');
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [forumThreads, setForumThreads] = useState<ForumThread[]>([]);
 
   // 優化的回調函數，確保引用穩定
   const handleInvite = React.useCallback(() => {
@@ -194,15 +222,207 @@ const Room = () => {
   const userCount = React.useMemo(() => roomUsers.length, [roomUsers.length]);
   
   const handlePlaylistClick = React.useCallback(() => {
-    setSidebarTab('playlist');
-    setShowSidebar(true);
-  }, []);
-  
+    if (showSidebar && sidebarTab === 'playlist') {
+      setShowSidebar(false);
+    } else {
+      setSidebarTab('playlist');
+      setShowSidebar(true);
+    }
+  }, [showSidebar, sidebarTab]);
+
   const handleChatClick = React.useCallback(() => {
-    setSidebarTab('chat');
-    setShowSidebar(true);
+    if (showSidebar && sidebarTab === 'chat') {
+      setShowSidebar(false);
+    } else {
+      setSidebarTab('chat');
+      setShowSidebar(true);
+    }
+  }, [showSidebar, sidebarTab]);
+
+  const handleForumClick = React.useCallback(() => {
+    if (showSidebar && sidebarTab === 'forum') {
+      setShowSidebar(false);
+    } else {
+      setSidebarTab('forum');
+      setShowSidebar(true);
+    }
+  }, [showSidebar, sidebarTab]);
+
+  // Camera toggle handler
+  const handleCameraToggle = React.useCallback(async () => {
+    if (isCameraEnabled) {
+      // Stop camera
+      if (cameraWsRef.current) {
+        cameraWsRef.current.close();
+        cameraWsRef.current = null;
+      }
+      if (cameraIntervalRef.current) {
+        clearInterval(cameraIntervalRef.current);
+        cameraIntervalRef.current = null;
+      }
+      if (videoElementRef.current && videoElementRef.current.srcObject) {
+        const stream = videoElementRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        videoElementRef.current.srcObject = null;
+      }
+      setIsCameraEnabled(false);
+      setCameraEmotion(undefined);
+      // 清除相機偵測的情緒，並廣播給其他使用者
+      setEmotion(undefined);
+      emotionRef.current = undefined;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'emotion',
+          emotion: undefined,
+          from_camera: true
+        }));
+      }
+      console.log('📹 Camera stopped');
+    } else {
+      // Start camera
+      console.log('📹 Starting camera...');
+      try {
+        console.log('🎥 Requesting camera access...');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        console.log('✅ Camera access granted');
+        
+        if (videoElementRef.current) {
+          videoElementRef.current.srcObject = stream;
+          await videoElementRef.current.play();
+          console.log('✅ Video element playing');
+        }
+        
+        // Connect to camera websocket
+        const wsBaseUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+        const wsUrl = `${wsBaseUrl}/api/ws/camera/${roomId}/${userId}`;
+        console.log('🔌 Connecting to camera WebSocket:', wsUrl);
+        const ws = new WebSocket(wsUrl);
+        cameraWsRef.current = ws;
+        
+        ws.onopen = () => {
+          console.log('✅ Camera WebSocket connected');
+          console.log('📹 Starting to send camera frames every second...');
+          
+          // Start sending frames every second
+          const interval = setInterval(() => {
+            if (videoElementRef.current && ws.readyState === WebSocket.OPEN) {
+              const video = videoElementRef.current;
+              console.log('📸 Capturing frame - Video dimensions:', video.videoWidth, 'x', video.videoHeight);
+              
+              if (video.videoWidth === 0 || video.videoHeight === 0) {
+                console.warn('⚠️ Video dimensions are 0, skipping frame');
+                return;
+              }
+              
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                ctx.drawImage(video, 0, 0);
+                canvas.toBlob((blob) => {
+                  if (blob) {
+                    console.log('🖼️ Frame captured, size:', blob.size, 'bytes');
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      const base64 = (reader.result as string).split(',')[1];
+                      console.log('📤 Sending frame to server, base64 length:', base64.length);
+                      ws.send(JSON.stringify({
+                        type: 'camera_frame',
+                        frame: base64
+                      }));
+                    };
+                    reader.readAsDataURL(blob);
+                  }
+                }, 'image/jpeg', 0.8);
+              }
+            } else {
+              if (!videoElementRef.current) {
+                console.warn('⚠️ Video element not found');
+              }
+              if (ws.readyState !== WebSocket.OPEN) {
+                console.warn('⚠️ WebSocket not open, state:', ws.readyState);
+              }
+            }
+          }, 1000);
+          cameraIntervalRef.current = interval as unknown as number;
+        };
+        
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          console.log('📸 Camera WebSocket received:', data);
+          
+          if (data.type === 'emotion_result') {
+            console.log('🎭 Emotion result:', data.result);
+            
+            if (data.result) {
+              const emotionData = {
+                emotion: data.result.emotion,
+                emoji: data.result.emoji,
+                score: data.result.score
+              };
+              console.log('✅ Setting camera emotion:', emotionData);
+              setCameraEmotion(emotionData);
+              
+              // 同時更新 emotion 狀態，這樣 UserDock 會顯示
+              setEmotion(data.result.emoji);
+              emotionRef.current = data.result.emoji;
+              
+              // 將情緒透過 WebSocket 廣播給其他使用者
+              // 標記為 from_camera，讓 AI 不要回應
+              if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                console.log('📡 Broadcasting emotion to other users:', data.result.emoji);
+                wsRef.current.send(JSON.stringify({
+                  type: 'emotion',
+                  emotion: data.result.emoji,
+                  from_camera: true
+                }));
+              }
+            } else {
+              console.log('⚠️ No emotion detected (no face or low confidence)');
+              // 如果沒有偵測到臉部，也更新狀態（可以選擇清除或保持上一個情緒）
+              // setCameraEmotion(undefined); // 取消註解如果想在沒偵測到時清除
+            }
+          }
+        };
+        
+        ws.onerror = (error) => {
+          console.error('❌ Camera WebSocket error:', error);
+        };
+        
+        ws.onclose = (event) => {
+          console.log('🔌 Camera WebSocket closed - Code:', event.code, 'Reason:', event.reason);
+        };
+        
+        setIsCameraEnabled(true);
+        console.log('✅ Camera enabled successfully');
+      } catch (error) {
+        console.error('❌ Error accessing camera:', error);
+        if (error instanceof Error) {
+          console.error('Error name:', error.name);
+          console.error('Error message:', error.message);
+        }
+        alert('無法存取相機: ' + (error instanceof Error ? error.message : String(error)));
+      }
+    }
+  }, [isCameraEnabled, roomId, userId]);
+
+  // Clean up camera on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraWsRef.current) {
+        cameraWsRef.current.close();
+      }
+      if (cameraIntervalRef.current) {
+        clearInterval(cameraIntervalRef.current);
+      }
+      if (videoElementRef.current && videoElementRef.current.srcObject) {
+        const stream = videoElementRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
   }, []);
-  
+
   const handleShareClick = React.useCallback(async () => {
     try {
       const url = window.location.href;
@@ -267,6 +487,12 @@ const Room = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const handleEmojiSelect = (selectedEmotion: string) => {
+    // 如果相機正在運行，不允許手動選擇 emoji（由相機自動控制）
+    if (isCameraEnabled) {
+      console.log('⚠️ Camera is running, emoji selection disabled');
+      return;
+    }
+    
     setEmotion(selectedEmotion);
     emotionRef.current = selectedEmotion;
     // Send immediate update via WS if connected
@@ -278,15 +504,18 @@ const Room = () => {
     }
     setShowEmojiMenu(false);
     
-    // 3秒後自動清除情緒
+    // 手動選擇的 emoji 3秒後自動清除
     setTimeout(() => {
-      setEmotion(undefined);
-      emotionRef.current = undefined;
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
-          type: 'emotion',
-          emotion: undefined
-        }));
+      // 只有在相機沒有運行時才清除（避免覆蓋相機偵測的情緒）
+      if (!isCameraEnabled) {
+        setEmotion(undefined);
+        emotionRef.current = undefined;
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({
+            type: 'emotion',
+            emotion: undefined
+          }));
+        }
       }
     }, 3000);
   };
@@ -448,8 +677,9 @@ const Room = () => {
     id: userId,
     username,
     avatar,
-    lastSeen: Date.now()
-  }), [userId, username, avatar]);
+    lastSeen: Date.now(),
+    emotion: emotion // 加入 emotion 狀態
+  }), [userId, username, avatar, emotion]);
 
   // 當 src 變更時，重置初始化 seek 標記
   useEffect(() => {
@@ -482,6 +712,7 @@ const Room = () => {
         updateRoomUsers(roomData.users || []);
         updateMessages(roomData.messages || []);
         updateHostId(roomData.hostId);
+        setForumThreads(roomData.forumThreads || []);
         
         // Sync initial state
         if (roomData.videoState.url) {
@@ -663,6 +894,17 @@ const Room = () => {
           const newMessages = [...messagesRef.current, data.message];
           messagesRef.current = newMessages;
           setMessages(newMessages);
+        } else if (data.type === 'forum_thread_created') {
+          setForumThreads(prev => [data.thread, ...prev]);
+        } else if (data.type === 'forum_thread_updated') {
+          setForumThreads(prev => prev.map(t => t.id === data.thread.id ? data.thread : t));
+        } else if (data.type === 'forum_comment_created') {
+          setForumThreads(prev => prev.map(t => {
+            if (t.id === data.threadId) {
+              return { ...t, comments: [...t.comments, data.comment] };
+            }
+            return t;
+          }));
         }
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
@@ -733,6 +975,7 @@ const Room = () => {
           updateQueue(data.queue || []);
           updateHistory(data.history || []);
           updateMessages(data.messages || []);
+          setForumThreads(data.forumThreads || []);
           
           // 更新用戶列表和房主信息（但不要在 WebSocket 連接正常時覆蓋）
           if (data.users) {
@@ -1282,6 +1525,42 @@ const Room = () => {
     }
   };
 
+  const handleCreateThread = async (title: string, content: string) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/forum/threads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content, authorId: userId, authorName: username })
+      });
+    } catch (error) {
+      console.error('Error creating thread:', error);
+    }
+  };
+
+  const handleAddComment = async (threadId: string, content: string) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/forum/threads/${threadId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, userId, username })
+      });
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
+  const handleUpdateThreadStatus = async (threadId: string, status: string) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}/forum/threads/${threadId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+    } catch (error) {
+      console.error('Error updating thread status:', error);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#0f0f0f] text-white overflow-hidden font-sans selection:bg-primary selection:text-primary-content">
       <Header 
@@ -1289,9 +1568,11 @@ const Room = () => {
         userCount={userCount}
         onPlaylistClick={handlePlaylistClick}
         onChatClick={handleChatClick}
+        onForumClick={handleForumClick}
         onShareClick={handleShareClick}
-        isMicEnabled={isMicEnabled}
-        onToggleMic={toggleMic}
+        onCameraToggle={handleCameraToggle}
+        isCameraEnabled={isCameraEnabled}
+        cameraEmotion={cameraEmotion}
         serverVideoState={serverVideoState}
         currentTime={state.playedSeconds}
       />
@@ -1492,7 +1773,8 @@ const Room = () => {
             {/* Controls: Text Input, Voice, Emoji */}
             <div className="absolute bottom-6 right-6 z-50 flex flex-col items-end gap-4 pointer-events-none">
               
-              {/* Emoji Button (Independent) */}
+              {/* Emoji Button (Independent) - 相機開啟時隱藏 */}
+              {!isCameraEnabled && (
               <div className="relative pointer-events-auto">
                  {showEmojiMenu && (
                     <div className="absolute bottom-full right-0 mb-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
@@ -1519,6 +1801,7 @@ const Room = () => {
                     </svg>
                  </button>
               </div>
+              )}
 
               {/* Expandable Input Bar Container */}
               <div className="flex items-center justify-end pointer-events-auto relative">
@@ -1636,6 +1919,10 @@ const Room = () => {
                    hideChat={false}
                    spoilerPreference={spoilerPreference as 'show_all' | 'hide_spoilers'}
                    mutedUserIds={mutedUserIds}
+                   forumThreads={forumThreads}
+                   onCreateThread={handleCreateThread}
+                   onAddComment={handleAddComment}
+                   onUpdateThreadStatus={handleUpdateThreadStatus}
                  />
              </div>
           </div>
@@ -1674,9 +1961,15 @@ const Room = () => {
            </div>
       </div>
 
-      {/* Local Video Preview & AI Status (Hidden but active) */}
-      <div className="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none -z-50">
-      </div>
+      {/* Hidden camera video element */}
+      <video 
+        ref={videoElementRef}
+        className="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none -z-50"
+        autoPlay
+        muted
+      />
+      
+      {/* Camera emotion display - moved to Header */}
 
 
 

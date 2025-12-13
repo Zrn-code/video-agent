@@ -6,10 +6,14 @@ import os
 from datetime import datetime
 from typing import Dict, List
 from app.models.room import RoomInternal, VideoState, CurrentVideo, User, Room
+from app.services.script_manager import script_manager
 
 # In-memory storage
 rooms: Dict[str, RoomInternal] = {}
 DB_FILE = "rooms_db.json"
+
+# Load scripts on startup
+script_manager.load_scripts()
 
 def save_rooms():
     try:
@@ -154,11 +158,30 @@ def init_demo_rooms():
 def cleanup_users(room: RoomInternal):
     now = datetime.now().timestamp()
     # Remove users inactive for more than 10 seconds (but keep mock users and AI companions)
-    room.users = {
-        uid: info 
-        for uid, info in room.users.items() 
-        if (now - info['lastSeen'] < 10) or uid.startswith('mock-user-') or info.get('isAi', False)
-    }
+    
+    users_to_remove = []
+    for uid, info in room.users.items():
+        # Skip mock users and AI
+        if uid.startswith('mock-user-') or info.get('isAi', False):
+            continue
+            
+        if now - info['lastSeen'] >= 10:
+            users_to_remove.append(uid)
+    
+    if not users_to_remove:
+        return
+
+    host_removed = False
+    for uid in users_to_remove:
+        if room.hostId == uid:
+            host_removed = True
+        if uid in room.users:
+            del room.users[uid]
+        
+    if host_removed:
+        print(f"Host {room.hostId} timed out in room {room.id}, assigning new host...")
+        assign_new_host(room)
+    
     # Messages are now persisted, no cleanup based on time
     # room.messages = [m for m in room.messages if now - m.timestamp < 15]
 
@@ -208,17 +231,26 @@ def get_room_response(room: RoomInternal) -> Room:
         lastUpdatedBy=room.videoState.lastUpdatedBy
     )
 
-    users_list = [
-        User(
+    users_list = []
+    for uid, info in room.users.items():
+        has_script = False
+        if info.get('isAi', False) and room.currentVideo:
+            # Check if this AI has a script for the current video
+            # We need companion ID. It should be in info['id'] if we populated it correctly.
+            # If not, we might need to rely on username or something else, but we added 'id' to info.
+            companion_id = info.get('id')
+            if companion_id:
+                has_script = script_manager.has_script(room.currentVideo.videoId, companion_id)
+        
+        users_list.append(User(
             id=uid,
             username=info['username'],
             avatar=info['avatar'],
             lastSeen=info['lastSeen'],
             emotion=info.get('emotion'),
-            isAi=info.get('isAi', False)
-        )
-        for uid, info in room.users.items()
-    ]
+            isAi=info.get('isAi', False),
+            hasScript=has_script
+        ))
     
     return Room(
         id=room.id,
@@ -231,6 +263,7 @@ def get_room_response(room: RoomInternal) -> Room:
         queue=room.queue,
         history=room.history,
         messages=room.messages,
+        forumThreads=room.forumThreads,
         aiCompanions=room.aiCompanions,
         hostId=room.hostId
     )

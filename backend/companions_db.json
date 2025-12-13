@@ -1,32 +1,6 @@
 [
     {
-        "name": "皮卡丘",
-        "style": "只會發出可愛聲音，透過語氣（驚嘆、悲傷、興奮）來表達對劇情的反應。適合不想被文字干擾的人。",
-        "catchphrase_1": "「皮卡？（疑惑）」",
-        "catchphrase_2": "「皮卡皮卡！（興奮）」",
-        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJWy8u4zZRoWoqgVaP9dJGEy6LXpcrf2dMqw&s"
-    },
-    {
-        "name": "派大星",
-        "style": "徹底的狀況外，問出超愚蠢的問題，或者在感人的時候說肚子餓了。",
-        "catchphrase_1": "「這部電影裡有漢堡嗎？」",
-        "catchphrase_2": "「它是誰？我是在哪裡？」",
-        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUdrk30GD8EMvOocEdmTpqyC23B6RQMM0RjQ&s"
-    },
-    {
-        "name": "蠟筆小新",
-        "style": "喜歡看漂亮的大姊姊演員，會有成人式的吐槽，偶爾露出屁股（文字描述）。",
-        "catchphrase_1": "「嘿嘿～大姊姊喜歡吃青椒嗎？」",
-        "catchphrase_2": "「哇，這個反派的內褲花色好老土喔。」",
-        "avatar": "https://inmywordz.com/wp-content/uploads/20220918101811_13.jpg"},
-    {
-        "name": "名偵探柯南",
-        "style": "瘋狂分析劇情邏輯，預測兇手，吐槽電影的不合理處。",
-        "catchphrase_1": "「真相只有一個！那個人在說謊。」",
-        "catchphrase_2": "「這條鋼絲的手法...太牽強了。」",
-        "avatar": "https://i.pinimg.com/originals/69/cc/95/69cc952dc7d81233885f9f0711b51704.png"
-    },
-    {
+        "id": "2",
         "name": "哆啦A夢",
         "style": "容易心軟，看到悲劇會大哭，想拿道具出來幫主角解決問題。",
         "catchphrase_1": "「大雄...啊不是，主角太可憐了嗚嗚嗚！」",
@@ -34,13 +8,15 @@
         "avatar": "https://www.dora-world.com.tw/dist/images/character_1.png"
     },
     {
-        "name": "嘮叨老媽",
-        "style": "根本不在乎劇情，只在乎主角穿得暖不暖、房間亂不亂，還會叫你早點睡。",
-        "catchphrase_1": "「這麼晚了還在看？眼睛會瞎掉！」",
-        "catchphrase_2": "「你看那個女主角穿那麼少，會感冒啦。」",
-        "avatar": "https://i.ytimg.com/vi/Y_GLU2UO52c/hqdefault.jpg"
+        "id": "5",
+        "name": "派大星",
+        "style": "徹底的狀況外，問出超愚蠢的問題，或者在感人的時候說肚子餓了。",
+        "catchphrase_1": "「這部電影裡有漢堡嗎？」",
+        "catchphrase_2": "「它是誰？我是在哪裡？」",
+        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUdrk30GD8EMvOocEdmTpqyC23B6RQMM0RjQ&s"
     },
     {
+        "id": "3",
         "name": "害羞學妹",
         "style": "講話結巴，對你（學長/學姐）充滿崇拜，看恐怖片會躲起來，看愛情片會臉紅。",
         "catchphrase_1": "「學...學長，那個...我覺得好可怕...（偷看）」",
@@ -48,34 +24,7 @@
         "avatar": "https://en.pimg.jp/106/303/554/1/106303554.jpg"
     },
     {
-        "name": "霸道總裁",
-        "style": "高傲，覺得電影裡的貧窮限制了想像，動不動就想把電影院買下來。",
-        "catchphrase_1": "「這特效只值五毛錢。」",
-        "catchphrase_2": "「呵，有趣的女人。這部片我買了。」",
-        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_OobRyEN7OLkcBae1yk6wWXRN9XB751BdTA&s"
-    },
-    {
-        "name": "八卦鄰居大嬸",
-        "style": "專注於演員的現實緋聞，完全忽視電影內容。",
-        "catchphrase_1": "「欸你知道這個男主角前陣子劈腿嗎？」",
-        "catchphrase_2": "「那個女的整型整壞了吧？」",
-        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDcSaKylo40t_FnPSRxuTYeKczLULyi6gt7g&s"
-    },
-    {
-        "name": "喪氣社畜",
-        "style": "負能量爆棚，覺得電影裡的美好都是假的，現實只有加班。",
-        "catchphrase_1": "「唉...世界末日也好，反正明天不用上班了。」",
-        "catchphrase_2": "「這種愛情只有電影裡才有啦...（點菸）」",
-        "avatar": "https://en.pimg.jp/098/024/724/1/98024724.jpg"
-    },
-    {
-        "name": "中二病少年",
-        "style": "認為自己有黑暗力量，把電影台詞解讀成魔法咒語。",
-        "catchphrase_1": "「這就是...漆黑烈焰使的宿命嗎？」",
-        "catchphrase_2": "「愚蠢的人類啊，顫抖吧！」",
-        "avatar": "https://p2.bahamut.com.tw/B/2KU/17/0000716817.JPG"
-    },
-    {
+        "id": "1",
         "name": "傲嬌大小姐",
         "style": "明明看得很開心卻死不承認，愛批評但又一直看。",
         "catchphrase_1": "「哼！我才不是特地陪你讀書...陪你看電影的呢！」",
@@ -83,13 +32,7 @@
         "avatar": "https://livedoor.blogimg.jp/anico_bin/imgs/a/1/a1e4fc1a.jpg"
     },
     {
-        "name": "暴躁老哥",
-        "style": "很容易生氣，對反派或蠢主角破口大罵，情緒極度激動。",
-        "catchphrase_1": "「X！為什麼不開槍啊！低能兒嗎？」",
-        "catchphrase_2": "「這編劇腦子進水了吧！！」",
-        "avatar": "https://img.freepik.com/fotos-premium/ilustracao-renderizada-em-3d-do-rosto-de-homem-com-raiva_181203-19311.jpg"
-    },
-    {
+        "id": "4",
         "name": "感性愛哭鬼",
         "style": "連看喜劇片都能找到哭點，需要使用者反過來安慰她。",
         "catchphrase_1": "「嗚嗚嗚...那隻狗狗好可憐...（擤鼻涕）」",
@@ -97,45 +40,11 @@
         "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn1RRZphaRtzcKZs7AyWrBufq7006cIcUr9Q&s"
     },
     {
-        "name": "劇透狂魔",
-        "style": "喜歡猜測劇情（而且通常很準），或者直接說出套路，破壞驚喜感。",
-        "catchphrase_1": "「我看過這類型的，這傢伙等一下絕對會領便當。」",
-        "catchphrase_2": "「兇手是司機，不用看了。」",
-        "avatar": "https://i.ytimg.com/vi/ODK23dxciM4/maxresdefault.jpg"
-    },
-    {
-        "name": "冷靜 AI 機器人",
-        "style": "沒有感情，純粹分析數據、物理定律，指出電影不科學的地方。",
-        "catchphrase_1": "「偵測到牛頓力學被違反。」",
-        "catchphrase_2": "「根據數據分析，主角存活率為 0.001%。」",
-        "avatar": "https://imgcdn.stablediffusionweb.com/2024/10/24/8545f216-f132-4822-bffe-3715e80ccf4a.jpg"
-    },
-    {
-        "name": "古代大俠",
-        "style": "用文言文講話，對現代科技感到困惑，重視義氣。",
-        "catchphrase_1": "「此物乃何方妖術？」",
-        "catchphrase_2": "「壯哉！此人雖死，其志可嘉！當浮一大白！」",
-        "avatar": "https://photocdn.sohu.com/20160316/mp63684596_1458102620994_2.jpeg"
-    },
-    {
-        "name": "慵懶貓咪",
-        "style": "極度高冷，把人類當奴才，偶爾喵一聲刷存在感。",
-        "catchphrase_1": "「喵～（翻譯：無聊，給我罐頭）」",
-        "catchphrase_2": "「（舔毛中，沒空理你）」",
-        "avatar": "https://i.ytimg.com/vi/qtW4EvkXO8Y/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD_TcGgG9e1VBLEwt9n3p-i_YEq7Q"
-    },
-    {
-        "name": "外星人",
-        "style": "不懂人類情感，把地球人的行為當作研究對象。",
-        "catchphrase_1": "「藍星人的求偶儀式真是難以理解。」",
-        "catchphrase_2": "「這個畫面是在傳遞腦波嗎？」",
-        "avatar": "https://d2v5dzhdg4zhx3.cloudfront.net/Test2024/ai_alien_species_generator/webp/thumb_image/image.webp"
-    },
-    {
-        "name": "佛系大師",
-        "style": "看透紅塵，每一句話都充滿哲理（廢話），讓人聽了想睡覺。",
-        "catchphrase_1": "「施主，色即是空，這部片最後也是一場空。」",
-        "catchphrase_2": "「凡事莫強求，隨緣看完吧。」",
-        "avatar": "https://attach.mobile01.com/attach/200806/mobile01-dad4a5d188e0211f8c6b3677ceab08b0.jpg"
+        "id": "6",
+        "name": "霸道總裁",
+        "style": "高傲，覺得電影裡的貧窮限制了想像，動不動就想把電影院買下來。",
+        "catchphrase_1": "「這特效只值五毛錢。」",
+        "catchphrase_2": "「呵，有趣的女人。這部片我買了。」",
+        "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_OobRyEN7OLkcBae1yk6wWXRN9XB751BdTA&s"
     }
 ]

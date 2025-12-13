@@ -1,0 +1,965 @@
+{
+    "summary": "The host of 'The Night Night Show' discusses the political situation in Miaoli, Taiwan, highlighting several controversial incidents involving local politicians. These include a heated argument in the county council, alleged misuse of public funds by a former county mayor, a council member bringing a cobra to a meeting, and another displaying ketamine. The host sarcastically proposes 'Miaoli Country independence' and a cabinet composed of these controversial figures, urging viewers to sign a petition to cut Miaoli's budget if corruption persists.",
+    "lines": [
+        {
+            "timestamp": "00:02",
+            "speaker": "Speaker 1",
+            "text": "欸！",
+            "tone": "Enthusiastic"
+        },
+        {
+            "timestamp": "00:05",
+            "speaker": "Speaker 1",
+            "text": "歡迎回到博恩夜夜秀。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "00:06",
+            "speaker": "Speaker 1",
+            "text": "前幾個禮拜，苗栗縣議會發生了這個事情。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "00:09",
+            "speaker": "Speaker 2",
+            "text": "國民黨人多啦！怎麼樣！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:13",
+            "speaker": "Speaker 2",
+            "text": "他媽的！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:14",
+            "speaker": "Speaker 3",
+            "text": "你剛剛說什麼？",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:15",
+            "speaker": "Speaker 3",
+            "text": "那三個字給我收回！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:17",
+            "speaker": "News Reporter",
+            "text": "民進黨議員陳光軒因為不滿國民黨議員江村貴爆粗口想要上前理論，與國民黨籍議員余文忠爆發拉扯。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:25",
+            "speaker": "Speaker 4",
+            "text": "車震也可以當議員。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:26",
+            "speaker": "Speaker 5",
+            "text": "車震也可以當議員。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:28",
+            "speaker": "Speaker 6",
+            "text": "說話放尊重一點啦！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "00:30",
+            "speaker": "Speaker 1",
+            "text": "苗栗縣議會爆發了激烈的口角衝突，其中國民黨議員就說國民黨人多啦，他媽的，這個剛好也是這次國民黨不分區立委名單的slogan。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "00:41",
+            "speaker": "Speaker 1",
+            "text": "你怎麼可以把一個舔共仔放在不分區第四名，國民黨人多啦，他媽的。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "00:47",
+            "speaker": "Speaker 1",
+            "text": "他們到底是為了什麼吵架？而下午的行程又突顯了地方政治的什麼問題呢？馬上進入一個比較激動的苗栗客家人收到地方民代的好處而說出來的感謝，安之歲！",
+            "tone": "Enthusiastic"
+        },
+        {
+            "timestamp": "01:02",
+            "speaker": "Speaker 1",
+            "text": "我們今天要講的主題是苗栗國。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "01:06",
+            "speaker": "Speaker 1",
+            "text": "每次你開始覺得台灣好像有點進步的時候，你就會想到，啊對，還有苗栗。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "01:16",
+            "speaker": "Speaker 1",
+            "text": "我知道我知道我知道，等一下等一下。",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "01:17",
+            "speaker": "Speaker 1",
+            "text": "我先跟苗栗的觀眾朋友道個歉，接下來的十幾分鐘，你會感覺非常不舒服。",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "01:24",
+            "speaker": "Speaker 1",
+            "text": "但是，但是，你們要知道，我們是愛之深責之切。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "01:29",
+            "speaker": "Speaker 1",
+            "text": "我們是罵你們是為了你們好，我們如果對你們沒有期待，我們就不會罵你，反正就是以前家長會對你們講的那些話。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "01:37",
+            "speaker": "Speaker 1",
+            "text": "那我們馬上來看一下前陣子的衝突導火線到底是為什麼。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "01:41",
+            "speaker": "Speaker 7",
+            "text": "我明天就要質詢水利處和工務處了。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "01:43",
+            "speaker": "Speaker 8",
+            "text": "要等到議會決議才能調資料。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "01:46",
+            "speaker": "Speaker 7",
+            "text": "那這個會期要質詢什麼？我們要怎麼審預算？",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "01:48",
+            "speaker": "Speaker 7",
+            "text": "苗栗縣政府在審預算，二十五年來從來沒有刪除預算的，前一刻、前一個工作天，發出這個公文，根本就是在規避我們的監督啊！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "01:56",
+            "speaker": "Speaker 8",
+            "text": "我是說，你們如果議員有需要調閱資料，你可以透過議會來跟我們調。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "02:03",
+            "speaker": "Speaker 7",
+            "text": "所以我本人不行要就對了？一定要透過議會？",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "02:05",
+            "speaker": "Speaker 7",
+            "text": "我的助理也不行要？",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "02:07",
+            "speaker": "Speaker 8",
+            "text": "不行。",
+            "tone": "Firm"
+        },
+        {
+            "timestamp": "02:08",
+            "speaker": "Speaker 7",
+            "text": "我的助理都是我的分身。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "02:09",
+            "speaker": "Speaker 8",
+            "text": "不行。",
+            "tone": "Firm"
+        },
+        {
+            "timestamp": "02:10",
+            "speaker": "Speaker 7",
+            "text": "他們所調的公文，他們所打的電話，都代表我個人的意志。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "02:13",
+            "speaker": "Speaker 8",
+            "text": "不行。",
+            "tone": "Firm"
+        },
+        {
+            "timestamp": "02:14",
+            "speaker": "Speaker 8",
+            "text": "不行。",
+            "tone": "Firm"
+        },
+        {
+            "timestamp": "02:15",
+            "speaker": "Speaker 1",
+            "text": "好可憐喔，一個縣議員想要調資料來審預算，結果縣長的語氣跟我對我家狗的語氣一模一樣。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "02:21",
+            "speaker": "Speaker 1",
+            "text": "不行，不行，嗯，嗯，今天坐下，不行，嗯。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "02:29",
+            "speaker": "Speaker 1",
+            "text": "當然後來整件事情鬧上全國的媒體之後，曾文雪總算要到資料了，我們來看一下這個原本不想給，而二十五年都沒有刪過的預算裡面到底包含了什麼。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "02:38",
+            "speaker": "Speaker 7",
+            "text": "處長，今年編了一筆經費接近100萬，要到中國去做在地的農業相關設施。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "02:42",
+            "speaker": "Speaker 7",
+            "text": "是不是可以請處長說明一下，大概要帶哪些人過去。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "02:46",
+            "speaker": "Speaker 9",
+            "text": "因為那個有關我們農業處的預算編列都是暫定。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "02:49",
+            "speaker": "Speaker 7",
+            "text": "所以有預計要去哪裡了嗎？沒有，有計畫了嗎？",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "02:51",
+            "speaker": "Speaker 9",
+            "text": "沒有。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "02:52",
+            "speaker": "Speaker 7",
+            "text": "辦理苗栗縣退休公教人員，辦理聯誼及交流經費。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "02:56",
+            "speaker": "Speaker 7",
+            "text": "60萬，這六十萬都怎麼花？",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "02:59",
+            "speaker": "Speaker 9",
+            "text": "第一個，他們辦理一個參觀旅遊的活動。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "03:04",
+            "speaker": "Speaker 7",
+            "text": "的防火宣導人員他一套單價是五千。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "03:06",
+            "speaker": "Speaker 7",
+            "text": "然後這邊有211套防火宣導人員的制服六千塊。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "03:11",
+            "speaker": "Speaker 7",
+            "text": "為什麼新進的少一千塊？",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "03:13",
+            "speaker": "Speaker 9",
+            "text": "他們會比較少買那個褲子一件啦。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "03:17",
+            "speaker": "Speaker 7",
+            "text": "新進的褲子會少一件。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "03:20",
+            "speaker": "Speaker 1",
+            "text": "該省的地方不省，為什麼他們不讓新進消防人員穿褲子？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:27",
+            "speaker": "Speaker 1",
+            "text": "不知道出什麼月曆嗎？為什麼？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:32",
+            "speaker": "Speaker 1",
+            "text": "而且，而且，等一下，前幾個退休公教人員聯誼，為什麼我們政府要特別撥一筆預算，讓退休老人出國什麼戀愛巴士啊？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:42",
+            "speaker": "Speaker 1",
+            "text": "這個對國家有什麼貢獻？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:44",
+            "speaker": "Speaker 1",
+            "text": "這個大家就不懂了，因為呢，就算是退休的軍公教，他賺的都還是比八年級生多，所以當然要從他們開始解決少子化的問題。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:52",
+            "speaker": "Speaker 1",
+            "text": "不刪預算，對，就是找他們，對，不刪預算又亂花錢的結果，就是縣長舉債，舉到被彈劾。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "03:59",
+            "speaker": "News Reporter",
+            "text": "十票比一票，監院通過彈劾前苗栗縣長劉政鴻。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:04",
+            "speaker": "監察委員 高鳳仙",
+            "text": "把一個縣市搞到快要破產，這樣的一個行為雖然他有很好的企圖心，但是他的手段呢，我認為是非常極端的一個，比較不正確的手段。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "04:17",
+            "speaker": "News Reporter",
+            "text": "已經負債累累，劉政鴻居然動起歪腦筋，虛列沒有上級核定的補助收入預算，欺騙外界將有510億的收入，事後僅僅實現27億元。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:28",
+            "speaker": "News Reporter",
+            "text": "最誇張的是，從101年起，中央核撥給鄉鎮市的救命錢，災害復建經費，2.1億裡頭，全部只撥出571萬，復建工程的錢，幾乎都是公所代墊。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:41",
+            "speaker": "前苗栗縣長 劉政鴻",
+            "text": "理財啊，理財啊，理財是一件非常重要的一環，理財啊。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "04:46",
+            "speaker": "Speaker 1",
+            "text": "沒錯，苗栗的前縣長劉政鴻，AKA陳為廷的鞋櫃，在擔任縣長的任內，把苗栗的負債從兩百多億增加到六百多億，舉債到連公務員的薪水都發不出來，可是大家千萬不要覺得劉政鴻是不會理財的。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "05:01",
+            "speaker": "News Reporter",
+            "text": "交通重大建設高鐵站，主打觀光的客家圓樓，改名英才書院的閩南書院，都坐落在劉政鴻祖厝短短方圓一公里左右。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:10",
+            "speaker": "News Reporter",
+            "text": "解密劉政鴻賺錢術，70年代繼承跟買來三筆，共1775坪的土地登記兒子名下，當時只是不值錢的田地，很巧劃入高鐵特區。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:22",
+            "speaker": "News Reporter",
+            "text": "劉政鴻選上縣長隔一年，確定高鐵徵收案後，馬上翻身準建地，隔天劉政鴻隨即以超過徵收的兩倍價，賣出四千多萬，等於土地翻漲超過20倍。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:34",
+            "speaker": "Speaker 1",
+            "text": "在他期間之內，苗栗的負債增加四百多億，可是劉政鴻他個人的負債從原本的六千萬變成只剩八百萬，他多出來的財產比他九年不吃不喝的薪水還多出五六百萬，你說他不會理財？拜託台灣巴菲特欸。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "05:54",
+            "speaker": "Speaker 1",
+            "text": "預算都用在奇怪的地方，然後縣長都變得莫名其妙有錢，你可能會覺得想，難道他們的縣議員都沒有在監督的嗎？他們上班都在幹嘛？各位觀眾，我必須先警告你們，接下來會出現好幾個影片，都是你會被嚇到，但是苗栗人就會看著覺得怎麼了嗎？的影片。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "06:11",
+            "speaker": "Speaker 1",
+            "text": "他們跟主要脈絡的關聯性其實沒有那麼大，但是我單純想要分享給大家的苗栗的地方特色，自成一格，這集的A下面的子單元我稱之為苗栗What the f***。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "06:21",
+            "speaker": "苗栗縣議員 李聰祥",
+            "text": "可愛的小動物啊。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "06:23",
+            "speaker": "News Reporter",
+            "text": "議員一上質詢台，就從下方拿了一個大大的籠子，裡面關的竟然是一條眼鏡蛇，旁邊的人一看到嚇得趕快跑，而議員還拿出一隻捕蛇夾，要求現場的官員伸手來摸蛇。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:38",
+            "speaker": "Speaker 10",
+            "text": "蛇啊，蛇啊，嚇死人了。",
+            "tone": "Scared"
+        },
+        {
+            "timestamp": "06:40",
+            "speaker": "苗栗縣議員 李聰祥",
+            "text": "你抓一抓，抓一抓，然後來抓給那些我們這些所有的那些長官，大家摸一下，好不好？",
+            "tone": "Demanding"
+        },
+        {
+            "timestamp": "06:47",
+            "speaker": "農業處處長 許滿蘭",
+            "text": "不行，這是保育類。",
+            "tone": "Firm"
+        },
+        {
+            "timestamp": "06:48",
+            "speaker": "苗栗縣議員 李聰祥",
+            "text": "不能摸，我要摸啊。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "06:49",
+            "speaker": "苗栗縣議員 李聰祥",
+            "text": "保育類又危險，那你怎麼會說他是保育類？有危險的動物，你還說他是保育類，這樣怎麼對？",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "06:58",
+            "speaker": "Speaker 1",
+            "text": "這位老兄，你從想白痴眼鏡蛇帶進議會，為了要說明有危險的動物，怎麼會是保育類，這樣怎麼對？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "07:10",
+            "speaker": "Speaker 1",
+            "text": "然後就在這個時候，苗栗人說，怎麼了嗎？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "07:14",
+            "speaker": "Speaker 1",
+            "text": "這已經超越拿高跟鞋反墮胎的邏輯了。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "07:19",
+            "speaker": "Speaker 1",
+            "text": "我我原本是想要講說，我不知道他吸了什麼，但都給我來一點，但你知道，在苗栗你不能隨便講這句話。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "07:25",
+            "speaker": "苗栗縣議員 謝芳紋",
+            "text": "我手上的這個東西是什麼你知道嗎？這個是K他命。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "07:30",
+            "speaker": "苗栗縣議員 謝芳紋",
+            "text": "這一小小包的K他命，隨手可得啊。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "07:35",
+            "speaker": "苗栗縣議員 謝芳紋",
+            "text": "你知道我們苗栗縣市，這個K他命啊，在校園裡啊，多麼氾濫。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "07:41",
+            "speaker": "News Reporter",
+            "text": "在現場的苗栗縣警察局局長立刻上前關切，並且趕快檢驗確定是三級毒品K他命，因此對謝芳文開罰兩萬元。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:51",
+            "speaker": "Speaker 1",
+            "text": "苗栗！",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "07:57",
+            "speaker": "Speaker 1",
+            "text": "What the f***！",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "08:00",
+            "speaker": "Speaker 1",
+            "text": "欸，我們我們不是隨便去挖什麼爆料公社什麼阿貓阿狗做過的荒唐事情，這兩個人是民意的代表喔，是大家覺得說，嗯，我覺得他們可以把這塊土地治理的很好，我信任他們，他們知道自己在做什麼。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "08:15",
+            "speaker": "Speaker 1",
+            "text": "而且到底為什麼在苗栗議會要講一件事情，一定要把那個實體的物品帶到現場。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "08:22",
+            "speaker": "Speaker 1",
+            "text": "你們想像他們掃黃嗎？像這樣子一個卡比獸。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "08:29",
+            "speaker": "Speaker 1",
+            "text": "隨處可見，我只能說好險台灣沒有被ISIS攻打，不然像這樣子的一個恐怖份子，你先把他炸彈拆掉。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "08:37",
+            "speaker": "Speaker 1",
+            "text": "當然，你可能會說，欸那個是上一屆的議會啊，那兩個人去年都沒有連任啊，好，那我們挑時間近一點的。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "08:43",
+            "speaker": "苗栗縣議員 韓茂賢",
+            "text": "可是石虎太多了才跑到街...路上來怎麼辦？難道可以叫各位不要開車經過道路嗎？",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "08:51",
+            "speaker": "News Reporter",
+            "text": "苗栗縣議員韓茂賢，抨擊地方建設需要環評，花錢花時間，也嚇跑投資人，話鋒一轉，韓茂賢公然指示違法。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:00",
+            "speaker": "苗栗縣議員 韓茂賢",
+            "text": "現在，我支持你，可以偷跑就讓他偷跑，可以讓他蓋就蓋，可以不罰就不罰。",
+            "tone": "Demanding"
+        },
+        {
+            "timestamp": "09:06",
+            "speaker": "苗栗縣議員 韓茂賢",
+            "text": "人進來，錢進來，苗栗才可以發大財。",
+            "tone": "Enthusiastic"
+        },
+        {
+            "timestamp": "09:09",
+            "speaker": "Speaker 1",
+            "text": "哇哇哇，既視感，既視感。",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "09:13",
+            "speaker": "Speaker 1",
+            "text": "所以大家就知道他們平常沒在審預算，他們都在忙別的事情。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "09:18",
+            "speaker": "Speaker 1",
+            "text": "那每次聽到有人講這種東西，或者表現出這種行為，最想說這些人到底是怎麼選上的？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "09:24",
+            "speaker": "Speaker 1",
+            "text": "根據資料指出呢，在苗栗縣你只要取得兩千多票你大概就可以當選一席的議員，可是選舉經費從三百萬到一千兩百萬不等。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:32",
+            "speaker": "Speaker 1",
+            "text": "他們花的錢也太多了吧，你知道呱吉用一百二十萬，他就拿到一萬八千張票了嗎？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "09:38",
+            "speaker": "Speaker 1",
+            "text": "你把同樣經費給呱吉，他可以在苗栗當選九十次。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "09:43",
+            "speaker": "Speaker 1",
+            "text": "可以當到四百多歲還在當。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "09:49",
+            "speaker": "Speaker 1",
+            "text": "但是，我們言歸正傳，回到他們打架的那一天，到底是怎麼從要不到資料審預算，變成國民黨人多啦，他媽的。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "09:58",
+            "speaker": "Speaker 11",
+            "text": "這個議題就秘書長，這一兩天提出一個。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "10:02",
+            "speaker": "Speaker 12",
+            "text": "我現在就要討論相關的規範啊，你坐下啦！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:05",
+            "speaker": "Speaker 13",
+            "text": "曾：根本規避議會監督嘛！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:07",
+            "speaker": "Speaker 13",
+            "text": "曾：今年是不是又要不刪預算！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:12",
+            "speaker": "Speaker 12",
+            "text": "好，那就尊重大家的意見，下午要不要開會？",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "10:16",
+            "speaker": "Speaker 14",
+            "text": "下鄉啦！",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "10:18",
+            "speaker": "Speaker 12",
+            "text": "好，那下午要開會的舉手好不好？",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "10:21",
+            "speaker": "Speaker 15",
+            "text": "（氣到當機）",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:25",
+            "speaker": "Speaker 12",
+            "text": "好，那只有，那沒有人舉手。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "10:28",
+            "speaker": "Speaker 16",
+            "text": "（回神舉手）那我們就下午更動議程，下午下鄉考察，我們要開會。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "10:33",
+            "speaker": "Speaker 2",
+            "text": "國民黨人多啦！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:34",
+            "speaker": "Speaker 2",
+            "text": "國民黨人多啦！怎麼樣！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:36",
+            "speaker": "Speaker 2",
+            "text": "他媽的！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "10:41",
+            "speaker": "Speaker 1",
+            "text": "原來他們是不想要繼續總質詢跟預算審查，所以就直接把原本十點要開到五點的會議，變成中午放飯，到兩點之後呢，直接下鄉考察，因為要尊重多數人的意見，各位，這個就是民主的真諦，用投票決定下午要不要上班，同時可以運用在投票要不要期中考，還要在餐廳投票要不要付錢，全世界都搞錯了，只有苗栗懂。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "11:06",
+            "speaker": "Speaker 1",
+            "text": "但為什麼，為什麼比起開會，議員更喜歡下鄉呢？因為在議會裡面做了什麼，選民根本看不到，可是選民服務，大家都看得到。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "11:17",
+            "speaker": "News Reporter",
+            "text": "南庄鄉農會總幹事陳乾安，在農會小組會議上，穿著縣長徐耀昌的競選背心發言，為特定候選人拉票。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "11:26",
+            "speaker": "南庄鄉農會總幹事 陳乾安",
+            "text": "我拜託大家，再給徐耀昌一次機會，這個老實人讓他再連任，來報答大家。",
+            "tone": "Persuasive"
+        },
+        {
+            "timestamp": "11:31",
+            "speaker": "News Reporter",
+            "text": "會議結束後直接發放兩包白米及兩瓶洗潔精，涉嫌賄選。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "11:35",
+            "speaker": "Speaker 1",
+            "text": "為什麼用白米就會被買通？這個真的不是我故意要引戰，可是用米賄選真的聽起來像是那種你媽超窮的punchline，你懂我意思嗎？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "11:47",
+            "speaker": "Speaker 1",
+            "text": "Yo mama so poor, I could buy her vote with rice，然後所有人在那邊，喔，然後苗栗人在旁邊，怎麼了嗎？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "11:56",
+            "speaker": "Speaker 1",
+            "text": "不要這麼容易就讓他過啊。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "11:59",
+            "speaker": "Speaker 1",
+            "text": "可是剛才的影片點出一個蠻重要的問題，就是為什麼農會的人要幫縣長輔選？就是因為大家常聽到的一個詞叫做地方派系。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "12:08",
+            "speaker": "Speaker 1",
+            "text": "從台灣開始實施地方自治到現在，苗栗縣是整個台灣本島唯一沒有政黨輪替過的縣，就是因為在國民黨1950年代的時候，他們就開始在苗栗地方扶植地方派系，從農會、漁會、村里長到什麼中金會啊、公廟系統，反正你投給我，我上任就給你好處。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "12:26",
+            "speaker": "Speaker 17",
+            "text": "台灣少子化，在苗栗原先每胎補助3000元，在劉政鴻任內加10倍，變成34000元。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "12:33",
+            "speaker": "Speaker 17",
+            "text": "老人居家防跌補貼，那個地板、扶手、防滑墊，每人10年之內有10萬元補助。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "12:41",
+            "speaker": "Speaker 17",
+            "text": "五樓以下的住宅裝設火警警報器是全額補助，全部喔，所以他們的裝置率高達九成五，這是他的政績。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "12:50",
+            "speaker": "Speaker 18",
+            "text": "苗栗縣所有的人都有火警警報器？！",
+            "tone": "Surprised"
+        },
+        {
+            "timestamp": "12:52",
+            "speaker": "Speaker 1",
+            "text": "對啊，這麼棒，你看誰在意什麼審預算、監督縣長、預算超支有什麼關係，我家有火警警報器欸，你有嗎？拜託很厲害，還知道提燒個什麼東西，嗚嗚嗚。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "13:04",
+            "speaker": "Speaker 1",
+            "text": "但，我們回到之前講的預算，這其實是綁在一起的利益結構。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "13:09",
+            "speaker": "Speaker 1",
+            "text": "執政者用政府的資源，讓這些地方顯達獲得好處，換取地方勢力對統治者的支持，也難怪二十幾年來他們都不敢砍預算。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "13:18",
+            "speaker": "News Reporter",
+            "text": "縣議會臨時會，縣長徐耀昌到場，財政大黑洞成為重點，21年來議員們沒刪過縣府任何一筆預算，被外界質疑罵翻，根本是監督不力。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "13:28",
+            "speaker": "縣議員 禹耀東",
+            "text": "歷屆縣長都會做人，他給我們一個很錯誤的觀念就是苗栗縣不會倒，他說他可以從中央要到錢。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "13:35",
+            "speaker": "Speaker 1",
+            "text": "每次苗栗有預算的問題，都會有個心態，可以跟中央要到錢。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "13:40",
+            "speaker": "Speaker 1",
+            "text": "而中央也的確為了要拉攏地方勢力，他們會給，所以這就是為什麼不管藍的綠的，韓國瑜或蘇貞昌，都要親自跑到苗栗跟他們搏感情，當然也要帶點好處過去。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "13:51",
+            "speaker": "行政院長 蘇貞昌",
+            "text": "歡迎我，不是因為我來這裡長得比較好看，是因為我不知道帶多少紅包來。",
+            "tone": "Jovial"
+        },
+        {
+            "timestamp": "13:59",
+            "speaker": "News Reporter",
+            "text": "蘇貞昌南下苗栗，宣布中央要全額支應造橋交流道的經費，發出總共12億的大紅包，讓財政困窘的苗栗縣，縣長和兩位國民黨立委排排站，感謝再感謝。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "14:11",
+            "speaker": "行政院長 蘇貞昌",
+            "text": "不能有錢才這樣啦。",
+            "tone": "Jovial"
+        },
+        {
+            "timestamp": "14:15",
+            "speaker": "Speaker 1",
+            "text": "沒給錢誰要理你啊，誰給錢我就叫誰爸媽啦，不限於台灣的官員喔，別的國家也是。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "14:24",
+            "speaker": "News Reporter",
+            "text": "就是這張照片，南庄國中師生拉起紅布條和大陸酒商合影，感謝他們捐贈60萬元，但回台後社會觀感實在不好，校方急忙退回。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "14:34",
+            "speaker": "國民黨籍議員 鄭聚然",
+            "text": "拜託誰逼他把錢退回去，你給我查清楚一下，我不希望管誰統戰我，誰給我錢誰老大。",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "14:40",
+            "speaker": "民進黨籍議員 羅貴星",
+            "text": "是因為我們的產品品質好，價格好，還是一種統戰手腕。",
+            "tone": "Serious"
+        },
+        {
+            "timestamp": "14:46",
+            "speaker": "苗栗縣長 徐耀昌",
+            "text": "我要憑良心話講，都有，以上皆有。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "14:49",
+            "speaker": "Speaker 1",
+            "text": "為什麼苗栗人都這麼誠實啊？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "14:53",
+            "speaker": "Speaker 1",
+            "text": "你你預算有沒有計畫？沒有，這是不是統戰？嗯，是。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "14:58",
+            "speaker": "Speaker 1",
+            "text": "可是這種你投給我，我就給你好處的缺點就是，萬一將來有人給的好處比你更多，我是一點忠誠或是價值理念都沒有的，當然全台灣也不是只有苗栗這個地方有地方派系，花蓮啊、彰化、台中、雲林、高雄，甚至新北市都有，所以接下來的問題就是，到底為什麼會有所謂地方派系嚴不嚴重的差別？",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "15:20",
+            "speaker": "Speaker 1",
+            "text": "這段期間呢，我們其實也讀了很多論文，有很多不同的影響因素，有人覺得是因為現代化程度、都市化程度、年輕人的比例、教育程度、與政府溝通的難易程度、媒體的關注度，都可能影響，不過追根究底就是因為沒有人在乎。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "15:35",
+            "speaker": "民眾",
+            "text": "劉縣長也很很用心的把這個縣政那個縣裡面的建設，把它帶動起來，你也不能說他不對啊。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "15:44",
+            "speaker": "Speaker 1",
+            "text": "對啊，政府人員花預算讓居民過更好的日子，你能說他不對嗎？縣民開心，地方派系開心，民意代表也開心，受害者到底是誰？",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "15:54",
+            "speaker": "Speaker 1",
+            "text": "就是全國其他縣市的納稅人啊，憑什麼苗栗縣政府亂搞，我們就要拿全國納稅錢去補洞，更過分的是，他連一生爸媽都沒有教我們。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:05",
+            "speaker": "Speaker 1",
+            "text": "那這個問題該怎麼解決呢？",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "16:07",
+            "speaker": "Speaker 1",
+            "text": "非常簡單，大家都知道，小孩子長大了，就不應該再跟爸媽要錢了。",
+            "tone": "Calm"
+        },
+        {
+            "timestamp": "16:13",
+            "speaker": "Speaker 1",
+            "text": "所以我在這邊，想要號召大家，一起支持苗栗國獨立。",
+            "tone": "Enthusiastic"
+        },
+        {
+            "timestamp": "16:20",
+            "speaker": "Speaker 1",
+            "text": "這個之前只是一個網路笑話，但我覺得是時候讓它成真了，苗栗不用擔心，我們已經幫你設計好國旗了，而且我們連你們的內閣都幫你們想好了。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:29",
+            "speaker": "Speaker 1",
+            "text": "總統當然還是徐耀昌。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:31",
+            "speaker": "Speaker 1",
+            "text": "劉政鴻呢，他可以擔任財政部長，他非常會理財喔。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:35",
+            "speaker": "Speaker 1",
+            "text": "我們的砍殺石虎大將軍，韓茂賢當然就是環保署長。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:39",
+            "speaker": "Speaker 1",
+            "text": "我的背K他命，謝芳文，他可以擔任衛福部長，當然不讓，最後，誰給錢我就叫他爸媽的Kija Kina鄭聚然，當然就是我們的外交部長。",
+            "tone": "Sarcastic"
+        },
+        {
+            "timestamp": "16:50",
+            "speaker": "Speaker 1",
+            "text": "那如果你不喜歡這樣子的一個苗栗人民共和國的話，你可以跟我們一起聯署，希望今年之後可以成為苗栗二十五年來第一次砍預算的一年，聯署我們會放在下面的資訊欄，名字叫做苗栗貪腐不改善，全民聯署刪預算，真心希望不用走到那一步，苗栗，加油，博恩夜夜秀，我們休息一下馬上回來。",
+            "tone": "Calm"
+        }
+    ]
+}

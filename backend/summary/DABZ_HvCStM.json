@@ -1,0 +1,915 @@
+{
+    "global_summary": {
+        "brief_summary": "This video delves into the global phenomenon of \"Gen Z protests,\" where young people are adopting symbols like the One Piece pirate flag, memes, and digital platforms such as Discord to challenge governments worldwide. Driven by economic pressures and perceived corruption, these movements are redefining political participation, exemplified by the election of an interim prime minister via a virtual parliament in Nepal. The video explores the rapid spread of these unique protest methods, their underlying causes, and their potential to usher in a new wave of democratization.",
+        "key_themes": [
+            "The One Piece pirate flag as a global symbol of youth protest and resistance",
+            "The impact of economic inequality and government corruption on Gen Z's political activism",
+            "The transformative role of social media and digital tools like Discord in protest organization and mobilization",
+            "The integration of popular culture, anime, and memes into political messaging by Gen Z",
+            "The emergence of a new wave of democratization movements led by Gen Z, with both innovative potential and inherent risks"
+        ],
+        "overall_mood": "Informative, analytical, and thought-provoking, with a blend of curiosity about new forms of activism and a cautious outlook on their long-term impact"
+    },
+    "segments": [
+        {
+            "start_time": "00:00",
+            "end_time": "00:06",
+            "visual_action": "A split screen shows two flags waving against a bright sky with green trees. On the left, a red and white national flag (Indonesia's) is visible. On the right, a black pirate flag with a white skull and crossbones wearing a yellow straw hat (from One Piece) waves. Both flags are on poles.",
+            "dialogue_summary": "The speaker introduces the phenomenon of pirate flags being used in protests across various countries, from Indonesia to Peru.",
+            "grounding_quote": "海賊旗走上街頭",
+            "mood": "Informative",
+            "commentary_hook": "The unusual sight of a One Piece pirate flag waving alongside a national flag."
+        },
+        {
+            "start_time": "00:06",
+            "end_time": "00:12",
+            "visual_action": "A young man with dark hair, wearing a black ribbed jacket over a black shirt, stands in a modern studio. The background is a dark grey wall with yellow accents and various framed posters or screens. He gestures with his hands as he speaks directly to the camera.",
+            "dialogue_summary": "The speaker questions why a flag from an anime would transcend national borders to become a common symbol of protest in different countries.",
+            "grounding_quote": "跨越國界變成",
+            "mood": "Curious",
+            "commentary_hook": "The modern, minimalist studio background with abstract art and yellow accents."
+        },
+        {
+            "start_time": "00:12",
+            "end_time": "00:15",
+            "visual_action": "The man continues speaking, looking at the camera. The yellow bar at the top of the screen expands to fill the entire top portion, then the screen transitions to a black background with bold yellow Chinese text appearing.",
+            "dialogue_summary": "The speaker invites the audience to delve into the topic of Gen Z protests.",
+            "grounding_quote": "聊聊Z世代抗議",
+            "mood": "Inviting",
+            "commentary_hook": "The sudden, stark transition to a black screen with bold yellow text."
+        },
+        {
+            "start_time": "00:15",
+            "end_time": "00:19",
+            "visual_action": "An animated sequence with yellow and black geometric shapes. Chinese text '訂閱' (Subscribe) appears prominently. A book cover featuring a woman is shown on the right. A traditional gong sound is heard.",
+            "dialogue_summary": "No dialogue, only sound effects and on-screen text related to subscribing.",
+            "grounding_quote": "訂閱",
+            "mood": "Commercial",
+            "commentary_hook": "The traditional gong sound effect used for a modern animated advertisement."
+        },
+        {
+            "start_time": "00:19",
+            "end_time": "00:22",
+            "visual_action": "A fast-paced animated sequence with yellow and black geometric patterns. The numbers '77' are visible, and a rotating grey globe appears. Chinese text '時事分析' (Current Event Analysis) is displayed.",
+            "dialogue_summary": "No dialogue, only fast-paced electronic music and sound effects.",
+            "grounding_quote": "時事分析",
+            "mood": "Energetic",
+            "commentary_hook": "The rapid, glitchy animation style and quick scene changes."
+        },
+        {
+            "start_time": "00:22",
+            "end_time": "00:24",
+            "visual_action": "An animated scene featuring a yellow sofa surrounded by multiple microphones. Chinese text '深度訪談' (In-depth Interview) appears.",
+            "dialogue_summary": "No dialogue, only electronic music and sound effects.",
+            "grounding_quote": "深度訪談",
+            "mood": "Professional",
+            "commentary_hook": "The visual metaphor of a sofa surrounded by microphones, suggesting an interview setting."
+        },
+        {
+            "start_time": "00:24",
+            "end_time": "00:27",
+            "visual_action": "An animated sequence with a black speech bubble containing yellow text '議題觀點' (Issues & Perspectives). Various close-ups of human features (an eye, an ear, a mouth, a brain) and a satellite dish appear around the speech bubble.",
+            "dialogue_summary": "No dialogue, only electronic music and sound effects.",
+            "grounding_quote": "議題觀點",
+            "mood": "Thought-provoking",
+            "commentary_hook": "The collage of human senses and a satellite dish representing different viewpoints."
+        },
+        {
+            "start_time": "00:27",
+            "end_time": "00:31",
+            "visual_action": "An animated sequence with a golden background, a rotating grey globe, a megaphone, and the number '7'. The scene transitions to a black grid background with yellow lines and the text '志祺七七 SIMPLEINFO' appearing.",
+            "dialogue_summary": "No dialogue, only electronic music and sound effects.",
+            "grounding_quote": "志祺七七",
+            "mood": "Conclusive",
+            "commentary_hook": "The stylized '77' and the final logo reveal with a grid background."
+        },
+        {
+            "start_time": "00:31",
+            "end_time": "00:40",
+            "visual_action": "The young man from earlier is back, speaking directly to the camera. A graphic appears on the left side of the screen, showing a red and white flag and a One Piece pirate flag against a fiery background. Chinese text '印尼人不忍了！掛海賊旗嗆政府！' (Indonesians can't stand it anymore! Hanging pirate flags to challenge the government!) is displayed. A blue text box with '改掛海' (changed to hang pirate) slides in.",
+            "dialogue_summary": "The speaker greets the audience and explains that a few months prior, Indonesia saw protests where people hung pirate flags instead of national flags on National Day to protest the government.",
+            "grounding_quote": "改掛海賊旗",
+            "mood": "Informative",
+            "commentary_hook": "The dramatic fiery background behind the protest flags, symbolizing anger or revolution."
+        },
+        {
+            "start_time": "00:40",
+            "end_time": "00:44",
+            "visual_action": "The man continues speaking to the camera, gesturing with his hands.",
+            "dialogue_summary": "The speaker expresses surprise that the pirate flag has now become a global symbol of protest.",
+            "grounding_quote": "全世界都在用的",
+            "mood": "Surprised",
+            "commentary_hook": "The speaker's slight head tilt and raised eyebrows conveying surprise."
+        },
+        {
+            "start_time": "00:44",
+            "end_time": "00:47",
+            "visual_action": "The scene shows a crowd of people, many wearing graduation caps, holding up black One Piece pirate flags. This transitions to a split screen: the left side shows people on a bridge holding a black flag with 'THE TIME IS NOW #WAKEUPNEPAL', while the right side shows people holding a One Piece flag and a Nepal flag. Text '印尼' (Indonesia) and '尼泊爾' (Nepal) appear.",
+            "dialogue_summary": "The speaker mentions that this trend of using pirate flags in protests was seen in Indonesia and Nepal recently.",
+            "grounding_quote": "印尼跟尼泊爾",
+            "mood": "Informative",
+            "commentary_hook": "The '#WAKEUPNEPAL' hashtag on the flag, showing specific local context for the protest."
+        },
+        {
+            "start_time": "00:47",
+            "end_time": "00:54",
+            "visual_action": "Another split screen is shown: the left side features a person holding a One Piece flag in a large crowd, while the right side displays a close-up of a One Piece flag with a colorful knitted hat on the skull. Text '秘魯' (Peru) and '馬達加斯加' (Madagascar) appear.",
+            "dialogue_summary": "The speaker adds that young people in Peru and Madagascar have also adopted the pirate flag for their street protests against the government.",
+            "grounding_quote": "舉著海賊旗上街頭",
+            "mood": "Informative",
+            "commentary_hook": "The unique colorful knitted hat on the skull of the pirate flag in the Madagascar protest."
+        },
+        {
+            "start_time": "00:54",
+            "end_time": "01:03",
+            "visual_action": "The man speaks to the camera. This transitions to a close-up of hands typing on a backlit keyboard with blue and pink lighting. Chinese text '迷因、動漫、流行語' (Memes, Anime, Slang) appears.",
+            "dialogue_summary": "The speaker highlights a common characteristic of these recent global protests: the use of memes, anime, and popular slang to replace serious slogans.",
+            "grounding_quote": "迷因、動漫、流行語",
+            "mood": "Analytical",
+            "commentary_hook": "The vibrant, futuristic blue and pink backlighting on the keyboard."
+        },
+        {
+            "start_time": "01:03",
+            "end_time": "01:10",
+            "visual_action": "A close-up shot of a person's hands holding and typing on a gold smartphone. Chinese text 'TikTok、IG、Discord' appears.",
+            "dialogue_summary": "The speaker explains that protest mobilization tools have shifted to platforms like TikTok, Instagram, and Discord, with some even using Discord to elect a prime minister.",
+            "grounding_quote": "Discord來選舉總理",
+            "mood": "Informative",
+            "commentary_hook": "The specific mention of Discord being used for political elections, highlighting a new form of digital activism."
+        },
+        {
+            "start_time": "01:10",
+            "end_time": "01:14",
+            "visual_action": "A still image from the movie 'Minions' shows many minions in a factory-like setting. Chinese text 'Z世代抗議潮' (Gen Z Protest Wave) appears.",
+            "dialogue_summary": "The speaker concludes this segment by stating that the media has dubbed this phenomenon the 'Gen Z protest wave.'",
+            "grounding_quote": "Z世代抗議潮",
+            "mood": "Informative",
+            "commentary_hook": "The unexpected use of Minions to represent a protest movement, adding a touch of humor."
+        },
+        {
+            "start_time": "01:14",
+            "end_time": "01:22",
+            "visual_action": "The man speaks to the camera. A yellow background with animated question marks appears on the right. Three question boxes slide in, displaying Chinese text: '為什麼海賊旗變成全球抗議符號？' (Why did the pirate flag become a global protest symbol?), '「Z世代抗議」到底是什麼？' (What exactly is 'Gen Z protest'?), and '為什麼會忽然大爆發？' (Why did it suddenly explode?).",
+            "dialogue_summary": "The speaker poses three key questions that will be addressed: why the pirate flag became a global protest symbol, what Gen Z protests entail, and why they suddenly erupted.",
+            "grounding_quote": "為什麼會忽然大爆發",
+            "mood": "Questioning",
+            "commentary_hook": "The animated question marks and sliding question boxes visually emphasizing the core inquiries of the video."
+        },
+        {
+            "start_time": "01:22",
+            "end_time": "01:26",
+            "visual_action": "The man speaks to the camera. A yellow banner with Chinese text '要進廣告囉！' (Time for an ad!) and '本片含有付費內容' (This video contains paid content) appears at the bottom left.",
+            "dialogue_summary": "The speaker announces a commercial break before continuing the discussion.",
+            "grounding_quote": "工商服務時間",
+            "mood": "Transitional",
+            "commentary_hook": "The direct and transparent on-screen announcement of an advertisement."
+        },
+        {
+            "start_time": "01:26",
+            "end_time": "01:31",
+            "visual_action": "A split screen. On the left, the man sits on a white sofa, reading a book. A large cartoon drawing of an old man (from Hikaru no Go) and Chinese text '你說坂卷，我知道嗎？' (You said Sakamaki, do I know him?) and '桑原本因坊' (Kuwabara Honinbo) are visible. On the right, a book cover featuring a woman and text '年度最大折扣' (Biggest discount of the year) and '黑嘉嘉圍棋週年慶' (Joanne Missingham Go Anniversary Sale) are displayed.",
+            "dialogue_summary": "Japanese dialogue from an anime is heard, followed by the speaker's voiceover, implying that Go can be played by one person.",
+            "grounding_quote": "一個人是沒辦法下的",
+            "mood": "Calm",
+            "commentary_hook": "The unexpected Japanese anime dialogue playing in the background of the commercial."
+        },
+        {
+            "start_time": "01:31",
+            "end_time": "01:35",
+            "visual_action": "A split screen. On the left, the man looks up from his book, smiling, and holds a tablet. Chinese text '圍棋其實一個人也可以下喔！' (Go can actually be played by one person!) and '直接用《黑嘉嘉圍棋》玩給你看！' (Play with 'Joanne Missingham Go' directly for you to see!) appear. On the right, the book cover remains.",
+            "dialogue_summary": "The speaker explains that Go can be played alone using the 'Joanne Missingham Go' app and offers to demonstrate. Another voice asks if he plays Go.",
+            "grounding_quote": "一個人也可以下喔",
+            "mood": "Enthusiastic",
+            "commentary_hook": "The speaker's confident smile and direct address to the camera, inviting viewers to try the app."
+        },
+        {
+            "start_time": "01:35",
+            "end_time": "01:39",
+            "visual_action": "A split screen. On the left, a Go board with a black stone placed in the center is shown. Chinese text '第一手天元' (First move: Tengen) appears. The man's face is superimposed, looking at the board, then he smiles. On the right, the book cover remains.",
+            "dialogue_summary": "The speaker confidently states his first move is 'Tengen,' but another voice implies he's incorrect. The speaker then dismisses it, saying 'No problem.'",
+            "grounding_quote": "第一手天元",
+            "mood": "Playful",
+            "commentary_hook": "The speaker's confident but incorrect first move on the Go board, adding a humorous touch."
+        },
+        {
+            "start_time": "01:39",
+            "end_time": "01:45",
+            "visual_action": "A split screen. On the left, the man says 'No problem, Joanne Missingham will teach me.' Then, a woman (Joanne Missingham) appears, introducing the Go classroom. A Go board shows a black stone and numbers 1-4 indicating '氣' (liberties). On the right, the book cover remains.",
+            "dialogue_summary": "The speaker says Joanne Missingham will teach him. Joanne Missingham then introduces the Go classroom and explains the concept of '氣' (liberties) in Go.",
+            "grounding_quote": "一共是4氣",
+            "mood": "Educational",
+            "commentary_hook": "The clear, numbered explanation of '氣' on the Go board, making a complex concept easy to understand."
+        },
+        {
+            "start_time": "01:45",
+            "end_time": "01:50",
+            "visual_action": "A split screen. On the left, Joanne Missingham asks to mark the '氣'. A Go board shows a white stone with red dots indicating liberties, then black and white stones with red stars and triangles. A green checkmark appears, followed by a pop-up showing '很熟練喔' (Very proficient!) with Joanne Missingham's image. On the right, the book cover remains.",
+            "dialogue_summary": "Joanne Missingham guides the user to mark liberties. Sound effects indicate correct answers, and a pop-up congratulates the user on their proficiency.",
+            "grounding_quote": "很熟練喔",
+            "mood": "Accomplished",
+            "commentary_hook": "The satisfying sound effects and visual feedback of correct answers, reinforcing a sense of achievement."
+        },
+        {
+            "start_time": "01:50",
+            "end_time": "01:54",
+            "visual_action": "A split screen. On the left, the man smiles, holding the tablet, and declares he's no longer a beginner and will play against AI. On the right, the book cover remains.",
+            "dialogue_summary": "The speaker confidently states he's no longer a Go beginner and announces his intention to play against AI. Another voice asks if he'll play against Joanne Missingham.",
+            "grounding_quote": "跟AI對弈",
+            "mood": "Confident",
+            "commentary_hook": "The speaker's sudden surge of confidence after completing the tutorial, ready to challenge AI."
+        },
+        {
+            "start_time": "01:54",
+            "end_time": "01:57",
+            "visual_action": "A split screen. On the left, the man says he'll play against himself. A pop-up shows a profile picture and Chinese text '志祺七七-G17' with a message. On the right, the book cover remains.",
+            "dialogue_summary": "The speaker humorously states he will play against himself. A notification sound is heard.",
+            "grounding_quote": "我跟我自己",
+            "mood": "Playful",
+            "commentary_hook": "The humorous idea of playing Go against his own AI persona, '志祺七七-G17'."
+        },
+        {
+            "start_time": "01:57",
+            "end_time": "02:04",
+            "visual_action": "A split screen. On the left, a Go game interface shows two players (one with the man's avatar, one generic). The game progresses rapidly with black and white stones being placed. The man's face is in a small circular inset at the bottom center, looking focused. On the right, the book cover remains.",
+            "dialogue_summary": "No dialogue, only fast-paced sound effects of Go stones being placed, indicating an intense game.",
+            "grounding_quote": "Go game sounds",
+            "mood": "Intense",
+            "commentary_hook": "The rapid-fire placement of Go stones, creating a sense of a fast-paced and challenging game."
+        },
+        {
+            "start_time": "02:04",
+            "end_time": "02:08",
+            "visual_action": "A split screen. On the left, a pop-up shows '失敗' (Failure) and '白勝 (白 155 子)' (White wins (White 155 stones)) with Joanne Missingham's image. The man's face is in black and white, looking frustrated, and he exclaims '可惡！可惡！可惡！' (Damn it! Damn it! Damn it!). He then encourages downloading the app, and a red emoji appears. On the right, the book cover remains.",
+            "dialogue_summary": "The speaker expresses frustration at losing the game and encourages viewers to download the 'Joanne Missingham Go' app to 'help him get revenge.'",
+            "grounding_quote": "幫我報仇",
+            "mood": "Frustrated",
+            "commentary_hook": "The man's exaggerated frustration and the black and white filter, adding a dramatic effect to his defeat."
+        },
+        {
+            "start_time": "02:08",
+            "end_time": "02:19",
+            "visual_action": "A split screen. On the left, the man, now back in color, explains the app's features. Chinese text '黑嘉嘉圍棋' (Joanne Missingham Go) and '一站式圍棋玩學平台' (One-stop Go learning platform) appear. He then promotes a discount with dates '9/30-11/10' and '全站線上課的超讚優惠喔！' (Super discount on all online courses!). On the right, the book cover remains.",
+            "dialogue_summary": "The speaker promotes the 'Joanne Missingham Go' app as a one-stop learning platform for Go players of all levels and highlights a special discount on online courses from September 30th to November 10th.",
+            "grounding_quote": "超讚優惠喔",
+            "mood": "Promotional",
+            "commentary_hook": "The clear call to action and specific discount dates, encouraging immediate engagement."
+        },
+        {
+            "start_time": "02:19",
+            "end_time": "02:21",
+            "visual_action": "A black One Piece pirate flag waves against a blue sky. Chinese text '海賊旗抗議是怎麼來的？' (How did the pirate flag protest come about?) appears.",
+            "dialogue_summary": "No dialogue, only sound effects and on-screen text posing a question.",
+            "grounding_quote": "海賊旗抗議",
+            "mood": "Questioning",
+            "commentary_hook": "The bold text overlay on the waving pirate flag, directly addressing the video's main topic."
+        },
+        {
+            "start_time": "02:21",
+            "end_time": "02:34",
+            "visual_action": "The man speaks to the camera, gesturing with his hands. Chinese text '印尼開始' (Started in Indonesia) appears, followed by '2023年 → 海賊旗零星出現' (2023 → Pirate flags appeared sporadically).",
+            "dialogue_summary": "The speaker explains that the use of the pirate flag in protests likely originated in Indonesia, with sporadic appearances as early as 2023.",
+            "grounding_quote": "印尼開始的",
+            "mood": "Informative",
+            "commentary_hook": "The clear timeline presented with text overlays, establishing the origin of the protest symbol."
+        },
+        {
+            "start_time": "02:34",
+            "end_time": "02:44",
+            "visual_action": "A truck drives on a highway, seen from behind. A large One Piece pirate flag is draped over its cargo. The flag is black with a white skull and crossbones wearing a yellow straw hat. Other vehicles and green trees are visible. The text 'BAIK BAIK SAYANGK' is written on the back of the truck.",
+            "dialogue_summary": "The speaker describes how Indonesian truck drivers, protesting government regulations on cargo, hung pirate flags on their vehicles, which gradually turned the flag into a protest symbol.",
+            "grounding_quote": "掛在車上抗議",
+            "mood": "Informative",
+            "commentary_hook": "The 'BAIK BAIK SAYANGK' text on the back of the truck, adding a personal and somewhat endearing touch to the protest vehicle."
+        },
+        {
+            "start_time": "02:44",
+            "end_time": "03:01",
+            "visual_action": "The man speaks to the camera. A picture of Indonesian President Prabowo Subianto appears with his name. This transitions to a screenshot of a news article titled 'ONE PIECE！印尼《航海王》旗幟運動：用草帽海賊反抗普拉伯沃政府' (ONE PIECE! Indonesia 'One Piece' Flag Movement: Using Straw Hat Pirates to Resist Prabowo Government).",
+            "dialogue_summary": "The speaker explains that during Indonesia's National Day in August, President Prabowo Subianto called for national flags, but many citizens deliberately hung pirate flags on their balconies to mock government corruption, solidifying the flag as a national protest symbol.",
+            "grounding_quote": "諷刺國家腐敗",
+            "mood": "Critical",
+            "commentary_hook": "The direct contrast between the president's call for national flags and the public's use of pirate flags to express dissent."
+        },
+        {
+            "start_time": "03:01",
+            "end_time": "03:11",
+            "visual_action": "The man speaks to the camera. Chinese text '2025年 → 海賊旗成為抗議象徵' (2025 → Pirate flag became a protest symbol) appears. This transitions to a split screen of TikTok videos: one shows a person on a mountain holding both Indonesian and pirate flags, and another shows a crowd with a large pirate flag.",
+            "dialogue_summary": "The speaker states that by September 2025, large-scale protests in Indonesia led the pirate flag to become a common symbol, frequently appearing in various protest settings.",
+            "grounding_quote": "共同象徵",
+            "mood": "Informative",
+            "commentary_hook": "The TikTok videos showing the flag being used in diverse protest settings, from mountain peaks to urban crowds."
+        },
+        {
+            "start_time": "03:11",
+            "end_time": "03:17",
+            "visual_action": "The man speaks to the camera. A screenshot of a Yahoo News article appears, titled '尼泊爾青年衝撞國會抗爭，不只因為社群平台被封！「權貴貪腐、貧富不均」引爆Z世代怒火，政府鐵腕鎮壓19死' (Nepal youth clash with parliament, not just because social media platforms were blocked! 'Power corruption, wealth disparity' ignites Gen Z anger, government crackdown leaves 19 dead). Chinese text '尼泊爾' (Nepal) and '抗議政府貪腐' (protesting government corruption) appear.",
+            "dialogue_summary": "The speaker notes that this trend spread globally, citing Nepal where students used pirate flags to protest government corruption.",
+            "grounding_quote": "抗議政府貪腐",
+            "mood": "Serious",
+            "commentary_hook": "The news headline mentioning '19 dead,' highlighting the severe consequences of the protests."
+        },
+        {
+            "start_time": "03:17",
+            "end_time": "03:26",
+            "visual_action": "A screenshot of a CNA news article titled '貪腐與養老金政策引發眾怒 秘魯抗議活動至少19傷' (Corruption and pension policies spark public anger, Peru protests leave at least 19 injured). Chinese text '秘魯' (Peru) and '反對退休金法案' (opposing pension bill) appear. This transitions to a TVBS News article titled '海賊王革命再起！秘魯.馬達加斯加 Z世代抗議' (One Piece Revolution Rises Again! Peru, Madagascar Gen Z Protests). Chinese text '馬達加斯加' (Madagascar) and '抗議缺電缺水' (protesting power and water shortages) appear.",
+            "dialogue_summary": "The speaker continues, mentioning that in Peru, young people protested pension bills with pirate flags, and in Madagascar, protests against long-term power and water shortages also featured the pirate flag.",
+            "grounding_quote": "抗議缺電缺水",
+            "mood": "Informative",
+            "commentary_hook": "The TVBS headline directly linking 'One Piece Revolution' to the protests in Peru and Madagascar."
+        },
+        {
+            "start_time": "03:26",
+            "end_time": "03:36",
+            "visual_action": "The man speaks to the camera, gesturing with his hands. Chinese text '為什麼能快速擴散？' (Why can it spread so quickly?) appears.",
+            "dialogue_summary": "The speaker questions why the pirate flag was able to spread so rapidly from Asia to Africa, becoming a common language for young people worldwide.",
+            "grounding_quote": "為什麼能快速擴散",
+            "mood": "Curious",
+            "commentary_hook": "The speaker's expressive hand gestures emphasizing the rapid and widespread adoption of the symbol."
+        },
+        {
+            "start_time": "03:36",
+            "end_time": "03:39",
+            "visual_action": "A black One Piece pirate flag waves against a blue sky. Chinese text '海賊旗變成全球抗議符號？' (Pirate flag became a global protest symbol?) appears.",
+            "dialogue_summary": "No dialogue, only sound effects and on-screen text posing a question.",
+            "grounding_quote": "全球抗議符號",
+            "mood": "Questioning",
+            "commentary_hook": "The repeated question from earlier, reinforcing the central theme of the video."
+        },
+        {
+            "start_time": "03:39",
+            "end_time": "03:46",
+            "visual_action": "The man speaks to the camera. Chinese text '一、海賊旗的意義' (1. The meaning of the pirate flag) appears.",
+            "dialogue_summary": "The speaker introduces the first reason for the pirate flag's widespread adoption as a protest symbol: its inherent meaning.",
+            "grounding_quote": "海賊旗的意義",
+            "mood": "Informative",
+            "commentary_hook": "The clear, numbered point appearing on screen, signaling the start of a new explanation."
+        },
+        {
+            "start_time": "03:46",
+            "end_time": "03:53",
+            "visual_action": "An animated scene from One Piece shows the pirate flag waving. This transitions to the Straw Hat Pirates running on a beach. Another animated scene shows a close-up of the One Piece flag. Chinese text '反抗政權' (Resist regime) and '追求自由' (Pursue freedom) appear.",
+            "dialogue_summary": "The speaker explains that in the world of One Piece, Luffy and the Straw Hat Pirates symbolize resistance against oppressive regimes and the pursuit of freedom.",
+            "grounding_quote": "追求自由的期待",
+            "mood": "Explanatory",
+            "commentary_hook": "The direct animation clips from One Piece, visually illustrating the symbolic meaning of the flag."
+        },
+        {
+            "start_time": "03:53",
+            "end_time": "03:59",
+            "visual_action": "A crowd of people protesting is seen from behind. A man in a black cap and backpack raises his fist in the air. Other protesters are visible in the blurred background, suggesting a large gathering.",
+            "dialogue_summary": "The speaker states that these protesters relate the spirit of the pirate flag to their own life situations.",
+            "grounding_quote": "自己的生活處境",
+            "mood": "Empowering",
+            "commentary_hook": "The raised fist of the protester, a universal and powerful symbol of resistance and solidarity."
+        },
+        {
+            "start_time": "03:59",
+            "end_time": "04:11",
+            "visual_action": "The man speaks to the camera. Chinese text '二、Z世代成長背景' (2. Gen Z growth background) appears. This transitions to a close-up of hands flipping through the pages of a book.",
+            "dialogue_summary": "The speaker explains that the flag's easy spread is also due to the changing demographic of protesters, with Gen Z becoming the main subject, and their unique growth background.",
+            "grounding_quote": "Z世代成長背景",
+            "mood": "Analytical",
+            "commentary_hook": "The close-up of hands flipping through a book, symbolizing the media consumption and learning habits of Gen Z."
+        },
+        {
+            "start_time": "04:11",
+            "end_time": "04:22",
+            "visual_action": "Chinese text '動漫、迷因' (Anime, Memes) appears. Animated clips from One Piece are shown: a fiery explosion, a flag with 'WORLD GOVT', a character screaming in anger, and Luffy running towards a building labeled 'ENIES LOBBY'.",
+            "dialogue_summary": "The speaker explains that Gen Z grew up with anime and memes, so they immediately connect the pirate flag to Luffy's story of fighting the World Government, finding resonance with their own struggles.",
+            "grounding_quote": "對抗世界政府",
+            "mood": "Explanatory",
+            "commentary_hook": "The iconic 'ENIES LOBBY' scene from One Piece, a pivotal moment of rebellion and defiance in the anime."
+        },
+        {
+            "start_time": "04:22",
+            "end_time": "04:30",
+            "visual_action": "A young woman smiles while looking at her smartphone, occasionally touching her hair. Chinese text '三、社群媒體的傳播' (3. Social media dissemination) and '影像快速擴散' (Images spread quickly) appear.",
+            "dialogue_summary": "The speaker introduces the third reason: the powerful influence of social media. The pirate flag, being easily recognizable and meme-like, spreads quickly on platforms like TikTok and Instagram.",
+            "grounding_quote": "社群媒體的渲染力",
+            "mood": "Informative",
+            "commentary_hook": "The woman's casual interaction with her smartphone, representing the everyday use of social media for information and sharing."
+        },
+        {
+            "start_time": "04:30",
+            "end_time": "04:42",
+            "visual_action": "A person is shown sewing multiple One Piece pirate flags. Another person holds a pirate flag. A pirate flag waves next to a national flag. A boat on the water is seen with multiple pirate flags. Chinese text '自由、反抗' (Freedom, Resistance) appears.",
+            "dialogue_summary": "The speaker explains that when images of Indonesian protesters with the flag spread, people in other countries quickly adapted the symbol to their local contexts, using the pirate flag to convey core messages of freedom and resistance.",
+            "grounding_quote": "自由、反抗",
+            "mood": "Informative",
+            "commentary_hook": "The scene of someone sewing multiple pirate flags, illustrating the grassroots production and widespread adoption of the protest symbol."
+        },
+        {
+            "start_time": "04:42",
+            "end_time": "04:51",
+            "visual_action": "The man speaks to the camera, gesturing with his hands. Chinese text '為何Z世代抗議連環爆？' (Why are Gen Z protests exploding consecutively?) appears.",
+            "dialogue_summary": "The speaker poses a final question: why are young Gen Z individuals across the world suddenly erupting in large-scale, consecutive protests, almost as if by agreement?",
+            "grounding_quote": "Z世代抗議連環爆",
+            "mood": "Curious",
+            "commentary_hook": "The speaker's direct gaze and questioning tone, inviting further thought on the global phenomenon."
+        },
+        {
+            "start_time": "04:51",
+            "end_time": "04:54",
+            "visual_action": "A black One Piece pirate flag waves against a blue sky. Chinese text 'Z世代抗議怎麼爆發的？' (How did Gen Z protests erupt?) appears.",
+            "dialogue_summary": "No dialogue, only sound effects and on-screen text posing a question.",
+            "grounding_quote": "怎麼爆發的",
+            "mood": "Questioning",
+            "commentary_hook": "The question posed over the iconic pirate flag, setting up the next segment's focus."
+        },
+        {
+            "start_time": "04:54",
+            "end_time": "04:59",
+            "visual_action": "The man speaks to the camera, pointing to the left. Chinese text 'Z世代抗議' (Gen Z Protest) appears.",
+            "dialogue_summary": "The speaker states that the term 'Gen Z protest' emerged around 2020-2021.",
+            "grounding_quote": "Z世代抗議",
+            "mood": "Informative",
+            "commentary_hook": "The speaker pointing to the text overlay, drawing attention to the specific term."
+        },
+        {
+            "start_time": "04:59",
+            "end_time": "05:01",
+            "visual_action": "A wide shot of a massive crowd of protesters gathered in a city square, with a large, white monument in the background. The crowd appears dense and extends far into the distance.",
+            "dialogue_summary": "The speaker mentions student movements in Thailand and Myanmar during that period, primarily involving young people born after the late 1990s.",
+            "grounding_quote": "學生運動",
+            "mood": "Serious",
+            "commentary_hook": "The sheer scale of the protest crowd, emphasizing the 'mass movement' aspect of Gen Z activism."
+        },
+        {
+            "start_time": "05:00",
+            "end_time": "05:05",
+            "visual_action": "A wide shot of a large crowd of people, mostly wearing dark clothing, gathered in an open square with a large, white, multi-columned monument in the background under a cloudy sky. Chinese text overlays: \"泰國、緬甸爆發學生運動\" (Thailand, Myanmar student movements erupt) and \"來源: 維基百科-Supanut Arunoprayote\" (Source: Wikipedia-Supanut Arunoprayote).",
+            "dialogue_summary": "The speaker discusses student movements erupting in Thailand and Myanmar, noting that most participants are young people born after the late 1990s.",
+            "grounding_quote": "爆發了學生運動",
+            "mood": "Informative",
+            "commentary_hook": "The large monument in the background is the Democracy Monument in Bangkok, Thailand."
+        },
+        {
+            "start_time": "05:05",
+            "end_time": "05:09",
+            "visual_action": "A night scene of a protest. People in raincoats and dark clothing are pushing against metal barriers, with water being sprayed from a hose on the left. Some individuals are holding up makeshift shields. The scene is chaotic and wet. Text overlays: \"Reuters Bangkok, Thailand October 16, 2020\" and \"South China Morning Post\".",
+            "dialogue_summary": "The speaker mentions that media and scholars have started using the term 'Gen Z protests' to describe this new form of movement.",
+            "grounding_quote": "Z世代抗議",
+            "mood": "Intense",
+            "commentary_hook": "The use of water cannons against protesters is visible."
+        },
+        {
+            "start_time": "05:09",
+            "end_time": "05:10",
+            "visual_action": "An aerial night shot of a massive crowd of people, each holding up a glowing light (likely phone flashlights), creating a sea of tiny lights. City buildings are visible in the background. Text overlays: \"Reuters October 18, 2020\" and \"South China Morning Post\".",
+            "dialogue_summary": "The speaker continues to describe the new form of protest movement.",
+            "grounding_quote": "新型態的運動",
+            "mood": "United",
+            "commentary_hook": "The visual of thousands of phone lights creates a powerful image of solidarity."
+        },
+        {
+            "start_time": "05:10",
+            "end_time": "05:12",
+            "visual_action": "A daytime wide shot of a street filled with a large crowd of protesters. Some people are on the back of a white pickup truck. A news overlay at the bottom reads \"ABC NEWS LIVE PRIME DEADLY SOCIAL UNREST IN NEPAL\".",
+            "dialogue_summary": "The speaker states that in recent months, young people in various countries, including Indonesia, Nepal, Philippines, Peru, and Madagascar, have continuously erupted in large-scale protests.",
+            "grounding_quote": "DEADLY SOCIAL UNREST",
+            "mood": "Unrest",
+            "commentary_hook": "The news headline 'DEADLY SOCIAL UNREST IN NEPAL' highlights the severity of the situation."
+        },
+        {
+            "start_time": "05:12",
+            "end_time": "05:14",
+            "visual_action": "A daytime scene of protesters pushing against a makeshift barrier made of wooden poles and barbed wire. Several men are actively pulling and pushing. News overlay at the bottom reads \"ABC NEWS LIVE PRIME DEADLY SOCIAL UNREST IN NEPAL\". Chinese text overlay: \"印尼、尼泊爾、菲律賓、秘魯、馬達加斯加\" (Indonesia, Nepal, Philippines, Peru, Madagascar).",
+            "dialogue_summary": "The speaker continues to list countries experiencing youth-led protests.",
+            "grounding_quote": "尼泊爾、菲律賓",
+            "mood": "Confrontational",
+            "commentary_hook": "The use of barbed wire as a barrier indicates a heightened level of conflict."
+        },
+        {
+            "start_time": "05:14",
+            "end_time": "05:15",
+            "visual_action": "A daytime wide shot of a street with a line of riot police in the distance, facing a crowd of protesters. A large white building with arches is in the background. News overlay at the bottom reads \"ABC NEWS LIVE PRIME DEADLY SOCIAL UNREST IN NEPAL\". Chinese text overlay: \"印尼、尼泊爾、菲律賓、秘魯、馬達加斯加\".",
+            "dialogue_summary": "The speaker continues to list countries experiencing youth-led protests.",
+            "grounding_quote": "馬達加斯加",
+            "mood": "Tense",
+            "commentary_hook": "The clear line of riot police suggests an imminent confrontation."
+        },
+        {
+            "start_time": "05:15",
+            "end_time": "05:17",
+            "visual_action": "A daytime wide shot of a large crowd of protesters on a street, some holding signs. A large gate and a building are in the background. English text overlay: \"Madagascar's youth-led movement is inspired by 'Gen Z' protests in Indonesia and Nepal\" and \"AFP News Agency\". Chinese text overlay: \"印尼、尼泊爾、菲律賓、秘魯、馬達加斯加\".",
+            "dialogue_summary": "The speaker mentions that youth-led movements in these countries have continuously erupted in large-scale protests.",
+            "grounding_quote": "youth-led movement",
+            "mood": "Determined",
+            "commentary_hook": "The English text overlay explicitly links the Madagascar protests to Gen Z movements in other countries."
+        },
+        {
+            "start_time": "05:17",
+            "end_time": "05:18",
+            "visual_action": "A daytime wide shot of a street with a large crowd of protesters and buildings in the background. A white monument is visible in the distance. Chinese text overlay: \"印尼、尼泊爾、菲律賓、秘魯、馬達加斯加\".",
+            "dialogue_summary": "The speaker reiterates the widespread nature of these large-scale protests.",
+            "grounding_quote": "大規模的抗議",
+            "mood": "Resolute",
+            "commentary_hook": "The white monument in the distance is similar to the one seen at 05:00, suggesting a recurring protest location or symbol."
+        },
+        {
+            "start_time": "05:18",
+            "end_time": "05:20",
+            "visual_action": "A night scene of a group of protesters pushing against metal barriers on a street. Some are wearing hoodies and masks. Buildings are in the background. News overlay at the bottom reads \"ALJAZEERA ENGLISH PERU ANTI-GOVERNMENT PROTESTS 'GEN-Z' RALLY AGAINST CORRUPTION AND PENSION REFORMS\".",
+            "dialogue_summary": "The speaker explains that the reasons for these protests are not uncommon.",
+            "grounding_quote": "抗議的理由",
+            "mood": "Confrontational",
+            "commentary_hook": "The Al Jazeera headline clearly states the reasons for the protests: corruption and pension reforms."
+        },
+        {
+            "start_time": "05:20",
+            "end_time": "05:24",
+            "visual_action": "A night scene of a large group of protesters pushing against metal barriers on a street. Smoke or tear gas is visible in the background. News overlay at the bottom reads \"ALJAZEERA ENGLISH PERU ANTI-GOVERNMENT PROTESTS 'GEN-Z' RALLY AGAINST CORRUPTION AND PENSION REFORMS\". Chinese text overlay: \"經濟、階級差距\" (Economy, Class Disparity).",
+            "dialogue_summary": "The speaker specifies that the protests mainly revolve around economic and class disparities.",
+            "grounding_quote": "經濟跟階級差距",
+            "mood": "Aggressive",
+            "commentary_hook": "The visible smoke/tear gas indicates a violent turn in the protest."
+        },
+        {
+            "start_time": "05:24",
+            "end_time": "05:26",
+            "visual_action": "A male presenter with dark hair, wearing a black ribbed jacket over a black t-shirt, stands in front of a yellow and black studio background. He gestures with his hands. Chinese text overlay: \"一、經濟壓力\" (1. Economic Pressure).",
+            "dialogue_summary": "The speaker introduces the first main reason for the protests: long-term economic pressure.",
+            "grounding_quote": "長期的經濟壓力",
+            "mood": "Informative",
+            "commentary_hook": "The presenter's modern studio background contrasts with the protest footage."
+        },
+        {
+            "start_time": "05:26",
+            "end_time": "05:30",
+            "visual_action": "A screenshot of a news article titled \"亞洲之春新浪潮 / 年輕人口紅利 為何成社會負擔\" (New Wave of Asian Spring / Why Youth Demographic Dividend Becomes a Social Burden). A bar chart shows youth unemployment rates in various Southeast and South Asian countries. Nepal is highlighted at 20.8%. Chinese text overlay: \"青年失業率 尼泊爾 20.8% 印尼 13.1%\".",
+            "dialogue_summary": "The speaker cites Nepal's youth unemployment rate at 20.8% and Indonesia's at nearly 14%.",
+            "grounding_quote": "青年失業率",
+            "mood": "Analytical",
+            "commentary_hook": "The specific unemployment percentages provide concrete data for the economic pressure."
+        },
+        {
+            "start_time": "05:30",
+            "end_time": "05:37",
+            "visual_action": "A graphic showing a stock market chart with red and blue lines indicating fluctuations. Chinese text overlays appear: \"2008 年金融風暴\" (2008 Financial Crisis) and \"2019 年COVID-19\".",
+            "dialogue_summary": "The speaker explains that this generation experienced the 2008 financial crisis as children and then high inflation caused by COVID-19 as adults.",
+            "grounding_quote": "金融風暴",
+            "mood": "Explanatory",
+            "commentary_hook": "The visual representation of economic downturns with the stock chart effectively illustrates the speaker's point."
+        },
+        {
+            "start_time": "05:37",
+            "end_time": "05:43",
+            "visual_action": "A man in a blue shirt and tie sits on a suitcase, covering his face with his hands, appearing distressed. The background is blurred, suggesting an airport or public waiting area. Chinese text overlays appear: \"憤怒、不安\" (Anger, Unease).",
+            "dialogue_summary": "The speaker states that many people worked hard but couldn't achieve stable lives, leading to strong feelings of anger and unease.",
+            "grounding_quote": "憤怒跟不安感",
+            "mood": "Somber",
+            "commentary_hook": "The image of the distressed man visually represents the emotional toll of economic hardship."
+        },
+        {
+            "start_time": "05:43",
+            "end_time": "05:49",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands.",
+            "dialogue_summary": "The speaker transitions to the issue of corruption, stating that when people's lives are difficult, official corruption exacerbates their dissatisfaction.",
+            "grounding_quote": "不滿情緒",
+            "mood": "Informative",
+            "commentary_hook": "The presenter's calm demeanor contrasts with the intense topics being discussed."
+        },
+        {
+            "start_time": "05:49",
+            "end_time": "05:54",
+            "visual_action": "A screenshot of a Yahoo! News article in Chinese: \"議員月薪可養32人！印尼青年闖國會「舉賊王」旗討公平\" (MP's monthly salary can support 32 people! Indonesian youth storm parliament with 'Pirate King' flag demanding fairness). Chinese text overlay: \"印尼貧富差距\" (Indonesia Rich-Poor Gap).",
+            "dialogue_summary": "The speaker gives an example from Indonesia, where parliament members earn dozens of times the basic salary and want to raise their own pay.",
+            "grounding_quote": "國會議員拿的薪資",
+            "mood": "Critical",
+            "commentary_hook": "The article title 'MP's monthly salary can support 32 people!' is a striking detail."
+        },
+        {
+            "start_time": "05:54",
+            "end_time": "05:59",
+            "visual_action": "A screenshot of a CNA news article in Chinese: \"菲律賓防洪弊案惹眾怒 數千民眾上街抗議\" (Philippines flood prevention corruption case sparks public anger, thousands protest in streets). Chinese text overlays: \"印尼貧富差距 菲律賓官員貪腐\" (Indonesia Rich-Poor Gap, Philippines Official Corruption).",
+            "dialogue_summary": "The speaker mentions the Philippines, where millions were affected by floods, but flood prevention funds were reportedly embezzled.",
+            "grounding_quote": "防洪預算卻被爆料貪污",
+            "mood": "Outraged",
+            "commentary_hook": "The combination of natural disaster and corruption is a potent issue."
+        },
+        {
+            "start_time": "05:59",
+            "end_time": "06:04",
+            "visual_action": "A screenshot of an RTI News article in Chinese: \"Z世代怒火撼動世界屋脊 尼泊爾政局動盪短期難平\" (Gen Z's anger shakes the roof of the world, Nepal's political instability hard to resolve in short term). Chinese text overlays: \"印尼貧富差距 菲律賓官員貪腐 尼泊爾舊勢力掌權\" (Indonesia Rich-Poor Gap, Philippines Official Corruption, Nepal Old Forces in Power).",
+            "dialogue_summary": "The speaker notes that in Nepal, despite political turmoil, the same old forces remain in power.",
+            "grounding_quote": "舊勢力掌權",
+            "mood": "Frustrated",
+            "commentary_hook": "The phrase 'roof of the world' in the headline refers to the Himalayas, adding a dramatic touch."
+        },
+        {
+            "start_time": "06:04",
+            "end_time": "06:11",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. Chinese text overlay: \"社群媒體放大落差\" (Social Media Amplifies Disparity).",
+            "dialogue_summary": "The speaker explains that while structural problems have always existed, social media amplifies the disparity.",
+            "grounding_quote": "社群媒體放大落差",
+            "mood": "Analytical",
+            "commentary_hook": "The presenter's hand gestures emphasize the 'amplification' of disparity."
+        },
+        {
+            "start_time": "06:11",
+            "end_time": "06:20",
+            "visual_action": "A young woman with light brown hair, wearing a green tank top, sits on a beige sofa, looking intently at a light green smartphone. She then covers her face with her hand in frustration. Chinese text overlay: \"政二代特權加深不滿\" (Privileges of Second-Generation Politicians Deepen Dissatisfaction).",
+            "dialogue_summary": "The speaker describes how Gen Z, working hard, sees 'second-generation politicians' flaunting wealth on TikTok and Instagram, leading to a stronger sense of relative deprivation.",
+            "grounding_quote": "相對的剝奪感",
+            "mood": "Frustrated",
+            "commentary_hook": "The woman's visible frustration while scrolling on her phone is highly relatable to the topic."
+        },
+        {
+            "start_time": "06:20",
+            "end_time": "06:28",
+            "visual_action": "A Twitter (now X) feed showing various posts under the hashtag #NepoBabies. The posts include images of protests, bullets, and political figures. Chinese text overlay: \"#NepoBabies\".",
+            "dialogue_summary": "The speaker mentions a specific hashtag, #NepoBabies, used in Nepal to criticize children of politicians who flaunt their parents' wealth.",
+            "grounding_quote": "#NepoBabies",
+            "mood": "Critical",
+            "commentary_hook": "The direct reference to a specific hashtag and its purpose is a strong hook."
+        },
+        {
+            "start_time": "06:28",
+            "end_time": "06:43",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. Then, a low-angle shot of people's legs and their long shadows on the ground, suggesting a protest march. This transitions to a vertical video showing a protest in Kathmandu, Nepal, with a 'WAKEUPNEPAL STOP LOOT, START WORK' sign. Another vertical video shows a 'ONE PIECE' skull flag in Paris, France. Another vertical video shows a person on a motorcycle holding a 'ONE PIECE' skull flag in Jakarta, Indonesia. Chinese text overlay: \"跨國抗議浪潮擴散\" (Cross-border protest wave spreads).",
+            "dialogue_summary": "The speaker explains that when protests erupt, young people use symbols like pirate flags or memes on social media to understand and relate to others' protest methods, leading to cross-border protest waves.",
+            "grounding_quote": "跨國抗議浪潮",
+            "mood": "Empowering",
+            "commentary_hook": "The 'ONE PIECE' skull flag appearing in multiple protest locations is a very specific and interesting cultural detail."
+        },
+        {
+            "start_time": "06:43",
+            "end_time": "06:48",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. Chinese text overlay: \"Z世代的特色\" (Characteristics of Gen Z).",
+            "dialogue_summary": "The speaker highlights that these protest methods have distinct Gen Z characteristics.",
+            "grounding_quote": "Z世代的特色",
+            "mood": "Analytical",
+            "commentary_hook": "The presenter's confident posture and direct gaze."
+        },
+        {
+            "start_time": "06:48",
+            "end_time": "06:50",
+            "visual_action": "A black flag with a white skull and crossbones wearing a straw hat (the 'ONE PIECE' pirate flag) waves against a blue sky. Chinese text overlay: \"Z世代怎麼抗議的？\" (How does Gen Z protest?).",
+            "dialogue_summary": "A short musical interlude introduces the next topic.",
+            "grounding_quote": "Z世代怎麼抗議的",
+            "mood": "Anticipatory",
+            "commentary_hook": "The 'ONE PIECE' flag is a strong visual cue for the upcoming discussion."
+        },
+        {
+            "start_time": "06:50",
+            "end_time": "06:58",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. This transitions to a close-up of a person's hands holding a black smartphone, scrolling. Chinese text overlays appear: \"數位工具\", \"TikTok\", \"IG reels\", \"Discord\".",
+            "dialogue_summary": "The speaker states that a key difference in Gen Z protests is the increasing importance of digital tools like TikTok, IG Reels, and Discord.",
+            "grounding_quote": "數位工具",
+            "mood": "Informative",
+            "commentary_hook": "The visual of hands scrolling on a phone is a direct representation of digital tool usage."
+        },
+        {
+            "start_time": "06:58",
+            "end_time": "07:06",
+            "visual_action": "A screenshot of a BBC News Chinese article: \"尼泊爾封鎖油管、臉書和WhatsApp，「Z世代」爆發抗議\" (Nepal blocks YouTube, Facebook, and WhatsApp, \"Gen Z\" protests erupt). Chinese text overlay: \"政府封鎖 26 個社群\" (Government blocks 26 social media platforms).",
+            "dialogue_summary": "The speaker gives Nepal as an example, where the government blocked 26 social media platforms like Facebook, X, and YouTube to suppress protests.",
+            "grounding_quote": "政府封鎖",
+            "mood": "Authoritarian",
+            "commentary_hook": "The BBC News headline directly reports on government censorship."
+        },
+        {
+            "start_time": "07:06",
+            "end_time": "07:12",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. This transitions to a Discord advertisement graphic, showing a desktop computer, a smartphone, and various cartoon characters and game controllers, all on a dark blue background with stars. Chinese text overlay: \"抗議大本營\" (Protest Headquarters).",
+            "dialogue_summary": "The speaker explains that because Discord was not blocked, it unexpectedly became a protest hub, primarily for gamers.",
+            "grounding_quote": "抗議大本營",
+            "mood": "Unexpected",
+            "commentary_hook": "The Discord ad graphic highlights its gaming origins, making its role in protests ironic."
+        },
+        {
+            "start_time": "07:12",
+            "end_time": "07:18",
+            "visual_action": "A screenshot of an article titled \"From Streets to Discord: How Nepal's Gen Z Toppled a Government\" by Amish Raj Mulmi, published on September 24, 2025. Chinese text overlays appear: \"Hami Nepal\", \"伺服器\", \"「Youth Against Corruption」\", \"14 萬人加入\".",
+            "dialogue_summary": "The speaker mentions a civic organization, Hami Nepal, that created a Discord server called 'Youth Against Corruption,' attracting 140,000 members.",
+            "grounding_quote": "14 萬人加入",
+            "mood": "Empowering",
+            "commentary_hook": "The article title 'From Streets to Discord: How Nepal's Gen Z Toppled a Government' is a bold claim."
+        },
+        {
+            "start_time": "07:18",
+            "end_time": "07:24",
+            "visual_action": "A screenshot of a Discord server interface for 'Youths Against Corruption,' showing member counts and channels.",
+            "dialogue_summary": "The speaker describes how the Discord server was used to discuss meeting locations, fact-check information, and plan ways to prevent politicians from escaping.",
+            "grounding_quote": "討論集結地點",
+            "mood": "Organized",
+            "commentary_hook": "The Discord interface shows the practical application of the platform for protest organization."
+        },
+        {
+            "start_time": "07:24",
+            "end_time": "07:34",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. Chinese text overlays appear: \"Discord → 「虛擬國會」\", \"10 萬人辯論\", \"8000 人投票\". This transitions to a photo of an older woman with glasses, wearing a red and gold sari, next to the presenter. Chinese text overlay: \"蘇希拉·卡爾基\" (Sushila Karki).",
+            "dialogue_summary": "The speaker explains that Discord evolved into a 'virtual parliament' where 100,000 people debated and nominated candidates, with 8,000 voting to elect former Chief Justice Sushila Karki as interim prime minister.",
+            "grounding_quote": "虛擬國會",
+            "mood": "Revolutionary",
+            "commentary_hook": "The idea of a 'virtual parliament' electing a prime minister is a groundbreaking concept."
+        },
+        {
+            "start_time": "07:34",
+            "end_time": "07:46",
+            "visual_action": "The male presenter is back in the studio. This transitions to a screenshot of an ETtoday News article in Chinese: \"尼泊爾首位女性總理上任 全球首次透過Discord投票產生\" (Nepal's first female prime minister takes office, first in the world elected via Discord vote). Chinese text overlays appear: \"尼泊爾臨時總理\", \"第一位女性總理\".",
+            "dialogue_summary": "The speaker emphasizes that this was not just a game; the Nepalese military and president accepted the outcome. Two days later, Karki was sworn in as interim prime minister, becoming Nepal's first female prime minister.",
+            "grounding_quote": "臨時總理",
+            "mood": "Triumphant",
+            "commentary_hook": "The news headline confirms the unprecedented nature of the Discord election."
+        },
+        {
+            "start_time": "07:46",
+            "end_time": "08:01",
+            "visual_action": "The male presenter is back in the studio, gesturing with his hands. Chinese text overlays appear: \"使用流行文化符號\", \"舉海賊旗\", \"角色扮演\".",
+            "dialogue_summary": "The speaker introduces another key characteristic of Gen Z protests: the extensive use of popular culture symbols, such as the 'One Piece' pirate flag and cosplay of characters like Luffy and Spider-Man, to visualize justice and resistance.",
+            "grounding_quote": "流行文化符號",
+            "mood": "Creative",
+            "commentary_hook": "The mention of cosplay characters like Luffy and Spider-Man makes the protests seem more accessible and modern."
+        },
+        {
+            "start_time": "08:01",
+            "end_time": "08:03",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlay: \"迷因\" (Meme).",
+            "dialogue_summary": "The speaker states that memes are also a major force.",
+            "grounding_quote": "迷因也是一大主力",
+            "mood": "Informative",
+            "commentary_hook": "The single word '迷因' (Meme) appearing on screen is a concise visual."
+        },
+        {
+            "start_time": "08:03",
+            "end_time": "08:09",
+            "visual_action": "A vertical video showing a man in a suit running, followed by a crowd. This transitions to a close-up of the same man looking distressed, then to another image of him running in a dirty shirt. English text overlay: \"NEW KASCONGO MEMES! 2023 KENYANS ON SOCIAL MEDIA CAN'T LET RUTO BREATHE! GEN Zs ARE FEARLESS!\" and \"YouTube - Kamba SoundCast\".",
+            "dialogue_summary": "The speaker gives an example from Kenya's July protests, where young people created memes of President Ruto, giving him various nicknames.",
+            "grounding_quote": "總統魯托做了迷因",
+            "mood": "Humorous",
+            "commentary_hook": "The meme-ified images of President Ruto running are visually striking and convey a sense of mockery."
+        },
+        {
+            "start_time": "08:09",
+            "end_time": "08:12",
+            "visual_action": "A Facebook post from 'United Democratic Alliance, UDA' showing graphics with 'WANTAM Achievements' and images of people. Chinese text overlay: \"WanTam! 「一屆就下台」\" (WanTam! \"One term and step down\").",
+            "dialogue_summary": "The speaker explains that one nickname for President Ruto was 'WanTam,' meaning 'one term and step down.'",
+            "grounding_quote": "一屆就下台",
+            "mood": "Sarcastic",
+            "commentary_hook": "The direct translation of 'WanTam' to 'One term and step down' is a clear political statement."
+        },
+        {
+            "start_time": "08:12",
+            "end_time": "08:22",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlays appear: \"「政府愛國口號」(Harambee!) → 「一屆就下台」(WanTam!)\". This transitions to a close-up of a person's hands using a laptop and a smartphone.",
+            "dialogue_summary": "The speaker mentions that even the government's patriotic slogan was changed to a mocking version, 'one term and step down,' using humorous symbols to spread protest actions online.",
+            "grounding_quote": "輕鬆好笑的符號",
+            "mood": "Playful",
+            "commentary_hook": "The transformation of a patriotic slogan into a mocking one demonstrates the power of memes."
+        },
+        {
+            "start_time": "08:22",
+            "end_time": "08:31",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlay: \"新一波民主化運動\" (New Wave of Democratization Movement).",
+            "dialogue_summary": "The speaker concludes this section by stating that the protest wave is ongoing globally, with observers watching to see if it will lead to a new wave of democratization.",
+            "grounding_quote": "新一波民主化運動",
+            "mood": "Hopeful",
+            "commentary_hook": "The question of whether this will lead to a 'new wave of democratization' is a significant point."
+        },
+        {
+            "start_time": "08:31",
+            "end_time": "08:34",
+            "visual_action": "A yellow background with large, stylized '777' numbers. Chinese text overlay: \"觀點 我們想跟你說的是...\" (Perspective What we want to tell you is...).",
+            "dialogue_summary": "A short musical interlude introduces the 'Perspective' segment.",
+            "grounding_quote": "觀點",
+            "mood": "Reflective",
+            "commentary_hook": "The '777' graphic is a recurring branding element."
+        },
+        {
+            "start_time": "08:34",
+            "end_time": "08:42",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlays appear: \"數位實驗\", \"流行文化\".",
+            "dialogue_summary": "The speaker reflects on the Gen Z protests, noting the interesting new forms of political participation, digital experiments, and popular culture expressions.",
+            "grounding_quote": "數位實驗",
+            "mood": "Thoughtful",
+            "commentary_hook": "The presenter's summary of 'digital experiments' and 'popular culture' encapsulates the previous points."
+        },
+        {
+            "start_time": "08:42",
+            "end_time": "08:52",
+            "visual_action": "The male presenter is back in the studio. This transitions to a shot from behind a young woman holding a white megaphone, facing a crowd of protesters. Chinese text overlays appear: \"文化符號\", \"「自由」、「反抗」\".",
+            "dialogue_summary": "The speaker explains that Gen Z doesn't use traditional political symbols but rather familiar cultural symbols to express values of freedom and resistance.",
+            "grounding_quote": "文化符號",
+            "mood": "Empowering",
+            "commentary_hook": "The image of a woman with a megaphone leading a protest is a classic symbol of activism."
+        },
+        {
+            "start_time": "08:52",
+            "end_time": "08:57",
+            "visual_action": "A close-up of hands coloring a drawing of 'One Piece' characters Luffy and Chopper. Chinese text overlay: \"尾田榮一郎\" (Eiichiro Oda).",
+            "dialogue_summary": "The speaker humorously notes that Eiichiro Oda (creator of One Piece) probably never imagined his pirate flag would carry such heavy meaning.",
+            "grounding_quote": "尾田老師",
+            "mood": "Amused",
+            "commentary_hook": "The visual of the 'One Piece' drawing directly relates to the cultural symbol discussion."
+        },
+        {
+            "start_time": "08:57",
+            "end_time": "09:08",
+            "visual_action": "A low-angle shot of several raised fists against a bright sky, with a building in the background. Chinese text overlays appear: \"嚴肅、有距離感\", \"→ 跨越國界\", \"產生共鳴\", \"民主化運動\".",
+            "dialogue_summary": "The speaker explains that this approach makes serious political demands more direct and understandable, allowing them to cross borders, resonate with people facing different issues, and drive new waves of democratization.",
+            "grounding_quote": "產生共鳴",
+            "mood": "Inspiring",
+            "commentary_hook": "The raised fists are a universal symbol of protest and solidarity."
+        },
+        {
+            "start_time": "09:08",
+            "end_time": "09:20",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlays appear: \"迷因 凝聚情緒\", \"改變制度\", \"長時間溝通協商\". This transitions to a close-up of hands pointing at charts and graphs on a table, with pens.",
+            "dialogue_summary": "The speaker raises concerns about the risks, noting that while memes can quickly rally emotions, transforming that energy into systemic change requires longer, more complex communication and negotiation.",
+            "grounding_quote": "改變制度",
+            "mood": "Cautious",
+            "commentary_hook": "The visual of hands analyzing charts represents the complex, long-term effort needed for systemic change."
+        },
+        {
+            "start_time": "09:20",
+            "end_time": "09:34",
+            "visual_action": "The male presenter is back in the studio. Chinese text overlays appear: \"缺乏組織能力\", \"可能被政治吸收\". This transitions to a black and white image of two fists bumping together.",
+            "dialogue_summary": "The speaker warns that a lack of organizational capacity could lead to the energy being dissipated or even co-opted by existing political powers, using memes to mobilize counter-narratives.",
+            "grounding_quote": "缺乏組織能力",
+            "mood": "Warning",
+            "commentary_hook": "The black and white fist bump, often a symbol of unity, here could imply co-option or a different kind of mobilization."
+        },
+        {
+            "start_time": "09:34",
+            "end_time": "09:43",
+            "visual_action": "The male presenter is back in the studio.",
+            "dialogue_summary": "The speaker concludes by stating that the Gen Z protest wave is still ongoing, with different situations in each place, and they will continue to observe its future development.",
+            "grounding_quote": "持續的發生當中",
+            "mood": "Observational",
+            "commentary_hook": "The presenter's final, serious expression."
+        },
+        {
+            "start_time": "09:43",
+            "end_time": "09:50",
+            "visual_action": "A white background with a large black 'Q' and a question in Chinese: \"你對這種充滿迷因、動漫、和數位工具的「Z世代抗議」有什麼看法呢？\" (What are your thoughts on this \"Gen Z protest\" full of memes, anime, and digital tools?).",
+            "dialogue_summary": "The speaker asks the audience for their opinion on Gen Z protests.",
+            "grounding_quote": "有什麼看法呢",
+            "mood": "Engaging",
+            "commentary_hook": "The direct question to the audience serves as an interactive element."
+        },
+        {
+            "start_time": "09:50",
+            "end_time": "09:53",
+            "visual_action": "The question remains on screen, with a large yellow 'A' appearing below it, followed by a Chinese answer: \"我覺得很酷喔，要更有社群感才能吸引到人參與！\" (I think it's cool, it needs to be more community-oriented to attract people to participate!).",
+            "dialogue_summary": "The speaker reads option A, suggesting that Gen Z protests are cool and need more community engagement.",
+            "grounding_quote": "吸引到人參與",
+            "mood": "Enthusiastic",
+            "commentary_hook": "The visual presentation of the answer options."
+        },
+        {
+            "start_time": "09:53",
+            "end_time": "09:56",
+            "visual_action": "The question remains on screen, with a large yellow 'B' appearing below it, followed by a Chinese answer: \"我覺得很沒用，有創意但不見得能真的改變制度。\" (I think it's useless, creative but not necessarily able to truly change the system.).",
+            "dialogue_summary": "The speaker reads option B, expressing skepticism about the effectiveness of creative protests in bringing real change.",
+            "grounding_quote": "改變制度",
+            "mood": "Skeptical",
+            "commentary_hook": "The contrasting opinion presented."
+        },
+        {
+            "start_time": "09:56",
+            "end_time": "10:00",
+            "visual_action": "The question remains on screen, with a large yellow 'C' appearing below it, followed by a Chinese answer: \"我覺得迷因雖然有用，但還是要靠組織和執行力才有辦法改變。\" (I think memes are useful, but it still requires organization and execution to make a change.).",
+            "dialogue_summary": "The speaker reads option C, suggesting that while memes are useful, organization and execution are crucial for change.",
+            "grounding_quote": "靠組織和執行力",
+            "mood": "Pragmatic",
+            "commentary_hook": "The final, more nuanced opinion."
+        },
+        {
+            "start_time": "10:00",
+            "end_time": "10:02",
+            "visual_action": "The screen displays a yellow background with a repeating 'A' pattern. A black and white rectangular box in the center shows a 'Q' at the top, followed by Chinese text asking about 'Generation Z protests'. Below, a large 'D' is shown with the text '其他，留言分享你的想法吧！' (Other, leave a comment to share your thoughts!). The text is white on a black background.",
+            "dialogue_summary": "The speaker encourages viewers to share their thoughts in the comments, specifically regarding 'Generation Z protests'.",
+            "grounding_quote": "分享你的想法吧！",
+            "mood": "Informative",
+            "commentary_hook": "The on-screen text is entirely in Chinese, making it inaccessible to non-Chinese speakers."
+        },
+        {
+            "start_time": "10:02",
+            "end_time": "10:05",
+            "visual_action": "The screen transitions to a split view. On the left, a man with dark hair, wearing a black striped jacket over a black shirt, sits in front of a dark grey wall with various film-related graphics and text. He looks directly at the camera. On the right, two black rectangular boxes with grid patterns display the text '影片再等等' (Video coming soon).",
+            "dialogue_summary": "The speaker thanks the audience and encourages them to share the video if they enjoyed it, to spread awareness about Generation Z protests.",
+            "grounding_quote": "歡迎分享出去",
+            "mood": "Encouraging",
+            "commentary_hook": "The background behind the speaker features film production elements like a clapperboard and film reels, suggesting a studio setting."
+        },
+        {
+            "start_time": "10:05",
+            "end_time": "10:08",
+            "visual_action": "The man on the left points his right index finger towards the upper right corner of the screen, indicating the '影片再等等' boxes. He then returns his hand to a resting position.",
+            "dialogue_summary": "The speaker directs viewers to click on the suggested videos for more content, specifically mentioning 'Indonesian unrest' and 'Indonesian pirate flags'.",
+            "grounding_quote": "看印尼動亂",
+            "mood": "Informative",
+            "commentary_hook": "The speaker's gesture clearly points to the placeholder video boxes, which are currently empty."
+        },
+        {
+            "start_time": "10:08",
+            "end_time": "10:12",
+            "visual_action": "The man on the left smiles and raises his right hand, making a waving gesture with his palm facing the camera, as if saying goodbye. He maintains eye contact with the camera.",
+            "dialogue_summary": "The speaker concludes the episode of 'Zhiqi Qiqi' and bids farewell, promising to see the audience again tomorrow night.",
+            "grounding_quote": "明晚再見囉！",
+            "mood": "Friendly",
+            "commentary_hook": "The speaker's final wave is a clear and friendly sign-off, typical of many YouTube creators."
+        }
+    ]
+}

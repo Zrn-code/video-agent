@@ -1,0 +1,1401 @@
+{
+    "global_summary": {
+        "brief_summary": "What began as a nostalgic Thanksgiving cave exploration for John Jones and his brother in Utah's Nutty Putty Cave quickly turned into a harrowing nightmare. Mistaking a treacherous passage for a familiar route, John became tragically trapped head-down in an impossibly narrow crevice. This gripping story chronicles the desperate 27-hour rescue attempt, the devastating setbacks, and the profound impact of an unforeseen tragedy on a young family.",
+        "key_themes": [
+            "The perils of cave exploration and navigational errors",
+            "Extensive and challenging rescue operations under extreme conditions",
+            "The emotional toll of tragedy on family and loved ones",
+            "Human resilience and rebuilding life after profound loss",
+            "The unforgiving nature of confined natural environments"
+        ],
+        "overall_mood": "Tragic and suspenseful"
+    },
+    "segments": [
+        {
+            "start_time": "00:00",
+            "end_time": "00:12",
+            "visual_action": "A man in a dark suit and fedora sits at a large wooden desk, gesturing with his hands. The room is dimly lit, resembling a library with dark wood paneling, bookshelves, a lantern, a globe, and stacks of books on the desk.",
+            "dialogue_summary": "The speaker, Will, introduces himself and discusses various adventurous activities like rock climbing, mountaineering, and diving, emphasizing their inherent uncertainty and risks.",
+            "grounding_quote": "具有不确定性",
+            "mood": "Informative",
+            "commentary_hook": "The speaker's fedora and the library-like setting give a classic detective show vibe."
+        },
+        {
+            "start_time": "00:12",
+            "end_time": "00:21",
+            "visual_action": "A first-person perspective shot moves through a dark, narrow cave. A headlamp illuminates rough, wet, light-brown rock formations and a muddy floor. A person's feet in white shoes are visible stepping over rocks.",
+            "dialogue_summary": "The speaker begins a story about a man who went cave exploring with his family and friends during a holiday.",
+            "grounding_quote": "地下洞穴探险",
+            "mood": "Mysterious",
+            "commentary_hook": "The first-person view makes the cave exploration feel very immersive and claustrophobic."
+        },
+        {
+            "start_time": "00:21",
+            "end_time": "00:33",
+            "visual_action": "The man in the suit and fedora returns, sitting at his desk and gesturing as he speaks.",
+            "dialogue_summary": "He explains that the man got stuck in a very narrow part of the cave, leading to a rescue operation. He then names the event as the 2009 Nutty Putty Cave exploration incident.",
+            "grounding_quote": "不幸卡住",
+            "mood": "Serious",
+            "commentary_hook": "The sudden shift to a serious tone about someone getting 'stuck' immediately raises the stakes."
+        },
+        {
+            "start_time": "00:33",
+            "end_time": "00:37",
+            "visual_action": "A black screen displays white Chinese text: '堅果油灰洞探險事件' (Nutty Putty Cave Exploration Incident). A bell rings.",
+            "dialogue_summary": "The title of the incident is presented.",
+            "grounding_quote": "探险事件",
+            "mood": "Ominous",
+            "commentary_hook": "The dramatic bell sound adds an unsettling feeling to the title card."
+        },
+        {
+            "start_time": "00:37",
+            "end_time": "00:41",
+            "visual_action": "The man in the suit is back on screen. A framed portrait of a smiling young man, John Jones, in a suit and tie appears on the left side of the screen.",
+            "dialogue_summary": "The protagonist, John Jones, is introduced as a 26-year-old.",
+            "grounding_quote": "约翰·琼斯",
+            "mood": "Informative",
+            "commentary_hook": "The formal portrait of John Jones gives a clear face to the story's subject."
+        },
+        {
+            "start_time": "00:41",
+            "end_time": "00:52",
+            "visual_action": "An animated map of the USA highlights Utah in red, with Chinese text '犹他州' (Utah). The map then zooms out to show an aerial view of a long road crossing a vast, calm lake (Great Salt Lake) with mountains under a blue, cloudy sky. Text '大盐湖 Great Salt Lake' appears.",
+            "dialogue_summary": "John was born in Utah, a resource-rich western state known for its natural beauty and popular tourist destinations like Salt Lake City, Ogden, and Provo.",
+            "grounding_quote": "犹他州是美国",
+            "mood": "Informative",
+            "commentary_hook": "The stunning aerial shot of the Great Salt Lake is a beautiful contrast to the dark cave scenes."
+        },
+        {
+            "start_time": "00:52",
+            "end_time": "00:56",
+            "visual_action": "A man in a white shirt runs through a vibrant green and yellow field towards distant mountains under a bright, sunny sky with a strong lens flare.",
+            "dialogue_summary": "John is described as having a cheerful and humorous personality, making him popular among his friends.",
+            "grounding_quote": "性格开朗为人幽默",
+            "mood": "Positive",
+            "commentary_hook": "The bright, idyllic scenery with the running man evokes a strong sense of freedom and joy."
+        },
+        {
+            "start_time": "00:56",
+            "end_time": "01:06",
+            "visual_action": "A man with a backpack walks into a dark cave entrance, silhouetted against the bright outside. Then, two framed photos appear on a black background: John Jones and his brother Josh Jones.",
+            "dialogue_summary": "John's father was an avid explorer who took John and his brother Josh on many expeditions, including into natural underground caves.",
+            "grounding_quote": "地下洞穴探险",
+            "mood": "Reminiscent",
+            "commentary_hook": "The silhouette of the explorer entering the cave is a classic adventure movie shot."
+        },
+        {
+            "start_time": "01:06",
+            "end_time": "01:13",
+            "visual_action": "The framed photos fade, revealing a wide shot inside a large cave. Numerous stalactites hang from the ceiling and stalagmites rise from the floor, illuminated by artificial light. The camera slowly pans across the formations.",
+            "dialogue_summary": "The caves are described as having a stable temperature, feeling like a labyrinth with many uncertainties, which made them both interesting and exciting.",
+            "grounding_quote": "既有趣又刺激",
+            "mood": "Awe",
+            "commentary_hook": "The intricate and vast cave formations are visually breathtaking."
+        },
+        {
+            "start_time": "01:13",
+            "end_time": "01:21",
+            "visual_action": "The man in the suit and fedora is back on screen, gesturing with his hands.",
+            "dialogue_summary": "John and his brother loved cave exploring, but as they grew up and started their own lives, they stopped going on expeditions with their father.",
+            "grounding_quote": "各自的生活",
+            "mood": "Reflective",
+            "commentary_hook": "The speaker's gesture of 'growing up' visually reinforces the passage of time in the narrative."
+        },
+        {
+            "start_time": "01:21",
+            "end_time": "01:32",
+            "visual_action": "A framed photo shows John Jones and a smiling woman, Emily, in a snowy outdoor setting. This transitions to another framed photo of John, Emily, and a baby girl.",
+            "dialogue_summary": "John, at 26, is married to Emily, and they have a 13-month-old daughter. John is currently studying at a medical school in Virginia and has not yet started working.",
+            "grounding_quote": "13个月大的女儿",
+            "mood": "Informative",
+            "commentary_hook": "The family photos provide a warm, personal glimpse into John's life."
+        },
+        {
+            "start_time": "01:32",
+            "end_time": "01:41",
+            "visual_action": "An animated map of the USA highlights Utah in red, then Virginia in orange. Chinese text '犹他州' (Utah) and '弗吉尼亚州' (Virginia) appear.",
+            "dialogue_summary": "John and his family moved from Utah to Virginia for his medical studies, where he is diligently working towards becoming a cardiologist.",
+            "grounding_quote": "弗吉尼亚州生活",
+            "mood": "Informative",
+            "commentary_hook": "The animated map clearly illustrates John's geographical move across the country."
+        },
+        {
+            "start_time": "01:41",
+            "end_time": "01:48",
+            "visual_action": "A framed portrait of Emily (John's wife) appears on a black background, with text '艾米莉 Emily' and '2009年' (2009).",
+            "dialogue_summary": "In late 2009, Emily shares exciting news with John: she is three months pregnant.",
+            "grounding_quote": "怀孕三个月了",
+            "mood": "Joyful",
+            "commentary_hook": "The '2009年' text clearly dates this significant personal event."
+        },
+        {
+            "start_time": "01:48",
+            "end_time": "02:01",
+            "visual_action": "A sepia-toned framed photo shows John and Emily smiling, sitting close together. This transitions to a shot of a large passenger airplane taking off into a cloudy blue sky.",
+            "dialogue_summary": "This means they are expecting their second child. Overjoyed, John decides to fly back to his hometown in Utah with his wife and child for Thanksgiving to share the good news with his parents.",
+            "grounding_quote": "飞回犹他州",
+            "mood": "Happy",
+            "commentary_hook": "The sepia tone of the photo gives a nostalgic and warm feeling to the family news."
+        },
+        {
+            "start_time": "02:01",
+            "end_time": "02:09",
+            "visual_action": "A black screen transitions to a framed portrait of Josh Jones, John's brother, with text '乔什 Josh Jones'.",
+            "dialogue_summary": "Upon returning to Utah, John's 23-year-old brother Josh also comes home. The brothers, who haven't seen each other in a long time, happily catch up.",
+            "grounding_quote": "弟弟乔什也回家了",
+            "mood": "Friendly",
+            "commentary_hook": "The focus shifts to Josh, formally introducing him as a key character."
+        },
+        {
+            "start_time": "02:09",
+            "end_time": "02:19",
+            "visual_action": "A first-person perspective shot moves through a dark cave, illuminated by a flashlight beam. The beam sweeps across rough, dark-grey rock walls and ceiling, revealing dripping water.",
+            "dialogue_summary": "As they chat, the brothers reminisce about their childhood experiences exploring underground caves with their father, a topic they both find very engaging.",
+            "grounding_quote": "地下洞穴探险",
+            "mood": "Nostalgic",
+            "commentary_hook": "The moving flashlight beam emphasizes the darkness and the act of exploring the cave."
+        },
+        {
+            "start_time": "02:19",
+            "end_time": "02:28",
+            "visual_action": "The man in the suit and fedora is back on screen, gesturing enthusiastically. The framed portrait of Josh Jones reappears.",
+            "dialogue_summary": "Their conversation grows more enthusiastic, and John proposes using the two-day holiday for a cave exploration trip. Josh immediately agrees to the idea.",
+            "grounding_quote": "立刻赞成了",
+            "mood": "Enthusiastic",
+            "commentary_hook": "The speaker's animated gestures perfectly convey the brothers' excitement."
+        },
+        {
+            "start_time": "02:28",
+            "end_time": "02:41",
+            "visual_action": "Framed portraits of John Jones and Josh Jones are displayed side-by-side on a black background.",
+            "dialogue_summary": "Although they had explored caves frequently as children, they hadn't done so in a long time and felt a bit out of practice. For safety, they chose a cave with a lower difficulty level.",
+            "grounding_quote": "难度较小的",
+            "mood": "Cautious",
+            "commentary_hook": "The side-by-side photos remind the viewer of the two brothers and their shared history."
+        },
+        {
+            "start_time": "02:41",
+            "end_time": "02:47",
+            "visual_action": "A wide shot of a rocky, barren landscape with a small, dark opening in the foreground. Text 'Nutty Putty Cave (坚果油灰洞)' appears.",
+            "dialogue_summary": "The chosen cave is named Nutty Putty Cave, located not far from their current position in Utah.",
+            "grounding_quote": "坚果油灰洞",
+            "mood": "Informative",
+            "commentary_hook": "The unique name 'Nutty Putty Cave' is intriguing and memorable."
+        },
+        {
+            "start_time": "02:47",
+            "end_time": "02:56",
+            "visual_action": "An animated map of the USA zooms into Utah. Utah Lake is highlighted, and then a small dot appears near it, labeled '坚果油灰洞' (Nutty Putty Cave).",
+            "dialogue_summary": "In north-central Utah, there is a freshwater body called Utah Lake, a remnant of ancient Lake Bonneville. Nutty Putty Cave is situated near Utah Lake.",
+            "grounding_quote": "犹他湖附近",
+            "mood": "Informative",
+            "commentary_hook": "The animated map clearly pinpoints the cave's location relative to a prominent geographical feature."
+        },
+        {
+            "start_time": "02:56",
+            "end_time": "03:01",
+            "visual_action": "The wide shot of the rocky cave entrance is shown again.",
+            "dialogue_summary": "The cave was discovered and explored in 1960 and is identified as a hydrothermal cave.",
+            "grounding_quote": "热液洞穴",
+            "mood": "Informative",
+            "commentary_hook": "The repeated visual of the cave entrance reinforces its appearance and significance."
+        },
+        {
+            "start_time": "03:01",
+            "end_time": "03:38",
+            "visual_action": "An animated 2D map of the Nutty Putty Cave system is displayed. It shows the total length (413m) and deepest point (44m). A red arrow indicates the entrance, then moves through sections labeled '迷宫 The Maze,' '大空间 The Big Room,' and '大狭缝 The Crack' (a very narrow passage). It then moves to '大滑梯 The Big Slide' (a wide passage that narrows).",
+            "dialogue_summary": "The speaker details the layout of Nutty Putty Cave, including its total length and depth, and describes various sections like 'The Maze,' 'The Big Room,' 'The Crack' (very narrow), and 'The Big Slide' (initially wide, then narrowing). He concludes that the cave's difficulty is not very high, but its varied paths make it enjoyable.",
+            "grounding_quote": "道路会变得狭窄",
+            "mood": "Informative",
+            "commentary_hook": "The animated map with labeled sections is very helpful for understanding the cave's complex structure."
+        },
+        {
+            "start_time": "03:38",
+            "end_time": "03:51",
+            "visual_action": "A shaky, low-quality video clip shows the rocky entrance of the cave from different angles, zooming in on the dark opening.",
+            "dialogue_summary": "After its discovery, the cave attracted numerous explorers. Despite its perceived low difficulty, it still posed risks. Since 1960, 10 people have been injured, with 4 sustaining serious injuries.",
+            "grounding_quote": "四人重伤",
+            "mood": "Cautionary",
+            "commentary_hook": "The low-quality, shaky footage adds a sense of raw realism and urgency to the past incidents."
+        },
+        {
+            "start_time": "03:51",
+            "end_time": "04:06",
+            "visual_action": "A first-person perspective shot moves through a dark, narrow cave over rocks. Then, a man in a red jacket and backpack looks up inside a narrow rock crevice, then turns and squeezes through a very tight opening.",
+            "dialogue_summary": "In the past decade alone, there were five rescue operations. In 2004, a boy got stuck in a narrow section and was rescued after 14 hours, fortunately without serious injury.",
+            "grounding_quote": "不幸卡住",
+            "mood": "Tense",
+            "commentary_hook": "The visual of the man squeezing through the extremely narrow crevice is particularly anxiety-inducing."
+        },
+        {
+            "start_time": "04:06",
+            "end_time": "04:14",
+            "visual_action": "The man in the suit and fedora is back on screen, gesturing with his hands.",
+            "dialogue_summary": "Less than a week after that rescue, another explorer became trapped in the cave, causing significant concern for local authorities.",
+            "grounding_quote": "管理方很是苦恼",
+            "mood": "Concerned",
+            "commentary_hook": "The speaker's serious expression highlights the ongoing problem with the cave."
+        },
+        {
+            "start_time": "04:14",
+            "end_time": "04:26",
+            "visual_action": "A photo shows a metal gate installed inside a cave opening, with a small wooden sign. This transitions to a photo of the cave entrance from above, showing a dark hole in the rocky ground.",
+            "dialogue_summary": "After years of research and discussion, Nutty Putty Cave was restricted from entry in 2006. Access required an application and permission from cave management. Following these measures, no serious accidents occurred.",
+            "grounding_quote": "限制进入",
+            "mood": "Regulated",
+            "commentary_hook": "The metal gate clearly indicates the new, strict access control measures for the cave."
+        },
+        {
+            "start_time": "04:26",
+            "end_time": "04:41",
+            "visual_action": "A shaky, low-quality video clip shows a person's feet navigating rocky terrain and then descending into a dark, narrow cave opening. The camera looks down into the dark hole where a person is visible.",
+            "dialogue_summary": "The cave was reopened in May 2009, allowing tourists to explore. Its low danger level made it suitable for beginners, attracting many explorers and making it a well-known spot.",
+            "grounding_quote": "重新开放",
+            "mood": "Reopened",
+            "commentary_hook": "The low-quality video footage makes it feel like an authentic, amateur recording of the cave's reopening."
+        },
+        {
+            "start_time": "04:41",
+            "end_time": "04:51",
+            "visual_action": "Framed portraits of John Jones and Josh Jones are displayed side-by-side on a black background.",
+            "dialogue_summary": "For John and Josh, who hadn't explored caves in a long time, Nutty Putty Cave seemed like the perfect place. They decided to embark on an underground cave exploration trip.",
+            "grounding_quote": "探险之旅",
+            "mood": "Anticipatory",
+            "commentary_hook": "The brothers' decision to revisit their childhood hobby sets the stage for the unfolding events."
+        },
+        {
+            "start_time": "04:51",
+            "end_time": "05:00",
+            "visual_action": "The man in the suit and fedora is back on screen, looking serious and gesturing with his hands.",
+            "dialogue_summary": "However, no one could have foreseen that this seemingly low-difficulty cave was actually fraught with hidden dangers. The speaker poses rhetorical questions about what happened that day and how the tragedy unfolded.",
+            "grounding_quote": "危机四伏",
+            "mood": "Foreboding",
+            "commentary_hook": "The speaker's final rhetorical questions create strong suspense for the continuation of the story."
+        },
+        {
+            "start_time": "05:00",
+            "end_time": "05:06",
+            "visual_action": "A man wearing a black fedora, dark suit, and striped tie sits at a large wooden desk in a dimly lit, wood-paneled room resembling a library. Bookshelves line the walls. On the desk are stacks of books, a vintage-style lantern, a globe, and a map. He gestures with his hands.",
+            "dialogue_summary": "The speaker introduces the topic, setting the scene for an event that occurred in 2009.",
+            "grounding_quote": "时间推回到2009年",
+            "mood": "Informative",
+            "commentary_hook": "The man's fedora and the library-like setting give a detective or storyteller vibe."
+        },
+        {
+            "start_time": "05:06",
+            "end_time": "05:11",
+            "visual_action": "The screen is black. White text appears, typing out '2009年11月24日' (November 24, 2009) and then '美國·猶他州·堅果油灰洞' (USA, Utah, Nutty Putty Cave).",
+            "dialogue_summary": "The audio features typing sounds and a whoosh, indicating the setting of the scene.",
+            "grounding_quote": "2009年11月24日",
+            "mood": "Preparatory",
+            "commentary_hook": "The sound effects accompanying the text create a sense of anticipation."
+        },
+        {
+            "start_time": "05:11",
+            "end_time": "05:15",
+            "visual_action": "The man in the fedora is back at his desk, gesturing. Text overlays appear on the left side of the screen, showing '2009年11月24日' and '11月24日 2009年'.",
+            "dialogue_summary": "The speaker reiterates the specific date and day of the week for the upcoming story.",
+            "grounding_quote": "这天是个星期二",
+            "mood": "Informative",
+            "commentary_hook": "The text overlays appearing and disappearing on the screen."
+        },
+        {
+            "start_time": "05:15",
+            "end_time": "05:21",
+            "visual_action": "The screen is black. Two framed photos appear side-by-side. On the left, a smiling young man (John Jones) in a suit and tie. On the right, a serious-looking young man (Josh Jones) in a blue shirt, with an older man partially visible behind him. Text identifies them as '約翰 John Jones' and '喬什 Josh Jones'.",
+            "dialogue_summary": "The speaker introduces John and his brother Josh, explaining they organized friends for a caving trip to Nutty Putty Cave.",
+            "grounding_quote": "约翰和他的弟弟",
+            "mood": "Factual",
+            "commentary_hook": "The contrast between John's smiling photo and Josh's more serious expression."
+        },
+        {
+            "start_time": "05:21",
+            "end_time": "05:26",
+            "visual_action": "The screen is black. A framed photo of a smiling young woman (Emily) with long blonde hair appears. Text identifies her as '艾米莉 Emily'.",
+            "dialogue_summary": "The speaker explains that John's wife, Emily, was pregnant and stayed home with her parents.",
+            "grounding_quote": "艾米莉怀有身孕",
+            "mood": "Explanatory",
+            "commentary_hook": "The detail about Emily's pregnancy as a reason for not joining the trip."
+        },
+        {
+            "start_time": "05:26",
+            "end_time": "05:31",
+            "visual_action": "The screen is black with white text '20 00' appearing, then changing to '20:00'.",
+            "dialogue_summary": "The speaker states that at 8 PM that evening, John, Josh, and their group arrived at the entrance of Nutty Putty Cave.",
+            "grounding_quote": "抵达了坚果油灰洞",
+            "mood": "Chronological",
+            "commentary_hook": "The digital clock animation indicating the time."
+        },
+        {
+            "start_time": "05:31",
+            "end_time": "05:38",
+            "visual_action": "The man in the fedora is back at his desk, gesturing with his hands.",
+            "dialogue_summary": "The speaker describes the cold, snowy weather outside in late November, contrasting it with the surprisingly warm interior of the cave.",
+            "grounding_quote": "温暖如春",
+            "mood": "Descriptive",
+            "commentary_hook": "The stark contrast between the freezing outside and the warm inside of the cave."
+        },
+        {
+            "start_time": "05:38",
+            "end_time": "05:43",
+            "visual_action": "A person in a blue jacket and dark pants crawls headfirst into a narrow, dark cave opening. Another person in camouflage pants is partially visible behind them. The cave walls are rough, brown rock.",
+            "dialogue_summary": "The speaker describes John and his group of over ten people taking off their jackets and entering the cave one by one.",
+            "grounding_quote": "进入了洞穴之中",
+            "mood": "Adventurous",
+            "commentary_hook": "The tight squeeze of the cave entrance, emphasizing the challenge."
+        },
+        {
+            "start_time": "05:43",
+            "end_time": "05:47",
+            "visual_action": "A grainy, dark video shows a person in light-colored clothing crawling through a very narrow, dark passage. The camera is close to the person, showing their back and legs.",
+            "dialogue_summary": "The speaker states that the entry process went smoothly, and everyone successfully entered the cave.",
+            "grounding_quote": "进行得很顺利",
+            "mood": "Claustrophobic",
+            "commentary_hook": "The extremely narrow passage, highlighting the confined space."
+        },
+        {
+            "start_time": "05:47",
+            "end_time": "05:53",
+            "visual_action": "More grainy, dark video from inside the cave. A person's headlamp illuminates the immediate area. The light source is bright, creating lens flares.",
+            "dialogue_summary": "The speaker explains that the cave was pitch black, and the explorers relied solely on their headlamps and flashlights for illumination.",
+            "grounding_quote": "漆黑一片",
+            "mood": "Dark",
+            "commentary_hook": "The bright, almost blinding headlamp light cutting through the absolute darkness."
+        },
+        {
+            "start_time": "05:53",
+            "end_time": "06:08",
+            "visual_action": "An animated map of the cave system appears on a black background, showing brown and white passages. A red arrow points to a section labeled '大滑梯 The Big Slide'. The area around 'The Big Slide' is highlighted in red, then the entire section is highlighted.",
+            "dialogue_summary": "The speaker explains that after half an hour, they reached 'The Big Slide,' a sloping area where one could slide down, describing it as a large and fun feature, and the largest space in the cave.",
+            "grounding_quote": "一个大型滑梯",
+            "mood": "Informative",
+            "commentary_hook": "The animated map visually explaining the cave's layout and features."
+        },
+        {
+            "start_time": "06:08",
+            "end_time": "06:22",
+            "visual_action": "The man in the fedora is back at his desk, gesturing. The cave map briefly appears as an overlay, showing a red dot labeled '所在位置' (current location) near 'The Big Slide'.",
+            "dialogue_summary": "The speaker states that after resting, some friends decided not to proceed further due to increasingly narrow and dangerous passages, feeling satisfied with their current exploration.",
+            "grounding_quote": "容易发生危险",
+            "mood": "Cautious",
+            "commentary_hook": "The map overlay indicating the group's current position within the cave."
+        },
+        {
+            "start_time": "06:22",
+            "end_time": "06:29",
+            "visual_action": "The screen is black. Framed photos of John and Josh reappear, along with two blank grey silhouettes for other friends. John and Josh's photos are highlighted.",
+            "dialogue_summary": "The speaker explains that John, Josh, and two other friends were not content to stop and decided to continue deeper into the cave.",
+            "grounding_quote": "不甘心只到这里",
+            "mood": "Determined",
+            "commentary_hook": "The blank silhouettes for the unnamed friends, adding a touch of mystery."
+        },
+        {
+            "start_time": "06:29",
+            "end_time": "06:31",
+            "visual_action": "The screen is black with white text 'The Birth Canal' appearing, then '（产道）' (Birth Canal) in gold text below it.",
+            "dialogue_summary": "The speaker introduces the next challenging section they planned to explore, called 'The Birth Canal'.",
+            "grounding_quote": "The Birth Canal",
+            "mood": "Anticipatory",
+            "commentary_hook": "The dramatic reveal of 'The Birth Canal' name."
+        },
+        {
+            "start_time": "06:31",
+            "end_time": "06:57",
+            "visual_action": "The animated cave map reappears. A red arrow points to '產道 The Birth Canal', which is highlighted. The path from 'The Big Slide' to 'The Birth Canal' is highlighted, showing a narrow passage and a '岔路' (fork).",
+            "dialogue_summary": "The speaker describes 'The Birth Canal's' location, the extremely narrow passage leading to it, and how passing through it feels like being born, hence its name.",
+            "grounding_quote": "更加狭窄",
+            "mood": "Descriptive",
+            "commentary_hook": "The explanation of why the passage is named 'The Birth Canal'."
+        },
+        {
+            "start_time": "06:57",
+            "end_time": "07:11",
+            "visual_action": "The screen is black. Framed photos of John and Josh, and the two grey silhouettes, reappear. John and Josh's photos are highlighted. The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker explains that John and his three friends felt it would be a missed opportunity not to explore 'The Birth Canal,' knowing that despite its narrowness, it led to a larger space where they could turn around.",
+            "grounding_quote": "那太可惜了",
+            "mood": "Adventurous",
+            "commentary_hook": "The group's adventurous spirit to explore the cave's most famous section."
+        },
+        {
+            "start_time": "07:11",
+            "end_time": "07:13",
+            "visual_action": "The screen is black with white text '關鍵岔路' (Key Fork) appearing.",
+            "dialogue_summary": "A dramatic sound effect plays, signaling a critical point in the narrative.",
+            "grounding_quote": "關鍵岔路",
+            "mood": "Suspenseful",
+            "commentary_hook": "The 'Key Fork' title card, building suspense."
+        },
+        {
+            "start_time": "07:13",
+            "end_time": "07:16",
+            "visual_action": "The man in the fedora is back at his desk.",
+            "dialogue_summary": "The speaker states that the group of four departed from 'The Big Slide'.",
+            "grounding_quote": "从大滑梯出发了",
+            "mood": "Informative",
+            "commentary_hook": "The quick transition back to the narrator's desk."
+        },
+        {
+            "start_time": "07:16",
+            "end_time": "07:20",
+            "visual_action": "Grainy, dark video from inside the cave. A bright headlamp illuminates a narrow, rocky passage. The camera follows the light as it moves forward.",
+            "dialogue_summary": "The speaker describes John leading the way, with his brother Josh and two friends following behind him.",
+            "grounding_quote": "约翰在前方带路",
+            "mood": "Exploratory",
+            "commentary_hook": "The bright headlamp beam cutting through the cave's darkness."
+        },
+        {
+            "start_time": "07:20",
+            "end_time": "07:30",
+            "visual_action": "The animated cave map reappears. A red arrow points to a fork in the path. One path leads to '產道 The Birth Canal', while the other, highlighted in red, leads to an unknown area.",
+            "dialogue_summary": "The speaker explains that after navigating a narrow passage, they reached a fork with two paths: one to 'The Birth Canal' and another to an unknown region.",
+            "grounding_quote": "到达了分叉口",
+            "mood": "Critical",
+            "commentary_hook": "The visual representation of the two diverging paths on the map."
+        },
+        {
+            "start_time": "07:30",
+            "end_time": "07:37",
+            "visual_action": "The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker explains that John stopped at the fork, as it was his first time in this cave, and he was unfamiliar with its passages.",
+            "grounding_quote": "一切都是陌生的",
+            "mood": "Cautious",
+            "commentary_hook": "John's inexperience with this particular cave system."
+        },
+        {
+            "start_time": "07:37",
+            "end_time": "07:47",
+            "visual_action": "The animated cave map reappears. John's current position (red dot) is shown at the fork. He chooses the larger path, which is highlighted in red, leading away from 'The Birth Canal'.",
+            "dialogue_summary": "The speaker describes John consulting the map and ultimately choosing the larger path, unknowingly taking the wrong route and moving further into an unknown area.",
+            "grounding_quote": "走错了路",
+            "mood": "Ominous",
+            "commentary_hook": "The visual of John choosing the incorrect path on the map."
+        },
+        {
+            "start_time": "07:47",
+            "end_time": "07:55",
+            "visual_action": "Grainy, dark video from inside the cave. The headlamp illuminates a narrow, rocky passage. The camera moves forward, showing the tight space.",
+            "dialogue_summary": "The speaker describes John crawling further, realizing he no longer had space to turn around, but he wasn't worried because he believed the map indicated a wider area ahead.",
+            "grounding_quote": "没有足够的空间",
+            "mood": "Claustrophobic",
+            "commentary_hook": "The increasing narrowness of the passage, creating a sense of entrapment."
+        },
+        {
+            "start_time": "07:55",
+            "end_time": "08:02",
+            "visual_action": "The animated cave map reappears. John's position (red dot) is shown past the fork, on the wrong path, near a wider area. The '產道 The Birth Canal' is highlighted.",
+            "dialogue_summary": "The speaker explains John's belief that after passing through 'The Birth Canal,' he would reach a spacious area where he could turn around.",
+            "grounding_quote": "可以在那里掉头",
+            "mood": "Misinformed",
+            "commentary_hook": "The map showing John's incorrect location relative to 'The Birth Canal'."
+        },
+        {
+            "start_time": "08:02",
+            "end_time": "08:08",
+            "visual_action": "The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker describes John seeing a wider path ahead with his headlamp, which falsely confirmed his belief that he was on the correct route.",
+            "grounding_quote": "没有走错路",
+            "mood": "Misguided confidence",
+            "commentary_hook": "John's false sense of security based on limited visibility."
+        },
+        {
+            "start_time": "08:08",
+            "end_time": "08:17",
+            "visual_action": "Grainy, dark video from inside the cave. A person (John) crawls headfirst down a steep, narrow, vertical passage. The headlamp illuminates the path.",
+            "dialogue_summary": "The speaker describes John crawling further and finally reaching a vertical passage that matched the description of 'The Birth Canal'.",
+            "grounding_quote": "垂直向下的通道",
+            "mood": "Intense",
+            "commentary_hook": "The visual of the vertical descent into the narrow passage."
+        },
+        {
+            "start_time": "08:17",
+            "end_time": "08:24",
+            "visual_action": "A still photo of John Jones, smiling, wearing a blue and red beanie with a headlamp, lying on his stomach in a very narrow, muddy cave passage, giving a thumbs up.",
+            "dialogue_summary": "The speaker describes John continuing headfirst, but the passage became increasingly narrow, eventually trapping him.",
+            "grounding_quote": "无法再前进了",
+            "mood": "Trapped",
+            "commentary_hook": "The iconic photo of John in the extremely narrow passage, giving a thumbs up despite the situation."
+        },
+        {
+            "start_time": "08:24",
+            "end_time": "08:34",
+            "visual_action": "The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker explains John's desperate attempt to push through the passage, hoping to experience a 'rebirth,' but this action caused him to become completely stuck.",
+            "grounding_quote": "彻底卡住了",
+            "mood": "Grim",
+            "commentary_hook": "The tragic irony of seeking 'rebirth' and becoming completely trapped."
+        },
+        {
+            "start_time": "08:34",
+            "end_time": "08:48",
+            "visual_action": "The animated cave map reappears. John's position is shown deep in the unknown, narrow passage, highlighted in red. The '產道 The Birth Canal' is also shown.",
+            "dialogue_summary": "The speaker clarifies that John mistakenly thought he was in 'The Birth Canal' but had actually taken the wrong path at the fork, entering an unknown and impassable area, too narrow even for experienced cavers.",
+            "grounding_quote": "走错了路",
+            "mood": "Tragic irony",
+            "commentary_hook": "The map visually confirming John's fatal navigational error."
+        },
+        {
+            "start_time": "08:48",
+            "end_time": "08:57",
+            "visual_action": "An animated 3D rendering of a person (John) stuck vertically in a narrow cave passage, head down, feet up. The passage is grey and textured.",
+            "dialogue_summary": "The speaker describes John's inverted and stuck position, almost vertical in the passage, unable to move forward or backward.",
+            "grounding_quote": "无法前行",
+            "mood": "Graphic",
+            "commentary_hook": "The 3D animation clearly illustrating John's inverted and trapped state."
+        },
+        {
+            "start_time": "08:57",
+            "end_time": "09:09",
+            "visual_action": "An animated 3D rendering of a human head and torso, with the brain glowing orange, showing blood flow. The brain's glow intensifies.",
+            "dialogue_summary": "The speaker explains the severe danger of John's inverted position, causing blood to rush to his brain, hindering circulation, and posing a life-threatening risk, especially for those with pre-existing conditions.",
+            "grounding_quote": "危及生命",
+            "mood": "Alarming",
+            "commentary_hook": "The glowing brain animation effectively visualizing the medical danger."
+        },
+        {
+            "start_time": "09:09",
+            "end_time": "09:15",
+            "visual_action": "The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker states that John, realizing he was stuck, finally understood he had taken the wrong path, but it was already too late.",
+            "grounding_quote": "为时已晚",
+            "mood": "Regretful",
+            "commentary_hook": "The narrator's somber tone emphasizing the finality of the situation."
+        },
+        {
+            "start_time": "09:15",
+            "end_time": "09:20",
+            "visual_action": "The screen is black. A framed photo of John Jones, smiling, reappears.",
+            "dialogue_summary": "The speaker describes John's desperate struggle to move backward, but he remained completely immobile.",
+            "grounding_quote": "纹丝不动",
+            "mood": "Desperate",
+            "commentary_hook": "The stark contrast between John's smiling photo and his dire, trapped reality."
+        },
+        {
+            "start_time": "09:20",
+            "end_time": "09:31",
+            "visual_action": "The man in the fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The speaker describes John's initial panic, followed by his quick composure. He knew panicking would worsen the situation, so he shouted loudly for those behind him to stop advancing.",
+            "grounding_quote": "停止前进",
+            "mood": "Resilient",
+            "commentary_hook": "John's remarkable self-control and warning to others in a life-threatening situation."
+        },
+        {
+            "start_time": "09:31",
+            "end_time": "09:39",
+            "visual_action": "A person in a blue jacket and dark pants crawls into a narrow, dark cave opening. Another person in camouflage pants is partially visible behind them. This is a repeated visual.",
+            "dialogue_summary": "The speaker describes John's brother, Josh, quickly realizing John was in trouble. He grabbed John's feet, attempting to pull him out.",
+            "grounding_quote": "将他拉出",
+            "mood": "Urgent",
+            "commentary_hook": "The repeated visual emphasizes the immediate and desperate rescue attempt."
+        },
+        {
+            "start_time": "09:39",
+            "end_time": "09:48",
+            "visual_action": "An animated 3D rendering of a person (John) stuck vertically in a narrow cave passage, head down, feet up. This is a repeated visual.",
+            "dialogue_summary": "The speaker explains that John's vertical position made it incredibly difficult to pull him up, and the cramped space prevented Josh from getting enough leverage.",
+            "grounding_quote": "使不上劲",
+            "mood": "Futile",
+            "commentary_hook": "The 3D animation again highlights the physical impossibility of the rescue."
+        },
+        {
+            "start_time": "09:48",
+            "end_time": "09:56",
+            "visual_action": "The man in the fedora is back at his desk, gesturing. The screen is black with a framed photo of Josh Jones, serious-looking, appearing.",
+            "dialogue_summary": "The speaker describes Josh's futile attempts to pull John out, as John would slide back into place if Josh released him. Josh realized he couldn't save his brother.",
+            "grounding_quote": "无法救出哥哥",
+            "mood": "Despairing",
+            "commentary_hook": "Josh's somber photo reflecting his despair and helplessness."
+        },
+        {
+            "start_time": "09:56",
+            "end_time": "10:00",
+            "visual_action": "The screen is black with white text '21 00' appearing, then changing to '21:00'.",
+            "dialogue_summary": "The speaker states that Josh looked at the time, and it was 9 PM.",
+            "grounding_quote": "晚上9点",
+            "mood": "Critical",
+            "commentary_hook": "The final time stamp, marking a critical moment in the unfolding tragedy."
+        },
+        {
+            "start_time": "10:00",
+            "end_time": "10:03",
+            "visual_action": "A wide shot of a dark, rocky landscape under a starry night sky, with the Milky Way prominently visible. Chinese subtitles are displayed at the bottom of the screen.",
+            "dialogue_summary": "The narrator explains that Josh tells his brother, John, to hold on while Josh goes to find help.",
+            "grounding_quote": "乔什让哥哥坚守住",
+            "mood": "Hopeful",
+            "commentary_hook": "The stunning view of the Milky Way against the dark landscape."
+        },
+        {
+            "start_time": "10:03",
+            "end_time": "10:08",
+            "visual_action": "The same starry night landscape with rocky formations is shown. Chinese subtitles are present.",
+            "dialogue_summary": "The narrator continues, stating that a friend stays with John, while Josh begins his descent back to the ground.",
+            "grounding_quote": "返回至地面",
+            "mood": "Determined",
+            "commentary_hook": "The vastness of the night sky contrasting with the human struggle."
+        },
+        {
+            "start_time": "10:08",
+            "end_time": "10:10",
+            "visual_action": "A black screen displays white text '21 30'.",
+            "dialogue_summary": "The narrator informs that the time has reached 9:30 PM.",
+            "grounding_quote": "晚上9点半",
+            "mood": "Informative",
+            "commentary_hook": "The stark, digital time display on a black background."
+        },
+        {
+            "start_time": "10:10",
+            "end_time": "10:14",
+            "visual_action": "A man wearing a dark suit and a fedora sits at a large wooden desk in a dimly lit, wood-paneled room. Bookshelves line the walls, and a globe and stacked books are on the desk. He gestures with his hands as he speaks.",
+            "dialogue_summary": "The narrator, embodied by the man, explains that Josh spent half an hour returning to the cave entrance and then made a distress call.",
+            "grounding_quote": "拨打了求救电话",
+            "mood": "Serious",
+            "commentary_hook": "The narrator's fedora and the old-fashioned, library-like setting."
+        },
+        {
+            "start_time": "10:14",
+            "end_time": "10:16",
+            "visual_action": "A black screen displays white text '救援行动' (Rescue Operation) with a sound effect.",
+            "dialogue_summary": "The narrator announces the commencement of the rescue operation.",
+            "grounding_quote": "救援行动",
+            "mood": "Urgent",
+            "commentary_hook": "The dramatic sound effect accompanying the title card."
+        },
+        {
+            "start_time": "10:16",
+            "end_time": "10:19",
+            "visual_action": "The man in the dark suit and fedora is again seated at his desk, gesturing with his hands.",
+            "dialogue_summary": "The narrator states that the first person to arrive after the distress call was a woman named Susie.",
+            "grounding_quote": "第一个赶来救援的",
+            "mood": "Informative",
+            "commentary_hook": "The consistent, almost theatrical, setting of the narrator's room."
+        },
+        {
+            "start_time": "10:19",
+            "end_time": "10:23",
+            "visual_action": "A woman with dark hair, wearing a light grey t-shirt and blue jeans, walks from right to left, carrying a dark bag. She is isolated on a black background. Text '苏珊 Susie Motola' appears next to her.",
+            "dialogue_summary": "The narrator introduces Susie Motola as a local rescue volunteer.",
+            "grounding_quote": "苏珊的女子",
+            "mood": "Informative",
+            "commentary_hook": "The 'green screen' effect of the woman walking on a black background."
+        },
+        {
+            "start_time": "10:23",
+            "end_time": "10:31",
+            "visual_action": "A nighttime highway is shown with numerous cars driving in both directions. Their bright headlights and red taillights illuminate the dark road, which is surrounded by flat, dark terrain.",
+            "dialogue_summary": "The narrator explains that Susie immediately departed for the remote cave after receiving the rescue message, arriving at 12:30 AM.",
+            "grounding_quote": "立即出发前往该洞穴",
+            "mood": "Urgent",
+            "commentary_hook": "The bright, almost blinding, headlights of the cars on the dark highway."
+        },
+        {
+            "start_time": "10:31",
+            "end_time": "10:35",
+            "visual_action": "A black screen displays white text '00 30'.",
+            "dialogue_summary": "The narrator states that John had been trapped in the cave for three and a half hours by this time.",
+            "grounding_quote": "3个半小时了",
+            "mood": "Critical",
+            "commentary_hook": "The simple, stark time display."
+        },
+        {
+            "start_time": "10:35",
+            "end_time": "10:42",
+            "visual_action": "An animated diagram shows a black silhouette of a person (John) stuck head-down and vertically in a narrow, winding grey cave passage.",
+            "dialogue_summary": "The narrator describes John's predicament, being stuck head-down, and highlights that there are only 8 to 10 hours of 'golden rescue time' in such situations.",
+            "grounding_quote": "垂直卡在通道内",
+            "mood": "Dire",
+            "commentary_hook": "The simple, yet effective, animated diagram illustrating John's trapped position."
+        },
+        {
+            "start_time": "10:42",
+            "end_time": "10:50",
+            "visual_action": "A first-person perspective shot from inside a dark, narrow cave, illuminated by a headlamp. The camera moves through tight, irregular rock formations, with the light beam sweeping across the rough, grey-white cave walls.",
+            "dialogue_summary": "The narrator explains that Susie's small stature and extensive experience in the Nutty Putty Cave allowed her to quickly reach John's location.",
+            "grounding_quote": "情况十分熟悉",
+            "mood": "Tense",
+            "commentary_hook": "The claustrophobic feeling of the narrow cave passage from the first-person view."
+        },
+        {
+            "start_time": "10:50",
+            "end_time": "11:01",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with his hands.",
+            "dialogue_summary": "The narrator explains Susie's personal experience of being stuck in a cave, her deep understanding of the fear and helplessness John must be feeling, and her empathy for his situation.",
+            "grounding_quote": "恐惧感和无助感",
+            "mood": "Empathetic",
+            "commentary_hook": "The narrator's expressive hand gestures conveying the emotional weight of the situation."
+        },
+        {
+            "start_time": "11:01",
+            "end_time": "11:04",
+            "visual_action": "A black screen displays white text: '「嗨！约翰，我叫苏珊。你怎么样了？」' (Hi! John, I'm Susie. How are you?)",
+            "dialogue_summary": "Susie's dialogue is presented.",
+            "grounding_quote": "你怎么样了？",
+            "mood": "Reassuring",
+            "commentary_hook": "The direct quote on a black screen, emphasizing the personal interaction."
+        },
+        {
+            "start_time": "11:04",
+            "end_time": "11:08",
+            "visual_action": "A black screen displays white text: '「嗨！苏珊，感谢到来。我很想离开这里。」' (Hi! Susie, thanks for coming. I really want to leave here.)",
+            "dialogue_summary": "John's distressed reply is shown.",
+            "grounding_quote": "我很想离开这里",
+            "mood": "Distressed",
+            "commentary_hook": "The simple text conveying John's deep desire to escape."
+        },
+        {
+            "start_time": "11:08",
+            "end_time": "11:12",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The narrator notes that John's condition appears better than initially feared, not yet reaching a critical state.",
+            "grounding_quote": "比想象中的好",
+            "mood": "Slightly hopeful",
+            "commentary_hook": "The narrator's slight smile, indicating a glimmer of hope."
+        },
+        {
+            "start_time": "11:12",
+            "end_time": "11:17",
+            "visual_action": "The woman (Susie) with dark hair, wearing a light grey t-shirt and blue jeans, walks from left to right, carrying a dark bag. She is isolated on a black background. Text '苏珊 Susie Motola' appears.",
+            "dialogue_summary": "The narrator describes Susie talking to John while cutting off his jeans in an attempt to create more space for him.",
+            "grounding_quote": "剪掉了他的牛仔裤",
+            "mood": "Practical",
+            "commentary_hook": "The repeated 'green screen' effect for Susie's character."
+        },
+        {
+            "start_time": "11:17",
+            "end_time": "11:24",
+            "visual_action": "An animated diagram shows John stuck head-down in the cave. The cave walls are grey.",
+            "dialogue_summary": "The narrator explains that John was too tightly wedged, and despite Susie's two hours of various attempts, she couldn't pull him free.",
+            "grounding_quote": "卡得实在太紧了",
+            "mood": "Frustrated",
+            "commentary_hook": "The visual representation of John's complete immobility within the cave."
+        },
+        {
+            "start_time": "11:24",
+            "end_time": "11:30",
+            "visual_action": "News footage shows a night scene outside the cave entrance. Several rescue workers in yellow and red uniforms with helmets are gathered around the opening, illuminated by bright lights. A 'KUTV' and 'O2HD NEWS' logo are visible. A close-up shows two firefighters talking.",
+            "dialogue_summary": "The narrator states that other rescue personnel had arrived at the cave entrance, and John had been trapped for over five hours.",
+            "grounding_quote": "已经过去了5个多小时",
+            "mood": "Urgent",
+            "commentary_hook": "The news channel logos, indicating real-world footage of the rescue."
+        },
+        {
+            "start_time": "11:30",
+            "end_time": "11:33",
+            "visual_action": "News footage shows a rescue worker in a yellow uniform and red helmet, seen from the chest up, looking into the cave opening. Blue tape marks off an area around the entrance.",
+            "dialogue_summary": "The narrator mentions that dozens of rescue personnel had gathered outside the cave.",
+            "grounding_quote": "几十名救援人员",
+            "mood": "Organized",
+            "commentary_hook": "The blue tape marking the rescue zone, suggesting a structured operation."
+        },
+        {
+            "start_time": "11:33",
+            "end_time": "11:40",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with his hands.",
+            "dialogue_summary": "The narrator describes the rescue team beginning to formulate a plan, with one suggestion being to lubricate the cave walls with oil to help pull John out.",
+            "grounding_quote": "用油涂抹在岩壁上",
+            "mood": "Strategic",
+            "commentary_hook": "The unusual and potentially risky suggestion of using oil for lubrication."
+        },
+        {
+            "start_time": "11:40",
+            "end_time": "11:45",
+            "visual_action": "A natural cave entrance is shown, rocky and dark, with some green moss. The rocks are grey and uneven.",
+            "dialogue_summary": "The narrator mentions another proposal to use explosives to open the cave, but both suggestions were ultimately rejected.",
+            "grounding_quote": "用炸药将洞穴炸开",
+            "mood": "Desperate",
+            "commentary_hook": "The extreme nature of the 'explosives' suggestion for rescue."
+        },
+        {
+            "start_time": "11:45",
+            "end_time": "11:50",
+            "visual_action": "News footage shows a rescue worker in a white helmet and beige uniform crawling head-first into a narrow, dark cave passage, illuminated by a headlamp. The 'O2HD NEWS' logo is visible.",
+            "dialogue_summary": "The narrator states that a rescue worker reached John's location to relieve Susie.",
+            "grounding_quote": "接替苏珊",
+            "mood": "Determined",
+            "commentary_hook": "The tight squeeze the rescuer is making to enter the cave."
+        },
+        {
+            "start_time": "11:50",
+            "end_time": "11:57",
+            "visual_action": "News footage shows the camera panning across the narrow, rocky cave passage, then cuts back to the rescuer crawling. The cave walls are rough and grey.",
+            "dialogue_summary": "The narrator explains that large equipment couldn't be brought in, so the rescuer used small tools to try and chip away at the rock around John.",
+            "grounding_quote": "小型设备进入",
+            "mood": "Challenging",
+            "commentary_hook": "The visible texture and narrowness of the cave walls."
+        },
+        {
+            "start_time": "11:57",
+            "end_time": "12:01",
+            "visual_action": "An animated diagram shows a foot and a shoe, with a measurement of '25cm' indicating the narrowness of the space. The background is a light grey texture.",
+            "dialogue_summary": "The narrator states that the rescuer spent an hour and a half on this attempt, but it proved ineffective, leading to its abandonment.",
+            "grounding_quote": "根本起不到什么作用",
+            "mood": "Futile",
+            "commentary_hook": "The diagram with the '25cm' measurement, highlighting the extreme spatial constraint."
+        },
+        {
+            "start_time": "12:01",
+            "end_time": "12:09",
+            "visual_action": "News footage shows a rescue worker in a red helmet and beige uniform, seen from above, deep inside a narrow cave. Ropes and pulleys are visibly set up, attached to the rough rock walls. The worker is using a tool.",
+            "dialogue_summary": "The narrator describes the rescue team's decision to install a pulley and rope traction system inside the cave, drilling the pulley into the rock for stability.",
+            "grounding_quote": "架设一个滑轮和绳索",
+            "mood": "Innovative",
+            "commentary_hook": "The complex arrangement of ropes and pulleys in the confined cave space."
+        },
+        {
+            "start_time": "12:09",
+            "end_time": "12:17",
+            "visual_action": "An animated diagram shows John stuck in the cave. A red line, representing a rope, is attached to John's foot and leads up through the winding cave passage to a pulley system. The rope is pulled, and John's silhouette moves slightly upwards.",
+            "dialogue_summary": "The narrator explains the plan: one end of the rope was tied to John's foot, and rescuers at the cave entrance would gradually pull him up.",
+            "grounding_quote": "一点点将约翰拉上来",
+            "mood": "Cautious",
+            "commentary_hook": "The visual representation of the rope pulling John, illustrating the rescue mechanism."
+        },
+        {
+            "start_time": "12:17",
+            "end_time": "12:22",
+            "visual_action": "A close-up shot of an old, rusty metal pulley with a thick cable running through it, set outdoors in bright daylight. Small bits of moss or lichen are visible on the rust.",
+            "dialogue_summary": "The narrator provides historical context, mentioning that a similar method was used by a rescue team in 2004 to save someone trapped in a cave.",
+            "grounding_quote": "救起一个被卡在洞穴内的人",
+            "mood": "Historical context",
+            "commentary_hook": "The rusty, weathered appearance of the pulley, suggesting its age and use."
+        },
+        {
+            "start_time": "12:22",
+            "end_time": "12:27",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with a serious expression.",
+            "dialogue_summary": "The narrator explains that John's head-down position and the influence of gravity made this rescue significantly more difficult than previous attempts.",
+            "grounding_quote": "受到重力的影响",
+            "mood": "Challenging",
+            "commentary_hook": "The narrator's serious expression, emphasizing the increased difficulty."
+        },
+        {
+            "start_time": "12:27",
+            "end_time": "12:30",
+            "visual_action": "News footage shows a rescue worker in a red helmet and beige uniform, seen from above, deep inside a narrow cave. Ropes and pulleys are visibly set up, attached to the rough rock walls. The worker is using a tool. (Similar to 12:01-12:09)",
+            "dialogue_summary": "The narrator states that after several hours of preparation, the traction device was fully installed.",
+            "grounding_quote": "牵引装置架设完成",
+            "mood": "Prepared",
+            "commentary_hook": "The visible complexity of the installed ropes and pulleys, indicating thorough preparation."
+        },
+        {
+            "start_time": "12:30",
+            "end_time": "12:36",
+            "visual_action": "News footage shows a rescue worker in a red helmet and beige uniform, seen from above, deep inside a narrow cave. John's foot, with a rope tied to it, is visible in the foreground. The worker is looking down at John.",
+            "dialogue_summary": "The narrator describes a rescue worker tying the rope to John's foot, and people outside the cave beginning to pull the rope with force.",
+            "grounding_quote": "绑在了约翰的脚上",
+            "mood": "Action-oriented",
+            "commentary_hook": "The clear view of John's foot with the rope tied around it."
+        },
+        {
+            "start_time": "12:36",
+            "end_time": "12:43",
+            "visual_action": "An animated diagram shows John stuck in the cave. The red rope is pulled, and John's silhouette moves slightly upwards. His feet then visibly hit the 'ceiling' of the narrow passage.",
+            "dialogue_summary": "The narrator states that the method initially worked, and John was pulled up slightly, but his feet then hit the tunnel's ceiling.",
+            "grounding_quote": "碰到了隧道的的天花板",
+            "mood": "Setback",
+            "commentary_hook": "The visual of John's feet hitting the ceiling, indicating a new obstruction."
+        },
+        {
+            "start_time": "12:43",
+            "end_time": "12:47",
+            "visual_action": "The animated diagram of John stuck in the cave is shown.",
+            "dialogue_summary": "The narrator explains that due to John's inverted position, his heart struggled to pump blood to his legs, leading to a lack of blood flow.",
+            "grounding_quote": "难以将血液注入腿部",
+            "mood": "Medical concern",
+            "commentary_hook": "The explanation of the physiological impact of John's inverted position."
+        },
+        {
+            "start_time": "12:47",
+            "end_time": "12:56",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with his hands.",
+            "dialogue_summary": "The narrator describes John crying out in pain when his legs touched the ceiling, and rescuers realizing that the angle of the passage prevented them from bending John's body.",
+            "grounding_quote": "痛苦地嚎叫",
+            "mood": "Distressed",
+            "commentary_hook": "The narrator's emphasis on John's audible pain."
+        },
+        {
+            "start_time": "12:56",
+            "end_time": "13:00",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The narrator states that attempting to forcibly pull John out would result in his legs being broken.",
+            "grounding_quote": "双腿将被折断",
+            "mood": "Horrifying",
+            "commentary_hook": "The grim choice presented to the rescue team."
+        },
+        {
+            "start_time": "13:00",
+            "end_time": "13:08",
+            "visual_action": "A portrait photo of a smiling young man (John Jones) in a suit and tie is displayed. Text '约翰 John Jones' appears next to him.",
+            "dialogue_summary": "The narrator explains that John was in a very weak state, and breaking his legs would make it impossible for him to survive the ordeal.",
+            "grounding_quote": "非常虚弱的状态",
+            "mood": "Desperate",
+            "commentary_hook": "The stark contrast between John's smiling portrait and his dire, life-threatening situation."
+        },
+        {
+            "start_time": "13:08",
+            "end_time": "13:16",
+            "visual_action": "News footage shows an outdoor scene at dusk or dawn, with several rescue workers in uniforms and helmets gathered around the cave entrance. A red tent is visible in the background, and the ground is rocky.",
+            "dialogue_summary": "The narrator states that the rescue team had no choice but to temporarily halt the rescue, and John had now been inverted in the cave for 12 hours.",
+            "grounding_quote": "倒挂在洞穴内12个小时",
+            "mood": "Stalled",
+            "commentary_hook": "The red tent in the background, suggesting a prolonged and established rescue operation."
+        },
+        {
+            "start_time": "13:16",
+            "end_time": "13:23",
+            "visual_action": "News footage shows a close-up inside the cave, revealing various blue and black hoses, ropes, and other equipment. The cave walls are rough and grey.",
+            "dialogue_summary": "The narrator explains that after further discussion, the rescue team located heavy-duty air drills and bits, and planned to construct a new pulley traction system.",
+            "grounding_quote": "重型空气钻子和钻头",
+            "mood": "Resilient",
+            "commentary_hook": "The tangle of hoses and equipment in the tight cave, highlighting the complex setup."
+        },
+        {
+            "start_time": "13:23",
+            "end_time": "13:27",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with a determined expression.",
+            "dialogue_summary": "The narrator states that they also dispatched another cave exploration expert into the cave.",
+            "grounding_quote": "洞穴探险专家",
+            "mood": "Renewed effort",
+            "commentary_hook": "The narrator's determined look, conveying the team's resolve."
+        },
+        {
+            "start_time": "13:27",
+            "end_time": "13:31",
+            "visual_action": "An animated icon of a person with a red shirt and blue/red hair is displayed. Text '瑞安·舒尔茨 Ryan Shurtz' appears next to it.",
+            "dialogue_summary": "The narrator introduces the expert as Ryan Shurtz.",
+            "grounding_quote": "瑞安·舒尔茨",
+            "mood": "Informative",
+            "commentary_hook": "The simple, stylized icon representing Ryan Shurtz."
+        },
+        {
+            "start_time": "13:31",
+            "end_time": "13:39",
+            "visual_action": "An animated diagram shows John stuck in the cave. Ryan's silhouette is now near John, and the red rope is visibly detached from John's foot. The cave walls are grey.",
+            "dialogue_summary": "The narrator explains that Ryan reached John, untied the rope that was previously on his foot, and began talking to him with the aim of alleviating his fear.",
+            "grounding_quote": "消除他的恐惧",
+            "mood": "Comforting",
+            "commentary_hook": "The visual of the rope being untied, signifying a shift in the immediate rescue strategy."
+        },
+        {
+            "start_time": "13:39",
+            "end_time": "13:44",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with a gentle expression.",
+            "dialogue_summary": "The narrator describes Ryan encouraging John to talk about his family and share stories, as Ryan wanted to listen.",
+            "grounding_quote": "聊聊他的家庭",
+            "mood": "Empathetic",
+            "commentary_hook": "The narrator's gentle tone, reflecting Ryan's comforting approach."
+        },
+        {
+            "start_time": "13:44",
+            "end_time": "13:53",
+            "visual_action": "A family portrait of John, his wife, and a baby is displayed. Text '约翰 John Jones' appears.",
+            "dialogue_summary": "The narrator explains that John told Ryan about his beautiful wife and another child expected next year. Ryan believed John's family should speak to him to encourage him not to give up.",
+            "grounding_quote": "另一个孩子也将在明年出生",
+            "mood": "Emotional",
+            "commentary_hook": "The heartwarming family photo, providing a strong emotional hook."
+        },
+        {
+            "start_time": "13:53",
+            "end_time": "14:00",
+            "visual_action": "A portrait photo of a smiling young woman (Emily) is displayed. Text '艾米莉 Emily' appears next to her.",
+            "dialogue_summary": "The narrator states that John's wife, Emily, was already at the cave entrance, anxiously awaiting her husband, and spoke to him via walkie-talkie.",
+            "grounding_quote": "苦苦守候着丈夫的出来",
+            "mood": "Anxious",
+            "commentary_hook": "The wife's hopeful smile despite the dire circumstances."
+        },
+        {
+            "start_time": "14:00",
+            "end_time": "14:05",
+            "visual_action": "A black screen displays white text: '「我爱你！继续战斗吧！」' (I love you! Keep fighting!)",
+            "dialogue_summary": "Emily's loving and encouraging message to John is presented.",
+            "grounding_quote": "继续战斗吧！",
+            "mood": "Loving",
+            "commentary_hook": "The powerful message of love and encouragement displayed on screen."
+        },
+        {
+            "start_time": "14:05",
+            "end_time": "14:09",
+            "visual_action": "A black screen displays white text: '「告诉艾米莉我爱她！我一定会出来！」' (Tell Emily I love her! I will definitely come out!)",
+            "dialogue_summary": "John's emotional and determined response is shown.",
+            "grounding_quote": "我一定会出来！",
+            "mood": "Determined",
+            "commentary_hook": "John's resolute declaration, showing his will to survive."
+        },
+        {
+            "start_time": "14:09",
+            "end_time": "14:11",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The narrator states that the calls from his family helped John regain his confidence.",
+            "grounding_quote": "重振了信心",
+            "mood": "Renewed hope",
+            "commentary_hook": "The narrator's positive tone, reflecting John's renewed spirit."
+        },
+        {
+            "start_time": "14:11",
+            "end_time": "14:16",
+            "visual_action": "A black screen displays white text: '16 00' and '11月25日 2009年' (November 25, 2009).",
+            "dialogue_summary": "The narrator informs that it is now 4 PM the next day, and John has been trapped for 19 hours.",
+            "grounding_quote": "被困19个小时",
+            "mood": "Critical",
+            "commentary_hook": "The increasing time count, emphasizing the prolonged ordeal."
+        },
+        {
+            "start_time": "14:16",
+            "end_time": "14:23",
+            "visual_action": "News footage shows an interior view of the cave, with multiple orange ropes running through a series of 15 pulleys attached to the rough, wet cave wall. The cave floor is rocky.",
+            "dialogue_summary": "The narrator explains that the rescue team finally installed 15 serial pulleys inside the cave, and eight people outside began pulling the ropes.",
+            "grounding_quote": "15个串联滑轮",
+            "mood": "Intensive effort",
+            "commentary_hook": "The sheer number of pulleys installed, indicating a complex mechanical system."
+        },
+        {
+            "start_time": "14:23",
+            "end_time": "14:28",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing with his hands.",
+            "dialogue_summary": "The narrator describes Ryan instructing John to cooperate by pushing outwards and continuously adjusting his posture to prevent injury.",
+            "grounding_quote": "不断调整姿势",
+            "mood": "Coordinated",
+            "commentary_hook": "The narrator's explanation of the delicate and coordinated maneuver required."
+        },
+        {
+            "start_time": "14:28",
+            "end_time": "14:39",
+            "visual_action": "An animated diagram shows John stuck in the cave. The red rope is pulled, John moves upwards, but his feet hit the ceiling again, causing him to cry out. Ryan's silhouette is visible near John.",
+            "dialogue_summary": "The narrator states that John was slowly pulled up, but his legs once again hit the ceiling, causing him to cry out in pain. Ryan then signaled for the people outside to stop pulling and allow John to rest.",
+            "grounding_quote": "再次发出了痛苦的哀嚎",
+            "mood": "Painful setback",
+            "commentary_hook": "The repeated visual of John's feet hitting the ceiling, highlighting the persistent obstruction."
+        },
+        {
+            "start_time": "14:39",
+            "end_time": "14:45",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The narrator explains that after three more pulls, John was successfully raised to a certain height.",
+            "grounding_quote": "拉起了一定的高度",
+            "mood": "Persistent",
+            "commentary_hook": "The narrator's description of the repeated, arduous pulling effort."
+        },
+        {
+            "start_time": "14:45",
+            "end_time": "14:49",
+            "visual_action": "An animated diagram shows John stuck in the cave. Ryan's silhouette is looking down, and John's face is now vaguely visible from Ryan's perspective.",
+            "dialogue_summary": "The narrator states that Ryan could now faintly see John's face.",
+            "grounding_quote": "隐约看到约翰的脸",
+            "mood": "Breakthrough",
+            "commentary_hook": "The visual of John's face becoming visible, marking a significant moment in the rescue."
+        },
+        {
+            "start_time": "14:49",
+            "end_time": "14:55",
+            "visual_action": "The man in the dark suit and fedora is back at his desk, gesturing.",
+            "dialogue_summary": "The narrator describes John's eyes as red and swollen from prolonged crying, but notes that there was no bleeding, and his complexion appeared acceptable.",
+            "grounding_quote": "眼睛因为长时间哭泣而红肿",
+            "mood": "Relieved",
+            "commentary_hook": "The specific detail about John's swollen eyes, indicating his emotional distress."
+        },
+        {
+            "start_time": "14:55",
+            "end_time": "15:00",
+            "visual_action": "An animated icon of a person with a red shirt and blue/red hair (Ryan Shurtz) is displayed. Text '瑞安 Ryan Shurtz' appears.",
+            "dialogue_summary": "The narrator states that after about 20 minutes, Ryan signaled for the fourth pull, feeling optimistic that they could save John if he didn't give up.",
+            "grounding_quote": "第4次拉绳",
+            "mood": "Optimistic",
+            "commentary_hook": "The focus on Ryan's renewed confidence and the belief in John's resilience."
+        },
+        {
+            "start_time": "15:00",
+            "end_time": "15:03",
+            "visual_action": "The screen is black with a cartoon icon of a man named Ryan Shurtz, depicted with a red shirt and a blue and red hat. Chinese characters for 'Ryan Shurtz' are displayed above the icon.",
+            "dialogue_summary": "The narrator states that if John's team doesn't give up, they can definitely save him.",
+            "grounding_quote": "他们一定可以",
+            "mood": "Hopeful",
+            "commentary_hook": "The cartoon icon for Ryan Shurtz is a simple, flat design."
+        },
+        {
+            "start_time": "15:03",
+            "end_time": "15:07",
+            "visual_action": "A close-up shot inside a dark cave shows a person in a red helmet with a bright headlamp shining. The person is maneuvering through a narrow, rocky passage. The bright light creates lens flares.",
+            "dialogue_summary": "The narrator explains that an unexpected accident occurred at this moment.",
+            "grounding_quote": "意外发生了",
+            "mood": "Tense",
+            "commentary_hook": "The bright headlamp creates significant lens flares, obscuring some of the cave details."
+        },
+        {
+            "start_time": "15:07",
+            "end_time": "15:12",
+            "visual_action": "The camera is inside the cave, looking up at a person in a red helmet with a bright headlamp. The person is struggling with ropes and equipment. Suddenly, the view shifts, and the light source is seen falling, followed by a quick shot of people falling to the ground in a dark, rocky area.",
+            "dialogue_summary": "One of the fixed pulleys could not bear the weight and shattered instantly, causing all eight rope-pullers at the cave entrance to fall to the ground.",
+            "grounding_quote": "瞬间碎裂",
+            "mood": "Chaotic",
+            "commentary_hook": "The sudden shift in camera perspective and the falling light effectively convey the unexpected accident."
+        },
+        {
+            "start_time": "15:12",
+            "end_time": "15:18",
+            "visual_action": "The screen is black with the same cartoon icon of Ryan Shurtz. Chinese characters for 'Ryan Shurtz' are displayed.",
+            "dialogue_summary": "Ryan was hit on the head by a falling pulley fragment, and the powerful impact caused him to briefly lose consciousness.",
+            "grounding_quote": "短暂昏迷",
+            "mood": "Injured",
+            "commentary_hook": "The cartoon icon is used again to represent Ryan's injury, keeping the visual consistent with the previous character introduction."
+        },
+        {
+            "start_time": "15:18",
+            "end_time": "15:26",
+            "visual_action": "An animated overhead map of a cave system is shown on a black background. A red line indicates a path, and a black figure representing John is seen at the bottom of a vertical shaft. The figure then moves deeper into the shaft.",
+            "dialogue_summary": "After waking up, Ryan discovered that John had fallen once again into the vertical passage, becoming even more deeply stuck due to gravity.",
+            "grounding_quote": "卡得更深了",
+            "mood": "Desperate",
+            "commentary_hook": "The animated map clearly illustrates the complex and dangerous cave structure."
+        },
+        {
+            "start_time": "15:26",
+            "end_time": "15:30",
+            "visual_action": "A close-up of medical equipment, specifically an IV drip bag and a monitor displaying green and red heart rate lines. The monitor is in the background, slightly out of focus.",
+            "dialogue_summary": "Due to his head injury, Ryan returned to the surface and was urgently sent to the hospital.",
+            "grounding_quote": "送往了医院",
+            "mood": "Concerned",
+            "commentary_hook": "The medical monitor with fluctuating lines effectively conveys a sense of urgency and medical attention."
+        },
+        {
+            "start_time": "15:30",
+            "end_time": "15:37",
+            "visual_action": "A wide shot of a rocky, barren landscape under a clear sky. Several rescue workers in various uniforms (some in yellow, some in red/orange) are gathered around a cave entrance marked with blue ropes. Several vehicles, including a white pickup truck and a red utility trailer, are parked nearby. Mountains are visible in the distance.",
+            "dialogue_summary": "At this time, there were 137 rescue personnel outside the cave, but only six of them could barely reach John's trapped location.",
+            "grounding_quote": "137名救援人员",
+            "mood": "Overwhelmed",
+            "commentary_hook": "The sheer number of rescue personnel visible highlights the scale of the operation."
+        },
+        {
+            "start_time": "15:37",
+            "end_time": "15:43",
+            "visual_action": "The screen is black with a cartoon icon of a man named Dave, depicted with a brown hat and beard, wearing blue overalls. Chinese characters for 'Dave' are displayed.",
+            "dialogue_summary": "Ultimately, Ryan's father, Dave, took over the mission and reached John's side.",
+            "grounding_quote": "戴夫到达了",
+            "mood": "Determined",
+            "commentary_hook": "The introduction of Dave with a distinct cartoon icon helps differentiate him from Ryan."
+        },
+        {
+            "start_time": "15:43",
+            "end_time": "15:50",
+            "visual_action": "The screen is black with white Chinese text appearing, quoting John and Dave.",
+            "dialogue_summary": "John said, 'I'm going to die here. I can't get out, right?' Dave replied, 'We will save you.'",
+            "grounding_quote": "我们会救你上去",
+            "mood": "Despairing",
+            "commentary_hook": "The use of text on a black screen emphasizes the emotional weight of the dialogue."
+        },
+        {
+            "start_time": "15:50",
+            "end_time": "15:58",
+            "visual_action": "A man in a dark suit and fedora sits at a wooden desk in a dimly lit, wood-paneled room filled with bookshelves. He gestures with his hands as he speaks.",
+            "dialogue_summary": "John was still concerned about Ryan, who had just tried to save him, asking if he was injured. However, John's voice became softer and softer, and his breathing slowed.",
+            "grounding_quote": "声音越来越轻",
+            "mood": "Somber",
+            "commentary_hook": "The narrator's serious expression and gestures convey the gravity of the situation."
+        },
+        {
+            "start_time": "15:58",
+            "end_time": "16:03",
+            "visual_action": "The screen is black with the cartoon icon of Dave. Chinese characters for 'Dave' are displayed.",
+            "dialogue_summary": "Dave came above John, wanting to tie the rope to his leg again, but found he couldn't reach.",
+            "grounding_quote": "已经够不到了",
+            "mood": "Frustrated",
+            "commentary_hook": "The static cartoon image contrasts with the intense action described."
+        },
+        {
+            "start_time": "16:03",
+            "end_time": "16:13",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking and gesturing.",
+            "dialogue_summary": "Dave then desperately moved forward, trying to tie the rope to John's leg. He wanted to save John so badly that he went too deep and also got stuck.",
+            "grounding_quote": "戴夫也被卡住了",
+            "mood": "Desperate",
+            "commentary_hook": "The narrator's intense gaze emphasizes the critical moment."
+        },
+        {
+            "start_time": "16:13",
+            "end_time": "16:22",
+            "visual_action": "The screen is black with the cartoon icon of Dave. Chinese characters for 'Dave' are displayed. A drilling sound is heard.",
+            "dialogue_summary": "Fortunately, Dave had the strength and managed to escape the danger. He then drilled a new hole to install a pulley. After the previous terrifying experience, Dave was exhausted.",
+            "grounding_quote": "没有了体力",
+            "mood": "Exhausted",
+            "commentary_hook": "The drilling sound effect adds a layer of realism to the cartoon image."
+        },
+        {
+            "start_time": "16:22",
+            "end_time": "16:31",
+            "visual_action": "A close-up photo of a man in a dark cave, wearing a headlamp, looking directly at the camera. He appears to be in a very tight space, surrounded by rock.",
+            "dialogue_summary": "He struggled out of the cave and was replaced by another rescuer. Dave informed the rescuers that John was in critical condition and had no energy left.",
+            "grounding_quote": "没有动力了",
+            "mood": "Grave",
+            "commentary_hook": "The photo of the rescuer in the tight cave highlights the extreme difficulty and danger of the rescue."
+        },
+        {
+            "start_time": "16:31",
+            "end_time": "16:36",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking and gesturing.",
+            "dialogue_summary": "The rescue team wanted Emily to communicate with John again. However, John no longer responded.",
+            "grounding_quote": "没有任何回应",
+            "mood": "Hopeless",
+            "commentary_hook": "The narrator's somber tone matches the grim news."
+        },
+        {
+            "start_time": "16:36",
+            "end_time": "16:43",
+            "visual_action": "A wide shot of a dark, rocky landscape under a starry night sky, with the Milky Way visible. Text '11月25日 2009年' appears. The scene then transitions to a view looking down into a dark, narrow cave opening, with a light source moving inside.",
+            "dialogue_summary": "It was 11:56 PM on the second night. A doctor, with the help of rescuers, entered the cave.",
+            "grounding_quote": "进入了洞穴",
+            "mood": "Urgent",
+            "commentary_hook": "The transition from the vast starry night to the claustrophobic cave entrance is visually striking."
+        },
+        {
+            "start_time": "16:43",
+            "end_time": "16:50",
+            "visual_action": "The camera moves through a dark, narrow cave passage, illuminated by a single light source. The passage is very tight and rocky. The screen then turns black with white Chinese text.",
+            "dialogue_summary": "They managed to reach John's location. After examination, the doctor determined that John had no vital signs.",
+            "grounding_quote": "无生命体征",
+            "mood": "Tragic",
+            "commentary_hook": "The tight, dark cave passage emphasizes the extreme conditions the rescuers faced."
+        },
+        {
+            "start_time": "16:50",
+            "end_time": "16:58",
+            "visual_action": "A night shot of the cave entrance area. Several rescue workers in uniforms are standing around, some looking down. Bright lights illuminate the scene. Vehicles are parked in the background.",
+            "dialogue_summary": "At this point, all 137 rescue personnel fell silent. They had put in 27 hours of effort, but ultimately failed to rescue John.",
+            "grounding_quote": "全部沉默了",
+            "mood": "Somber",
+            "commentary_hook": "The bright lights at night highlight the continuous, round-the-clock effort of the rescue team."
+        },
+        {
+            "start_time": "16:58",
+            "end_time": "17:07",
+            "visual_action": "A wide shot of the rocky, barren landscape around the cave entrance during the day. The cave entrance is a dark, irregular hole in the rock.",
+            "dialogue_summary": "John's wife, Emily, was heartbroken by the news and refused to leave the cave, not wanting to leave her husband alone there.",
+            "grounding_quote": "泣不成声",
+            "mood": "Grieving",
+            "commentary_hook": "The desolate landscape around the cave entrance adds to the somber mood."
+        },
+        {
+            "start_time": "17:07",
+            "end_time": "17:14",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking and gesturing.",
+            "dialogue_summary": "After a long period of persuasion, the rescuers promised to retrieve John's body from the cave, and only then did Emily agree to leave.",
+            "grounding_quote": "答应离开",
+            "mood": "Resigned",
+            "commentary_hook": "The narrator's calm but serious demeanor reflects the difficult negotiation."
+        },
+        {
+            "start_time": "17:14",
+            "end_time": "17:23",
+            "visual_action": "A young man in a yellow and black jacket stands in the foreground, looking to the right. In the background, rescue workers are gathered around the cave entrance during daylight. A red utility trailer is visible.",
+            "dialogue_summary": "Rescuers later discovered that the recovery operation after John's death was even more difficult than rescuing him alive. The rescue personnel tried a series of methods, but ultimately failed.",
+            "grounding_quote": "失败告终",
+            "mood": "Frustrated",
+            "commentary_hook": "The young man in the foreground appears to be a journalist or observer, adding a human element to the scene."
+        },
+        {
+            "start_time": "17:23",
+            "end_time": "17:31",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking and gesturing. Text '11月26日 2009年' appears.",
+            "dialogue_summary": "On the morning of November 26th, rescuers called John's family and informed them that they had done their best but could not retrieve John.",
+            "grounding_quote": "无法将约翰带出来",
+            "mood": "Regretful",
+            "commentary_hook": "The date overlay emphasizes the timeline of the events."
+        },
+        {
+            "start_time": "17:31",
+            "end_time": "17:37",
+            "visual_action": "A family photo of eight people (four men, four women) smiling and posing in front of a green, leafy background.",
+            "dialogue_summary": "John's family considered the dangers of the rescue and did not ask the rescue team to continue.",
+            "grounding_quote": "没有再让",
+            "mood": "Acceptance",
+            "commentary_hook": "The family photo provides a poignant reminder of John's life and the people he left behind."
+        },
+        {
+            "start_time": "17:37",
+            "end_time": "17:40",
+            "visual_action": "The screen is black with white Chinese text.",
+            "dialogue_summary": "After deliberation, the family decided to leave John permanently in the cave.",
+            "grounding_quote": "留在洞穴里",
+            "mood": "Solemn",
+            "commentary_hook": "The stark text on a black background highlights the finality of the decision."
+        },
+        {
+            "start_time": "17:40",
+            "end_time": "17:47",
+            "visual_action": "An aerial shot looking down into the cave entrance. A person in a green uniform is leaning over the edge, looking into the hole. The entrance appears to be filled with concrete.",
+            "dialogue_summary": "After the incident, local authorities used concrete to completely seal the entrance to Nutty Putty Cave, prohibiting any further entry.",
+            "grounding_quote": "彻底堵住",
+            "mood": "Closure",
+            "commentary_hook": "The concrete filling the cave entrance visually represents the permanent closure."
+        },
+        {
+            "start_time": "17:47",
+            "end_time": "17:54",
+            "visual_action": "A close-up photo of a bronze plaque with John's name and image, placed on the rocky ground near the cave entrance.",
+            "dialogue_summary": "A plaque with John's name and photo was placed at the cave entrance. They made the cave John's tomb, allowing him to rest there forever.",
+            "grounding_quote": "约翰的墓地",
+            "mood": "Memorial",
+            "commentary_hook": "The bronze plaque serves as a permanent memorial to John."
+        },
+        {
+            "start_time": "17:54",
+            "end_time": "17:59",
+            "visual_action": "A photo of a smiling young woman with long brown hair, wearing a white collared shirt. Text '艾米莉 Emily' is displayed.",
+            "dialogue_summary": "After losing her husband, John's wife Emily returned to their home in Virginia.",
+            "grounding_quote": "回到他们家",
+            "mood": "Resilient",
+            "commentary_hook": "Emily's smiling face in the photo suggests her strength despite the tragedy."
+        },
+        {
+            "start_time": "17:59",
+            "end_time": "18:07",
+            "visual_action": "A photo of Emily smiling and holding a newborn baby, whose face is blurred. Text '6月 2010年' is displayed.",
+            "dialogue_summary": "In June of the following year, Emily's son was born. Emily named him John, as a continuation of John's life.",
+            "grounding_quote": "生命延续",
+            "mood": "Bittersweet",
+            "commentary_hook": "The blurred face of the baby respects privacy while showing the new life."
+        },
+        {
+            "start_time": "18:07",
+            "end_time": "18:15",
+            "visual_action": "A wedding photo of Emily in a white dress, smiling and holding a bouquet, standing next to a man in a suit holding a young boy. A young girl is also next to Emily. Text '8月 2012年' is displayed.",
+            "dialogue_summary": "In August 2012, Emily emerged from her grief and found a new partner. John's father personally officiated their wedding.",
+            "grounding_quote": "新的伴侣",
+            "mood": "Joyful",
+            "commentary_hook": "The presence of children in the wedding photo indicates a blended family."
+        },
+        {
+            "start_time": "18:15",
+            "end_time": "18:22",
+            "visual_action": "A family photo of Emily, her new husband, and three children (two boys, one girl) standing outdoors. The children's faces are blurred.",
+            "dialogue_summary": "Soon after the wedding, Emily welcomed her third child. The family of five began a brand new life.",
+            "grounding_quote": "全新生活",
+            "mood": "Content",
+            "commentary_hook": "The blurred faces of the children maintain their privacy."
+        },
+        {
+            "start_time": "18:22",
+            "end_time": "18:35",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking and gesturing.",
+            "dialogue_summary": "The narrator concludes the story, reflecting on John's unfortunate fate. He had a happy family and a beautiful life, but in his final moments, he experienced unimaginable fear and despair.",
+            "grounding_quote": "恐惧与绝望",
+            "mood": "Reflective",
+            "commentary_hook": "The narrator's solemn expression conveys the tragic nature of the story."
+        },
+        {
+            "start_time": "18:35",
+            "end_time": "18:41",
+            "visual_action": "The man in the dark suit and fedora sits at the wooden desk, speaking. A yellow circular logo with a stylized 'X' appears over his chest.",
+            "dialogue_summary": "The narrator expresses hope that Emily's resilience brings some comfort to John.",
+            "grounding_quote": "一丝欣慰",
+            "mood": "Hopeful",
+            "commentary_hook": "The logo appearing over the narrator's chest is a common YouTube channel outro element."
+        },
+        {
+            "start_time": "18:41",
+            "end_time": "18:50",
+            "visual_action": "A black screen with a yellow circular logo with a stylized 'X' and Chinese text 'X调查' (X Investigation) below it. Soft, melancholic music plays.",
+            "dialogue_summary": "No dialogue, only melancholic music.",
+            "grounding_quote": "No dialogue",
+            "mood": "Melancholic",
+            "commentary_hook": "The logo and music indicate the end of the video."
+        }
+    ]
+}

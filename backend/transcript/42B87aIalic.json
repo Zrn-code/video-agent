@@ -1,0 +1,934 @@
+{
+    "lines": [
+        {
+            "timestamp": "00:00",
+            "speaker": "Speaker 1",
+            "text": "我們不拒絕任何東西",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:04",
+            "speaker": "Speaker 1",
+            "text": "所以也不要奪走我們任何一樣東西",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:07",
+            "speaker": "Speaker 1",
+            "text": "宇宙的流星街就在黑洞",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:09",
+            "speaker": "Speaker 1",
+            "text": "而黑洞的最深處就是奇異點",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:11",
+            "speaker": "Speaker 1",
+            "text": "物理學家超想研究奇異點",
+            "tone": "enthusiastic"
+        },
+        {
+            "timestamp": "00:14",
+            "speaker": "Speaker 1",
+            "text": "雖然困難重重，但是這不能阻止我們的好奇心",
+            "tone": "determined"
+        },
+        {
+            "timestamp": "00:17",
+            "speaker": "Speaker 1",
+            "text": "我們可以根據愛因斯坦留下的廣義相對論",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:20",
+            "speaker": "Speaker 1",
+            "text": "推測黑洞和黑洞中的奇異點是什麼樣子",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:23",
+            "speaker": "Speaker 1",
+            "text": "在那裡，時空失控了嗎?",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "00:26",
+            "speaker": "Speaker 1",
+            "text": "而掉進黑洞後，我們會真的徹底消失",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "00:29",
+            "speaker": "Speaker 1",
+            "text": "還是能發現宇宙的終極秘密呢?",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "00:32",
+            "speaker": "Speaker 1",
+            "text": "現在，這一集就跟我們一起潛入黑洞，看看黑洞的裡面到底長怎樣",
+            "tone": "engaging"
+        },
+        {
+            "timestamp": "00:38",
+            "speaker": "Speaker 1",
+            "text": "但我得先說，進去了，就出不來囉",
+            "tone": "playful warning"
+        },
+        {
+            "timestamp": "00:46",
+            "speaker": "Speaker 1",
+            "text": "還以為量子科技離我們很遠嗎?",
+            "tone": "rhetorical question"
+        },
+        {
+            "timestamp": "00:47",
+            "speaker": "Speaker 1",
+            "text": "量子力學已經發展出影響日常生活的半導體、網路科技和通訊工具、GPS、核能、太陽能、磁浮列車",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:55",
+            "speaker": "Speaker 1",
+            "text": "雷射手術、醫學影像等等",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:57",
+            "speaker": "Speaker 1",
+            "text": "還有眾所期待的量子電腦",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "00:59",
+            "speaker": "Speaker 1",
+            "text": "世界正為未來的量子資訊科學做準備，你又打算如何加入呢?",
+            "tone": "engaging"
+        },
+        {
+            "timestamp": "01:04",
+            "speaker": "Speaker 1",
+            "text": "趕快上QuBear量子熊微學習平台，一起來Quantum PAY一下吧",
+            "tone": "call to action"
+        },
+        {
+            "timestamp": "01:13",
+            "speaker": "Speaker 1",
+            "text": "上一集我們聊了大質量恆星的結局，有可能變成黑洞",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:16",
+            "speaker": "Speaker 1",
+            "text": "除此之外每一個星系的中央還有超大質量黑洞的存在",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:21",
+            "speaker": "Speaker 1",
+            "text": "但能吞噬一切的黑洞，能被物理定律描述嗎?",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "01:25",
+            "speaker": "Speaker 1",
+            "text": "先前我們好好聊過了愛因斯坦著名的廣義相對論，解釋時間、空間與重力之間的關係",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:32",
+            "speaker": "Speaker 1",
+            "text": "想複習的話可以先點這裡",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:33",
+            "speaker": "Speaker 1",
+            "text": "當時還沒提到的是",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:35",
+            "speaker": "Speaker 1",
+            "text": "廣義相對論裡頭包含了 一條最重要的方程式",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:39",
+            "speaker": "Speaker 1",
+            "text": "愛因斯坦場方程式",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:40",
+            "speaker": "Speaker 1",
+            "text": "方程式的左半邊描述了時空的曲率，右邊則是物質的運動",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:46",
+            "speaker": "Speaker 1",
+            "text": "宛如一首宇宙之詩",
+            "tone": "evocative"
+        },
+        {
+            "timestamp": "01:48",
+            "speaker": "Speaker 1",
+            "text": "它說，物質決定時空如何彎曲",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:51",
+            "speaker": "Speaker 1",
+            "text": "而時空告訴物質如何運動",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:53",
+            "speaker": "Speaker 1",
+            "text": "重力在廣義相對論的視角來看，它相當於時空的曲率",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "01:58",
+            "speaker": "Speaker 1",
+            "text": "與其說是一種力，不如說是一種幾何效應",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:02",
+            "speaker": "Speaker 1",
+            "text": "為什麼說是幾何效應呢?",
+            "tone": "rhetorical question"
+        },
+        {
+            "timestamp": "02:04",
+            "speaker": "Speaker 1",
+            "text": "你可以這麼想",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:05",
+            "speaker": "Speaker 1",
+            "text": "有兩隻螞蟻在地球儀的赤道相隔一段距離",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:09",
+            "speaker": "Speaker 1",
+            "text": "兩隻螞蟻都筆直地往北朝著北極點前進",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:13",
+            "speaker": "Speaker 1",
+            "text": "你會發現",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:14",
+            "speaker": "Speaker 1",
+            "text": "明明一開始兩隻螞蟻是平行前進，理論上不會相交",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:18",
+            "speaker": "Speaker 1",
+            "text": "但隨著越靠近北極點，這兩隻呢會更靠近彼此，最後在北極點的位置相會，這種靠近彼此就像是重力，把兩個質量吸引在一起",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "02:29",
+            "speaker": "Speaker 1",
+            "text": "看似被一種無形力牽引，但實際上不過是因為球面本身存在著曲率",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:35",
+            "speaker": "Speaker 1",
+            "text": "同樣的我們熟悉的重力在廣義相對論中則被認為是一種幾何效應，一切都是因為時空彎曲，導致物體互相靠近，或是光線前進的路線產生彎曲",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:46",
+            "speaker": "Speaker 1",
+            "text": "如果你還是看不懂這個公式，這很正常",
+            "tone": "empathetic"
+        },
+        {
+            "timestamp": "02:48",
+            "speaker": "Speaker 1",
+            "text": "因為這個公式就包含了這麼多專有名詞",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "02:53",
+            "speaker": "Speaker 1",
+            "text": "你以為都是一堆常數",
+            "tone": "rhetorical"
+        },
+        {
+            "timestamp": "02:54",
+            "speaker": "Speaker 1",
+            "text": "錯",
+            "tone": "assertive"
+        },
+        {
+            "timestamp": "02:55",
+            "speaker": "Speaker 1",
+            "text": "例如這個帶有兩個下標的符號，則代表這個元素是一個二階張量",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:00",
+            "speaker": "Speaker 1",
+            "text": "在廣義相對論裡面，則以一個四乘四的矩陣呈現",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:04",
+            "speaker": "Speaker 1",
+            "text": "沒錯",
+            "tone": "affirmative"
+        },
+        {
+            "timestamp": "03:04",
+            "speaker": "Speaker 1",
+            "text": "這個公式極為複雜，就連愛因斯坦本人都花了不少心力，才求出一個近似解，用來預測水星軌道的偏差角度",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:13",
+            "speaker": "Speaker 1",
+            "text": "但是就在愛因斯坦發表廣義相對論的兩個月後，他收到了一封信",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:17",
+            "speaker": "Speaker 1",
+            "text": "寄件者是物理學家卡爾·史瓦西，在天體是球對稱、不旋轉也不帶電的前提下",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:23",
+            "speaker": "Speaker 1",
+            "text": "史瓦西算出了一個精確解",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:27",
+            "speaker": "Speaker 1",
+            "text": "前面這一項代表重力如何影響時間，後面這一項表示空間如何被扭曲",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:33",
+            "speaker": "Speaker 1",
+            "text": "後人為了紀念他，便稱之為「史瓦西度規」",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:37",
+            "speaker": "Speaker 1",
+            "text": "解開數學題目固然讓人感到開心，但這個解卻令人毛骨悚然",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:41",
+            "speaker": "Speaker 1",
+            "text": "不然你仔細看",
+            "tone": "engaging"
+        },
+        {
+            "timestamp": "03:42",
+            "speaker": "Speaker 1",
+            "text": "再看仔細點，有沒有看到一個人臉?",
+            "tone": "teasing"
+        },
+        {
+            "timestamp": "03:45",
+            "speaker": "Speaker 1",
+            "text": "嗯，沒有就好",
+            "tone": "humorous"
+        },
+        {
+            "timestamp": "03:46",
+            "speaker": "Speaker 1",
+            "text": "因為它真正恐怖的點在於，根據史瓦西的解，在一個特殊的「臨界半徑」上會發生奇怪的事",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "03:53",
+            "speaker": "Speaker 1",
+            "text": "當一個天體的r，也就是半徑，等於2GM / c平方的時候，時間項會等於0",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:01",
+            "speaker": "Speaker 1",
+            "text": "你沒聽錯",
+            "tone": "emphatic"
+        },
+        {
+            "timestamp": "04:02",
+            "speaker": "Speaker 1",
+            "text": "時間是零欸",
+            "tone": "surprised"
+        },
+        {
+            "timestamp": "04:03",
+            "speaker": "Speaker 1",
+            "text": "零欸",
+            "tone": "surprised"
+        },
+        {
+            "timestamp": "04:03",
+            "speaker": "Speaker 1",
+            "text": "也就是時間會幾乎靜止",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:06",
+            "speaker": "Speaker 1",
+            "text": "而且空間項更會發散到無窮大，代表空間被扭曲，拉伸至無限",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:12",
+            "speaker": "Speaker 1",
+            "text": "對",
+            "tone": "affirmative"
+        },
+        {
+            "timestamp": "04:12",
+            "speaker": "Speaker 1",
+            "text": "你還是沒聽錯",
+            "tone": "emphatic"
+        },
+        {
+            "timestamp": "04:13",
+            "speaker": "Speaker 1",
+            "text": "無限欸",
+            "tone": "exasperated"
+        },
+        {
+            "timestamp": "04:14",
+            "speaker": "Speaker 1",
+            "text": "無限欸",
+            "tone": "exasperated"
+        },
+        {
+            "timestamp": "04:15",
+            "speaker": "Speaker 1",
+            "text": "一個天體如果小於它的臨界半徑，以太陽來說的話，就是半徑三公里，那這個天體呢，就會形成一個奇異點",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:24",
+            "speaker": "Speaker 1",
+            "text": "在臨界半徑內的所有物質，包括光都無法逃逸出去",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:30",
+            "speaker": "Speaker 1",
+            "text": "這個臨界半徑就稱為「史瓦西半徑」",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:32",
+            "speaker": "Speaker 1",
+            "text": "而這個連光都無法逃脫的奇異點，就是我們熟知的黑洞",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "04:37",
+            "speaker": "Speaker 1",
+            "text": "那到底我們碰到這個黑洞會發生什麼事呢？時空被扭曲到極限，到底是什麼意思？",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "04:44",
+            "speaker": "Speaker 1",
+            "text": "不如就讓我們坐上一艘太空船，前往黑洞，從外到內，看看黑洞到底長什麼樣子",
+            "tone": "engaging"
+        },
+        {
+            "timestamp": "04:51",
+            "speaker": "Speaker 1",
+            "text": "進入黑洞中，周圍的時空真的會出現變化嗎?",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "05:00",
+            "speaker": "Speaker 1",
+            "text": "當我們前往黑洞，你第一個感到驚訝的原因會是，黑洞其實並不黑",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:05",
+            "speaker": "Speaker 1",
+            "text": "關於這點，在我們成功拍到黑洞的照片時就已經知道了",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:09",
+            "speaker": "Speaker 1",
+            "text": "可是黑洞的重力場不是連光線都能被吸進去嗎？又為何可以被拍攝到呢？",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "05:14",
+            "speaker": "Speaker 1",
+            "text": "照片中的環狀結構，其實是黑洞的「吸積盤」",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:17",
+            "speaker": "Speaker 1",
+            "text": "你可以把它想像成物質被吸入前，因為高速旋轉而形成的「死亡漩渦」，諸如氣體、塵埃、恆星殘骸等物質，在不斷摩擦加熱下，甚至會達到數億度高溫，同時釋放出高能射線，從而被觀測到",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:32",
+            "speaker": "Speaker 1",
+            "text": "現在假設我們的太空船十分堅固，可以順利穿過吸積盤，而不會被高溫粉碎，我們就來到了黑洞的面前",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:41",
+            "speaker": "Speaker 1",
+            "text": "剛才說每個黑洞都有一個「史瓦西半徑」",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:44",
+            "speaker": "Speaker 1",
+            "text": "簡單來說，這個半徑告訴了我們，將物體的體積壓縮到多小就會變成黑洞",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:50",
+            "speaker": "Speaker 1",
+            "text": "舉個例子",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:50",
+            "speaker": "Speaker 1",
+            "text": "與太陽質量相等的物體，它的史瓦西半徑是三公里",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:54",
+            "speaker": "Speaker 1",
+            "text": "換句話說",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "05:55",
+            "speaker": "Speaker 1",
+            "text": "只要把太陽半徑壓縮到只剩三公里，大概一座陽明山所覆蓋的範圍，就會直接變成黑洞",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "06:02",
+            "speaker": "Speaker 1",
+            "text": "如果換作是地球，就需要壓縮成一枚硬幣大小才能變成黑洞",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "06:08",
+            "speaker": "Speaker 1",
+            "text": "剛才說",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "06:08",
+            "speaker": "Speaker 1",
+            "text": "在這裡空間會被扭曲，拉伸至無限，這到底意味著什麼呢?",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "06:13",
+            "speaker": "Speaker 1",
+            "text": "我們會被扭曲到分不清東南西北嗎？這就關係到光究竟是怎麼「走」的問題了",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "06:19",
+            "speaker": "Speaker 1",
+            "text": "我們常常聽說「光走直線」，但這其實只在時空平坦、沒有被重力嚴重扭曲的情況下才成立喔",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "06:26",
+            "speaker": "Speaker 1",
+            "text": "更精確、更普遍的說法是，光永遠遵循著時空中兩點之間的「最短路徑」",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "06:33",
+            "speaker": "Speaker 1",
+            "text": "物理學家給了它一個專有名詞，叫做「測地線」(Geodesic)",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "06:37",
+            "speaker": "Speaker 1",
+            "text": "在我們熟悉的、接近平坦的時空中，測地線正好就是我們認知的直線",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "06:43",
+            "speaker": "Speaker 1",
+            "text": "但在黑洞旁邊，強大的重力把時空扭曲得非常厲害，這裡的測地線，當然就不再是直線了，而在史瓦西半徑的臨界邊界上，時空的扭曲到達了最極端的程度",
+            "tone": "descriptive"
+        },
+        {
+            "timestamp": "06:55",
+            "speaker": "Speaker 1",
+            "text": "最後從事件視界內部出發，所有指向前方的「測地線」，全都無可避免地單向地指向黑洞的中心",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "07:04",
+            "speaker": "Speaker 1",
+            "text": "就像你站在一個巨大無比的瀑布邊緣，一旦跨過去，無論你朝哪個方向奮力划水，最終的水流路徑都只會向下墜落",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "07:15",
+            "speaker": "Speaker 1",
+            "text": "在這裡，根本不存在任何一條可以通往「外面」世界的測地線，也就是說，越過這條線",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "07:22",
+            "speaker": "Speaker 1",
+            "text": "時空本身的結構就決定了你再也無法回頭，連光速也救不了你，這個範圍被稱為「事件視界」",
+            "tone": "dramatic"
+        },
+        {
+            "timestamp": "07:29",
+            "speaker": "Speaker 1",
+            "text": "所以啊，還想要下船上廁所的，請趕快補充一下",
+            "tone": "playful warning"
+        },
+        {
+            "timestamp": "07:33",
+            "speaker": "Speaker 1",
+            "text": "剛才假設的都是不會自轉的黑洞，對於有些「旋轉黑洞」而言",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "07:37",
+            "speaker": "Speaker 1",
+            "text": "事件視界的外圍還有一層「動圈」(ergosphere)，這個區域的時空也被拖曳著",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "07:43",
+            "speaker": "Speaker 1",
+            "text": "但我們有機會透過「潘洛斯過程」(Penrose process)來從黑洞身上提取能量，而且還能順利從黑洞逃脫，想知道怎麼做的，請留言告訴我們，我們之後再來單獨介紹介紹",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "07:54",
+            "speaker": "Speaker 1",
+            "text": "關鍵來了",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "07:55",
+            "speaker": "Speaker 1",
+            "text": "穿越事件視界後，除了無法返回以外，我們的太空船和我們會發生什麼事呢？這就要看看這是什麼樣的黑洞了",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "08:03",
+            "speaker": "Speaker 1",
+            "text": "如果這是一個恆星變成的黑洞，那麼很快就進入結局了，因為還不用進入事件視界，強大的潮汐力就會把你當成龍鬚糖抽絲拉長，接著就會被粉碎",
+            "tone": "alarming"
+        },
+        {
+            "timestamp": "08:14",
+            "speaker": "Speaker 1",
+            "text": "所謂潮汐力其實是一種假想力",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "08:17",
+            "speaker": "Speaker 1",
+            "text": "它指的是，如果你頭上腳下靠近黑洞的時候，腳的部分所受的重力比較大，頭的地方所受的重力比較小，頭腳受力不均勻，整個人就會被龍鬚糖化，在天文物理學中，這個現象又被稱為「義大利麵條化」(spaghettification)現象",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "08:33",
+            "speaker": "Speaker 1",
+            "text": "而潮汐力與黑洞的大小有關，質量小的黑洞，在視界以外一段距離，強大的潮汐力就會將物體粉碎",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "08:42",
+            "speaker": "Speaker 1",
+            "text": "但是，如果你面對的是星系中央的超大質量黑洞，情形就不同了",
+            "tone": "contrasting"
+        },
+        {
+            "timestamp": "08:46",
+            "speaker": "Speaker 1",
+            "text": "作用在你身上各個部位的重力值不會偏差太多，因此你不會在事件視界以外就被撕碎",
+            "tone": "reassuring"
+        },
+        {
+            "timestamp": "08:52",
+            "speaker": "Speaker 1",
+            "text": "相反的，你甚至可能在毫無不適的狀態下，就跨越了事件視界",
+            "tone": "surprising"
+        },
+        {
+            "timestamp": "08:58",
+            "speaker": "Speaker 1",
+            "text": "不過最後還是會，嗯",
+            "tone": "ominous"
+        },
+        {
+            "timestamp": "09:00",
+            "speaker": "Speaker 1",
+            "text": "為了讓我們這趟旅程可以延續，這次的旅程",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "09:03",
+            "speaker": "Speaker 1",
+            "text": "是銀河系中心的超大質量黑洞，現在說應該還來得及吧",
+            "tone": "lighthearted"
+        },
+        {
+            "timestamp": "09:06",
+            "speaker": "Speaker 1",
+            "text": "但這個時候，雖然進入黑洞後，會以趨近光速的速度落入，對於「時間」的體驗卻相當反常",
+            "tone": "surprising"
+        },
+        {
+            "timestamp": "09:14",
+            "speaker": "Speaker 1",
+            "text": "史瓦西度規告訴我們，在事件視界的時間會幾乎靜止",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "09:18",
+            "speaker": "Speaker 1",
+            "text": "也就是說，你落入黑洞後",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "09:21",
+            "speaker": "Speaker 1",
+            "text": "你的夥伴在遠處的太空船上會驚訝地望著，由於重力會讓時間變慢，他將會看見你的身影如同慢速播放一般，並定格在事件視界外圍",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "09:32",
+            "speaker": "Speaker 1",
+            "text": "而且由於光線從強重力的地方出來時，就像爬坡一樣會損失能量，光線能量變低的話，波長就會變長，顏色就會偏紅，產生重力紅移",
+            "tone": "technical explanation"
+        },
+        {
+            "timestamp": "09:44",
+            "speaker": "Speaker 1",
+            "text": "因此從你身上發射出的光線，會朝著紅外線與無線電波的方向移動，從而慢慢消失在可見範圍內，從外界看來，像是逐漸「淡出」了",
+            "tone": "descriptive"
+        },
+        {
+            "timestamp": "09:55",
+            "speaker": "Speaker 1",
+            "text": "此時我們發出的任何訊號，都已再無法逃離事件視界，他們將永遠無法得知視界內部的我們是什麼情況",
+            "tone": "stark"
+        },
+        {
+            "timestamp": "10:04",
+            "speaker": "Speaker 1",
+            "text": "但先不管外面的夥伴了，此刻正墜入黑洞的我們，可能正在體驗一場精彩的「時間旅行」",
+            "tone": "intriguing"
+        },
+        {
+            "timestamp": "10:09",
+            "speaker": "Speaker 1",
+            "text": "首先，雖然重力會讓時間流速變慢，但由於「我們的時間」是跟著我們一起墜入黑洞的，所以你的手錶依舊正常運作，你的心臟仍穩定跳動著，所有生理與物理過程「在你眼中」都是正常的",
+            "tone": "reassuring"
+        },
+        {
+            "timestamp": "10:24",
+            "speaker": "Speaker 1",
+            "text": "然而，如果你有機會回頭看看黑洞外圍，你會發現星光藍移，時間快速流逝著，假設你身處的黑洞夠大，你可能需要數小時才跨越事件視界，這時你將能看見外界的時間流逝到了數千年，甚至數百萬年，換而言之，你將能看見宇宙的未來，在看完各種奇景之後，我們終於來到了旅程的終點，也就是黑洞的中心，「奇異點」(singularity)",
+            "tone": "descriptive"
+        },
+        {
+            "timestamp": "10:55",
+            "speaker": "Speaker 1",
+            "text": "剛才說，史瓦西度規預測了在史瓦西半徑時，時空曲率會向無限發散，但實際上，這只是座標系的問題",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "11:03",
+            "speaker": "Speaker 1",
+            "text": "舉個例子好了",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "11:04",
+            "speaker": "Speaker 1",
+            "text": "在地球上呢，我們會用經度來區分不同地方的時區，但是站在北極點上的我們，所有經線都會穿過我們腳底下",
+            "tone": "illustrative"
+        },
+        {
+            "timestamp": "11:13",
+            "speaker": "Speaker 1",
+            "text": "所以時區的概念對我們不起作用，但這不代表「時間」的概念對我們來說失效了",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "11:19",
+            "speaker": "Speaker 1",
+            "text": "我們的一分鐘還是60秒，一天還是24小時",
+            "tone": "reassuring"
+        },
+        {
+            "timestamp": "11:23",
+            "speaker": "Speaker 1",
+            "text": "同樣的道理，史瓦西半徑上的問題，也是史瓦西座標系在這個特定位置失效所導致的假象，我們稱之為「座標奇異點」，這可能並不代表時空曲率真的無限大",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "11:36",
+            "speaker": "Speaker 1",
+            "text": "那麼，我們要如何正確判斷一個地方的時空曲率是不是真的無限大呢？當然就是需要一個不隨座標系改變而改變的量",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "11:44",
+            "speaker": "Speaker 1",
+            "text": "物理學家艾里希·克雷希曼，提出了「克雷希曼純量」，這個純量的大小可以反映時空真正的彎曲程度",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "11:51",
+            "speaker": "Speaker 1",
+            "text": "無論你使用哪種座標系，算出來的值都一樣",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "11:56",
+            "speaker": "Speaker 1",
+            "text": "當我們計算史瓦西時空的克雷希曼純量時，會發現在史瓦西半徑的地方，克雷希曼純量的值仍然是有限的，代表事件視界確實只是一個「座標奇異點」，而非物理奇異點",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "12:08",
+            "speaker": "Speaker 1",
+            "text": "但是，當我們一路向內，計算半徑等於0，也就是黑洞中心點的克雷希曼純量時，它確實會發散到無限大，這才是真正物理上的奇異點",
+            "tone": "crucial clarification"
+        },
+        {
+            "timestamp": "12:19",
+            "speaker": "Speaker 1",
+            "text": "在這個地方，應該說在這個點上，時空的曲率真正達到了無限，密度也是無限大",
+            "tone": "emphasizing"
+        },
+        {
+            "timestamp": "12:27",
+            "speaker": "Speaker 1",
+            "text": "我們目前所有已知的物理定律，包括愛因斯坦的廣義相對論本身，都在這個點完全失效",
+            "tone": "dramatic"
+        },
+        {
+            "timestamp": "12:34",
+            "speaker": "Speaker 1",
+            "text": "一個重力無窮大，時空曲率無窮大的「點」，對，這很不合理，不合理到我都想對自己說，你要不要聽聽看你現在到底在講什麼",
+            "tone": "exasperated"
+        },
+        {
+            "timestamp": "12:42",
+            "speaker": "Speaker 1",
+            "text": "我們知道在物理上，「無限大」或者「點」，都是很夭壽的概念，再大也一定得有個上限值吧，再小也一定有個體積，然而「奇異點」卻是名副其實的科學家最不願接受的存在",
+            "tone": "philosophical"
+        },
+        {
+            "timestamp": "12:55",
+            "speaker": "Speaker 1",
+            "text": "而且啊，因為奇異點在黑洞之中，因此必然被事件視界包覆著，我們又無法看穿事件視界，這代表目前所知的一切理論都無法讓我們觀測或得知奇異點的結構，想看卻看不到，物理學家心有多癢啊，彷彿宇宙有意識在刻意透過審查來阻絕奇異點被窺探，等等，這不是物理學家吃不到葡萄說葡萄酸，還真有此一說，就被稱為「宇宙審查假說」",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "13:21",
+            "speaker": "Speaker 1",
+            "text": "為了避開宇宙審查，不少物理學家正積極尋找「裸奇異點」的可能性，也就是不被事件視界所包圍的奇異點，可是目前宇宙審查假說唯一允許存在的裸奇異點就是宇宙本身",
+            "tone": "technical"
+        },
+        {
+            "timestamp": "13:33",
+            "speaker": "Speaker 1",
+            "text": "按照宇宙誕生的「大霹靂」模型，我們的宇宙也是從重力、密度、時空曲率無窮大的「奇異點」誕生的，而且很有可能就是裸奇異點",
+            "tone": "cosmological"
+        },
+        {
+            "timestamp": "13:43",
+            "speaker": "Speaker 1",
+            "text": "然而目前物理學也還無法有效描述它的本質，我們自然也無法得知宇宙如何誕生，或者是否有誕生之前的狀態",
+            "tone": "reflective"
+        },
+        {
+            "timestamp": "13:52",
+            "speaker": "Speaker 1",
+            "text": "最後，回到我們的黑洞旅程，在越過黑洞的事件視界後，所有事物終將無可避免地墜入奇異點，即使我們的裝備可以幫助你隔絕吸積盤的輻射，抵抗強大的潮汐力，但我們最終的結局依然是落入奇異點，徹底粉碎消失",
+            "tone": "dramatic"
+        },
+        {
+            "timestamp": "14:09",
+            "speaker": "Speaker 1",
+            "text": "等等，真的是這樣嗎？落入黑洞的我們，只能迎向空寂的結局，絲毫沒有逃脫的可能性嗎？",
+            "tone": "questioning"
+        },
+        {
+            "timestamp": "14:15",
+            "speaker": "Speaker 1",
+            "text": "黑洞的出口，白洞，白色的明天在等著我們！是這樣吧？",
+            "tone": "optimistic"
+        },
+        {
+            "timestamp": "14:19",
+            "speaker": "Speaker 1",
+            "text": "黑洞之旅當然不會就這樣結束，我們從相對論出發，介紹了黑洞是如何誕生的，為何不拒絕任何東西，也不容許任何東西被奪走",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "14:27",
+            "speaker": "Speaker 1",
+            "text": "下一集，我們終於要讓量子力學和相對論在黑洞面前來個終極 Battle，看看黑洞為何是這兩大理論的擂台",
+            "tone": "engaging"
+        },
+        {
+            "timestamp": "14:35",
+            "speaker": "Speaker 1",
+            "text": "究竟落入黑洞的資訊會消失嗎？而霍金會如何用量子力學重新描述黑洞呢？",
+            "tone": "intriguing"
+        },
+        {
+            "timestamp": "14:41",
+            "speaker": "Speaker 1",
+            "text": "好的，以上就是本集的內容",
+            "tone": "informative"
+        },
+        {
+            "timestamp": "14:43",
+            "speaker": "Speaker 1",
+            "text": "你可以先點這裡複習黑洞撞到另一個黑洞會發生什麼事，或是點這裡，看看時間旅行是有可能的嗎？記得訂閱PanSci泛科學頻道跟量子熊頻道，開啟小鈴鐺，加入我們的頻道會員，鎖定更多精彩的科學新知、科學議題，我們下次再見",
+            "tone": "call to action"
+        }
+    ]
+}

@@ -1,0 +1,682 @@
+{
+    "lines": [
+        {
+            "timestamp": "00:00",
+            "speaker": "Speaker 1",
+            "text": "你知道嗎?最近從印尼、尼泊爾到秘魯",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:03",
+            "speaker": "Speaker 1",
+            "text": "到處都有人舉著草帽海賊團的海賊旗走上街頭。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:06",
+            "speaker": "Speaker 1",
+            "text": "為什麼一個原本只存在動漫裡面的旗幟會跨越國界變成不同國家抗議的共同符號呢？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "00:12",
+            "speaker": "Speaker 1",
+            "text": "今天就讓我們一起來聊聊Z世代抗議吧。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:31",
+            "speaker": "Speaker 1",
+            "text": "Hello，大家好，我是志祺。",
+            "tone": "Friendly"
+        },
+        {
+            "timestamp": "00:33",
+            "speaker": "Speaker 1",
+            "text": "前幾個月我們做了一支影片討論到印尼呢，為了抗議政府在國慶日的時候故意不掛國旗改掛海賊旗。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:40",
+            "speaker": "Speaker 1",
+            "text": "沒想到幾個月過去了，這個海賊旗已經變成了全世界都在用的抗議符號。",
+            "tone": "Surprised"
+        },
+        {
+            "timestamp": "00:44",
+            "speaker": "Speaker 1",
+            "text": "不只是前陣子的印尼跟尼泊爾抗議出現，",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:48",
+            "speaker": "Speaker 1",
+            "text": "後來呢在秘魯啊跟馬達加斯加，抗議的年輕人也都忽然同樣舉著海賊旗上街頭抗議政府。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:54",
+            "speaker": "Speaker 1",
+            "text": "而且值得注意的是，近半年全球各地忽然爆出了抗議潮，他們的共同特徵呢，",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "00:59",
+            "speaker": "Speaker 1",
+            "text": "都會用很多的迷因、動漫還有流行用語來取代嚴肅的口號。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:04",
+            "speaker": "Speaker 1",
+            "text": "動員工具也開始轉向TikTok、IG、Discord。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:08",
+            "speaker": "Speaker 1",
+            "text": "甚至呢還會有人呢直接用Discord來選舉總理。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:11",
+            "speaker": "Speaker 1",
+            "text": "還因此呢被媒體稱會是Z世代抗議潮。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:14",
+            "speaker": "Speaker 1",
+            "text": "那今天我們就要來看為什麼海賊旗會變成全球通用的抗議符號？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "01:18",
+            "speaker": "Speaker 1",
+            "text": "這種新興的Z世代抗議到底是什麼？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "01:20",
+            "speaker": "Speaker 1",
+            "text": "Z世代抗議為什麼會忽然大爆發呢？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "01:23",
+            "speaker": "Speaker 1",
+            "text": "不過在開始今天的討論之前，先讓我們進到工商服務時間。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:31",
+            "speaker": "Speaker 1",
+            "text": "欸，圍棋其實一個人也可以下喔，直接用黑嘉嘉圍棋玩給你看。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:35",
+            "speaker": "Speaker 1",
+            "text": "志祺會下圍棋嗎？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "01:36",
+            "speaker": "Speaker 1",
+            "text": "我知道，第一手天元。",
+            "tone": "Confident"
+        },
+        {
+            "timestamp": "01:37",
+            "speaker": "Speaker 1",
+            "text": "看來是不會",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "01:38",
+            "speaker": "Speaker 1",
+            "text": "沒關係，黑嘉嘉老師會教我。",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "01:40",
+            "speaker": "Speaker 1",
+            "text": "歡迎來到黑嘉嘉圍棋教室。",
+            "tone": "Friendly"
+        },
+        {
+            "timestamp": "01:41",
+            "speaker": "Speaker 1",
+            "text": "一個棋子落在棋盤之上之後就會產生氣，所以這個棋子一共有是4氣，請同學把「氣」標示出來。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "01:50",
+            "speaker": "Speaker 1",
+            "text": "我很熟練喔。",
+            "tone": "Satisfied"
+        },
+        {
+            "timestamp": "01:51",
+            "speaker": "Speaker 1",
+            "text": "我現在已經不是圍棋小白了，我要來跟AI對弈。",
+            "tone": "Confident"
+        },
+        {
+            "timestamp": "01:54",
+            "speaker": "Speaker 1",
+            "text": "你要跟黑嘉嘉下嗎？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "01:55",
+            "speaker": "Speaker 1",
+            "text": "我跟我自己。",
+            "tone": "Amused"
+        },
+        {
+            "timestamp": "02:04",
+            "speaker": "Speaker 1",
+            "text": "失敗",
+            "tone": "Disappointed"
+        },
+        {
+            "timestamp": "02:05",
+            "speaker": "Speaker 1",
+            "text": "可惡！可惡！可惡！大家快去下載《黑嘉嘉圍棋》App幫我報仇！",
+            "tone": "Angry"
+        },
+        {
+            "timestamp": "02:09",
+            "speaker": "Speaker 1",
+            "text": "《黑嘉嘉圍棋》是專為現代人打造的一站式圍棋玩學平台，不論你是圍棋小白還是棋靈王一個人都可以玩。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:15",
+            "speaker": "Speaker 1",
+            "text": "趕快點擊資訊欄把握9/30-11/10，全站線上課的超讚優惠喔！",
+            "tone": "Excited"
+        },
+        {
+            "timestamp": "02:19",
+            "speaker": "Speaker 1",
+            "text": "為什麼海賊旗抗議是怎麼來的？",
+            "tone": "Questioning"
+        },
+        {
+            "timestamp": "02:22",
+            "speaker": "Speaker 1",
+            "text": "為什麼海賊旗會變成共同的抗議符號？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "02:24",
+            "speaker": "Speaker 1",
+            "text": "根據我們的觀察應該是從印尼開始的。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:27",
+            "speaker": "Speaker 1",
+            "text": "雖然說呢早在2023年印尼跟紐約的挺巴遊行當中就有人舉著海賊旗。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:33",
+            "speaker": "Speaker 1",
+            "text": "不過那個時候只是零星的出現。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:35",
+            "speaker": "Speaker 1",
+            "text": "一直到今年的6月底，印尼卡車司機們反對政府管制貨車的限制，把海賊旗掛在車上抗議，海賊旗就慢慢變成了一個抗議的象徵。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:44",
+            "speaker": "Speaker 1",
+            "text": "然後今年的8月，印尼國慶期間，他們的總統普拉伯沃在演講當中呼籲民眾，要在國慶日懸掛國旗展現對國家的熱愛。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "02:54",
+            "speaker": "Speaker 1",
+            "text": "但不少民眾為了諷刺國家腐敗，反而故意掛海賊旗在陽台上面，讓海賊旗慢慢的變成全國性的抗議符號。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:02",
+            "speaker": "Speaker 1",
+            "text": "到了9月呢，印尼爆發了大規模抗議，海賊旗忽然就變成了連結大家的共同象徵。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:07",
+            "speaker": "Speaker 1",
+            "text": "在不少的抗議場合都會出現有人揮舞著海賊旗的身影。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:12",
+            "speaker": "Speaker 1",
+            "text": "然後這股風潮還進一步的吹到了世界各地。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:14",
+            "speaker": "Speaker 1",
+            "text": "比如說在尼泊爾，學生們高舉海賊旗抗議政府貪腐。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:18",
+            "speaker": "Speaker 1",
+            "text": "在秘魯呢，年輕人舉著海賊旗反對退休金法案。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:21",
+            "speaker": "Speaker 1",
+            "text": "甚至在非洲的馬達加斯加，長期缺電缺水引爆的抗議也能夠看到海賊旗的身影。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:27",
+            "speaker": "Speaker 1",
+            "text": "這就讓很多人好奇哦，為什麼這面旗子可以在這麼短的時間內，",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "03:32",
+            "speaker": "Speaker 1",
+            "text": "能夠從亞洲擴散到非洲，變成了全球年輕人的共同語言呢？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "03:37",
+            "speaker": "Speaker 1",
+            "text": "海賊旗變成全球抗議符號？",
+            "tone": "Questioning"
+        },
+        {
+            "timestamp": "03:39",
+            "speaker": "Speaker 1",
+            "text": "為什麼海賊旗會被全世界的Z世代拿來當作抗議的符號呢？原因大概有三個。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:45",
+            "speaker": "Speaker 1",
+            "text": "第一個當然是因為海賊旗本身的意義。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:47",
+            "speaker": "Speaker 1",
+            "text": "因為在原本航海王的設定裡面呢，魯夫跟草帽海賊團是象徵了反抗高壓的政權以及追求自由的期待。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:54",
+            "speaker": "Speaker 1",
+            "text": "這些抗議的人們認為這樣的精神可以套用到自己的生活處境上面。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "03:59",
+            "speaker": "Speaker 1",
+            "text": "不過光是有這層意義還不夠，因為要能夠看懂海賊旗的意涵，跟群眾的成長背景還是有很大的關係。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:05",
+            "speaker": "Speaker 1",
+            "text": "有媒體就指出，這次海賊旗之所以能夠那麼的容易被傳播，是因為抗議的主體開始變成了Z世代。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:12",
+            "speaker": "Speaker 1",
+            "text": "這代人呢都在動漫跟迷因中長大的，不管是亞洲還是非洲的年輕人，只要一看到海賊旗，就馬上可以聯想到魯夫對抗世界政府的故事，馬上跟自己的處境產生了共鳴。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:23",
+            "speaker": "Speaker 1",
+            "text": "那再來還有社群媒體的渲染力。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:26",
+            "speaker": "Speaker 1",
+            "text": "海賊旗這種一看就懂，還帶有點迷因感的符號，在TikTok還有IG上面很輕易的被瘋傳。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:31",
+            "speaker": "Speaker 1",
+            "text": "所以在印尼抗議者舉旗的畫面傳出去之後，不同國家的人看到別人的抗議手法，也可以很快的結合自己當地的脈絡，透過海賊旗傳達出自由跟反抗的核心訊息。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:43",
+            "speaker": "Speaker 1",
+            "text": "不過這邊就有個問題哦，為什麼世界各地的年輕Z世代最近怎麼好像是約好了一樣，不然開始連續的爆發大規模的抗議呢？",
+            "tone": "Curious"
+        },
+        {
+            "timestamp": "04:52",
+            "speaker": "Speaker 1",
+            "text": "Z世代抗議怎麼爆發的？",
+            "tone": "Questioning"
+        },
+        {
+            "timestamp": "04:54",
+            "speaker": "Speaker 1",
+            "text": "Z世代抗議這個說法大概是在2020到2021年之間開始出現的。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "04:59",
+            "speaker": "Speaker 1",
+            "text": "當時泰國和緬甸爆發了學生運動，參與者呢大多是90年代末以後出生的年輕人。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:05",
+            "speaker": "Speaker 1",
+            "text": "所以媒體跟學者開始用Z世代抗議來形容這種新型態的運動。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:10",
+            "speaker": "Speaker 1",
+            "text": "然後一直到近幾個月哦，從印尼、尼泊爾、菲律賓、秘魯、馬達加斯加，各地的年輕人都連續爆發大規模的抗議。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:18",
+            "speaker": "Speaker 1",
+            "text": "抗議的理由其實也並不算罕見，基本上呢是圍繞著經濟跟階級差距這兩個大主軸。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:25",
+            "speaker": "Speaker 1",
+            "text": "首先是長期的經濟壓力。像尼泊爾的青年失業率高達20.8%，印尼也接近14%。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:31",
+            "speaker": "Speaker 1",
+            "text": "再加上這一代人小時候遇過2008年的金融風暴，長大之後呢又遇到了疫情引發的高通膨。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:38",
+            "speaker": "Speaker 1",
+            "text": "很多人努力了很久都沒有辦法得到穩定的生活，讓他們有更強烈的憤怒跟不安感。",
+            "tone": "Concerned"
+        },
+        {
+            "timestamp": "05:43",
+            "speaker": "Speaker 1",
+            "text": "而當民眾的生活已經過不好了，官員貪污腐敗的問題更加的加重了這樣子的不滿情緒。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:49",
+            "speaker": "Speaker 1",
+            "text": "比如說像印尼，國會議員拿的薪資呢是基本薪資的幾十倍，還想要立法幫自己加薪。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "05:55",
+            "speaker": "Speaker 1",
+            "text": "菲律賓呢有百萬人因為洪災受害，可是防洪預算卻被爆料貪污。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:00",
+            "speaker": "Speaker 1",
+            "text": "在尼泊爾呢，政權雖然看起來很動盪，但掌權的永遠是同一批的舊勢力。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:05",
+            "speaker": "Speaker 1",
+            "text": "有分析認為呢，雖然這種結構性的問題雖然早就已經存在，但這樣子的落差在社群媒體世代被放的更大。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:12",
+            "speaker": "Speaker 1",
+            "text": "Z世代們自己辛苦的生活，下班滑TikTok、IG呢就看到政二代開名車炫富，那這種相對的剝奪感就會更加強烈。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:21",
+            "speaker": "Speaker 1",
+            "text": "甚至在尼泊爾呢，還有一個專門的Hashtag叫做#NepoBabies，專門用來酸那些靠爸媽炫富的政治人物小孩。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:28",
+            "speaker": "Speaker 1",
+            "text": "那在這樣子的情緒之下，當一個地方爆發出抗議之後，各個地方的年輕人在社群上面透過海賊旗或是迷因等等的符號，看到別人使用的抗議手法，理解背後的原因之後，也更能夠帶入自己的狀況引發一波又一波的跨國抗議浪潮。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:44",
+            "speaker": "Speaker 1",
+            "text": "而且有趣的是，這些抗議方式也都帶有很鮮明的Z世代的特色。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:49",
+            "speaker": "Speaker 1",
+            "text": "Z世代怎麼抗議的？",
+            "tone": "Questioning"
+        },
+        {
+            "timestamp": "06:51",
+            "speaker": "Speaker 1",
+            "text": "這一波Z世代抗議跟前一代比起來最明顯的是，像TikTok、IG短影音、DC這類的工具開始變得越來越重要。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "06:59",
+            "speaker": "Speaker 1",
+            "text": "以尼泊爾為例哦，政府呢在抗議期間一口氣封鎖了Facebook、X、YouTube等26個平台，想要壓制抗議者的串聯。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:06",
+            "speaker": "Speaker 1",
+            "text": "但因為政府沒有封鎖Discord，結果這個以遊戲玩家為主的工具呢意外成了抗議的大本營。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:12",
+            "speaker": "Speaker 1",
+            "text": "像今年公民組織Hami Nepal呢就在Discord上面建立了伺服器，一度吸引了14萬人加入。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:19",
+            "speaker": "Speaker 1",
+            "text": "裡面有人討論集結地點，有人做事實查核，還有人規劃要怎麼樣阻止政客外逃等等。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:24",
+            "speaker": "Speaker 1",
+            "text": "後來更進一步的呢，直接把DC變成虛擬國會，裡面有10萬人一起辯論、提名候選人。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:30",
+            "speaker": "Speaker 1",
+            "text": "最後還有8000人投票，推舉出前首席大法官卡爾基成為臨時總理。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:35",
+            "speaker": "Speaker 1",
+            "text": "更扯的是，這個結果也不是選好玩的而已，尼泊爾軍方跟總統最後還真的接受了這個選項。",
+            "tone": "Surprised"
+        },
+        {
+            "timestamp": "07:40",
+            "speaker": "Speaker 1",
+            "text": "兩天之後呢，卡爾基就在總統府宣誓成為尼泊爾的臨時總理，也是尼泊爾史上第一位女性總理。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:47",
+            "speaker": "Speaker 1",
+            "text": "那除了數位工具，Z世代抗議另外一個主要的特點就是大量的流行文化符號。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "07:53",
+            "speaker": "Speaker 1",
+            "text": "除了前面提到的海賊旗，還有人直接打扮成魯夫啊，蜘蛛人走上街頭，把正義跟反抗的形象視覺化，讓抗議看起來更親近大眾。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:01",
+            "speaker": "Speaker 1",
+            "text": "而另外迷因也是一大主力。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:03",
+            "speaker": "Speaker 1",
+            "text": "像是在肯亞7月的抗議當中，年輕民眾直接幫總統魯托做了迷因，還取了各種綽號。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:09",
+            "speaker": "Speaker 1",
+            "text": "像他這個，意思就是一屆就下台。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:13",
+            "speaker": "Speaker 1",
+            "text": "甚至呢把政府喊的愛國口號，改成了嘲諷版的一屆就下台等等，用各種輕鬆好笑的符號取代嚴肅的口號，加速直接抗議行動在網路上面的擴散。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:23",
+            "speaker": "Speaker 1",
+            "text": "那目前這波浪潮還在世界各地發生當中，各界還有學者們也都在觀察，未來它會走向哪裡，是不是會帶來新一波民主化運動。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:34",
+            "speaker": "Speaker 1",
+            "text": "爬梳完這次Z世代抗議的資料，我們看到很多新興的政治參與方式，有不少數位實驗啊，流行文化的展現，覺得真的是蠻有趣的。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:42",
+            "speaker": "Speaker 1",
+            "text": "對於Z世代來說，他們不一定會用傳統的政治符號，比如說用國旗或者黨旗來表達立場，而是更傾向的拿自己熟悉的文化符號，去講自由跟反抗這些價值。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "08:53",
+            "speaker": "Speaker 1",
+            "text": "像尾田老師應該是絕對想不到海賊旗有一天會承載這麼重的意義。",
+            "tone": "Surprised"
+        },
+        {
+            "timestamp": "08:57",
+            "speaker": "Speaker 1",
+            "text": "這做法呢，讓原本很嚴肅甚至有距離感的政治訴求變得更直白的好理解，甚至能夠跨越國界，對於遇到不同問題的人們也能夠產生共鳴推動新一波的民主化運動。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:09",
+            "speaker": "Speaker 1",
+            "text": "不過我們也在思考，這些做法呢還是有些風險在。",
+            "tone": "Concerned"
+        },
+        {
+            "timestamp": "09:12",
+            "speaker": "Speaker 1",
+            "text": "畢竟大規模的抗議雖然能夠透過迷因短時間內凝聚情緒，但要把這股能量轉化成可以改變制度的力量，往往需要更長時間還有更複雜的溝通協商。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:21",
+            "speaker": "Speaker 1",
+            "text": "那萬一缺乏後續的組織能力，這些聲音就可能被消耗，甚至反過來被原本的政治力量吸收，也用迷因呢去動員另外一種煽動情緒，潛疊化的反動論述來抵消掉原本的反抗能量。",
+            "tone": "Concerned"
+        },
+        {
+            "timestamp": "09:34",
+            "speaker": "Speaker 1",
+            "text": "不過當然，目前各地的Z世代抗議浪潮也還在持續的發生當中，每個地方遇到的狀況也都很不一樣。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:40",
+            "speaker": "Speaker 1",
+            "text": "那未來會怎麼樣發展下去，我們也會跟大家一起觀察的。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:44",
+            "speaker": "Speaker 1",
+            "text": "那最後我們也想要問大家，你對這種充滿迷因、動漫、和數位工具的「Z世代抗議」有什麼看法呢？",
+            "tone": "Questioning"
+        },
+        {
+            "timestamp": "09:51",
+            "speaker": "Speaker 1",
+            "text": "A. 我覺得很酷喔，要更有社群感才能吸引到人參與。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:54",
+            "speaker": "Speaker 1",
+            "text": "B. 我覺得很沒用，有創意但不見得能真的改變制度。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "09:57",
+            "speaker": "Speaker 1",
+            "text": "C. 我覺得迷因雖然有用，但還是要靠組織和執行力才有辦法改變。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "10:00",
+            "speaker": "Speaker 1",
+            "text": "D. 其他，留言分享你的想法吧！",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "10:01",
+            "speaker": "Speaker 1",
+            "text": "最後，如果你喜歡今天的影片，歡迎分享出去讓更多人知道Z世代抗議。",
+            "tone": "Encouraging"
+        },
+        {
+            "timestamp": "10:05",
+            "speaker": "Speaker 1",
+            "text": "此外呢，可以點這個地方看印尼動亂以及印尼海賊旗。",
+            "tone": "Informative"
+        },
+        {
+            "timestamp": "10:08",
+            "speaker": "Speaker 1",
+            "text": "那麼，今天的志祺七七就到這邊告一段落，我們就明晚再見囉！",
+            "tone": "Friendly"
+        }
+    ]
+}

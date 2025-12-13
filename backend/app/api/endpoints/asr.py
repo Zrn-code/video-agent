@@ -4,7 +4,7 @@ import uuid
 import os
 from google import genai
 from google.genai import types
-from app.core.config import GOOGLE_API_KEY
+from app.core.config import GOOGLE_API_KEY, GEMINI_MODEL_ASR
 
 router = APIRouter()
 
@@ -30,13 +30,13 @@ async def asr(file: UploadFile = File(...)):
 
                 # Generate content
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash-lite",
+                    model=GEMINI_MODEL_ASR,
                     contents=[
                         types.Part.from_bytes(
                             data=audio_bytes,
                             mime_type="audio/wav"
                         ),
-                        "Transcribe this audio exactly as spoken. Do not add any other text."
+                        "請將這段音訊轉錄為文字。語言可能是繁體中文或英文。請直接輸出原始語言的內容，不要翻譯，不要包含時間戳記，也不要添加任何其他文字。"
                     ]
                 )
                 return {"text": response.text}

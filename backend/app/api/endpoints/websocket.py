@@ -4,8 +4,9 @@ import uuid
 
 from app.services.connection_manager import manager
 from app.services.room_manager import rooms, save_rooms, assign_new_host
+from app.services.script_manager import script_manager
 from app.models.room import Message, CurrentVideo, VideoItem, AICompanion
-from app.services.ai_generator import generate_companion_response, analyze_message
+from app.services.ai_generator import generate_companion_response, analyze_message, analyze_message_and_select_companions, get_neutral_reply, generate_character_response
 
 router = APIRouter()
 
@@ -98,6 +99,107 @@ async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name
         if room_id in rooms and ai_uid in rooms[room_id].users:
             rooms[room_id].users[ai_uid]['emotion'] = None
 
+async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: str, user_content: str, video_id: str, video_title: str, video_timestamp: float):
+    import asyncio
+    
+    # Set typing status for all
+    if room_id in rooms:
+        for uid, info in selected_ais:
+            if uid in rooms[room_id].users:
+                rooms[room_id].users[uid]['emotion'] = '💬'
+        
+        await manager.broadcast({
+            "type": "users_update",
+            "users": [
+                {
+                    "id": uid,
+                    "username": info['username'],
+                    "avatar": info['avatar'],
+                    "lastSeen": info['lastSeen'],
+                    "emotion": info.get('emotion'),
+                    "isAi": info.get('isAi', False),
+                    "addedBy": info.get('addedBy'),
+                    "addedByUsername": info.get('addedByUsername')
+                }
+                for uid, info in rooms[room_id].users.items()
+            ],
+            "hostId": rooms[room_id].hostId
+        }, room_id)
+
+    try:
+        # Step 2: General Reply
+        situation = await get_neutral_reply(video_id, user_content, video_timestamp)
+        
+        # Step 3: Generate responses
+        video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+        
+        for uid, info in selected_ais:
+            # Generate for each
+            response_text = await generate_character_response(
+                ch_name=info['username'],
+                ch_personality=info.get('style', '友善的角色'),
+                ch_style=info.get('style', '友善的角色'),
+                user_name=user_name,
+                user_input=user_content,
+                situation=situation,
+                video_context_str=video_context_str
+            )
+            
+            if room_id in rooms:
+                # Clear typing
+                if uid in rooms[room_id].users:
+                    rooms[room_id].users[uid]['emotion'] = None
+                
+                ai_message = Message(
+                    id=str(uuid.uuid4()),
+                    userId=uid,
+                    username=info['username'],
+                    content=response_text,
+                    timestamp=datetime.now().timestamp(),
+                    videoTitle=video_title,
+                    videoTimestamp=video_timestamp
+                )
+                
+                rooms[room_id].messages.append(ai_message)
+                if len(rooms[room_id].messages) > 50:
+                    rooms[room_id].messages.pop(0)
+                
+                save_rooms()
+                
+                await manager.broadcast({
+                    "type": "new_message",
+                    "message": ai_message.dict()
+                }, room_id)
+                
+                await asyncio.sleep(0.5)
+
+        # Final user update to clear emotions
+        if room_id in rooms:
+             await manager.broadcast({
+                "type": "users_update",
+                "users": [
+                    {
+                        "id": uid,
+                        "username": info['username'],
+                        "avatar": info['avatar'],
+                        "lastSeen": info['lastSeen'],
+                        "emotion": info.get('emotion'),
+                        "isAi": info.get('isAi', False),
+                        "addedBy": info.get('addedBy'),
+                        "addedByUsername": info.get('addedByUsername')
+                    }
+                    for uid, info in rooms[room_id].users.items()
+                ],
+                "hostId": rooms[room_id].hostId
+            }, room_id)
+
+    except Exception as e:
+        print(f"Error in group AI response: {e}")
+        if room_id in rooms:
+            for uid, _ in selected_ais:
+                if uid in rooms[room_id].users:
+                    rooms[room_id].users[uid]['emotion'] = None
+
 @router.websocket("/ws/{room_id}/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
     await manager.connect(websocket, room_id)
@@ -166,7 +268,11 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
 
             elif event_type == "emotion":
                 emotion = data.get("emotion")
-                if user_id in rooms[room_id].users:
+                from_camera = data.get("from_camera", False)  # 檢查是否來自相機
+                
+                print(f"📩 Emotion update: user={user_id}, emotion={emotion}, from_camera={from_camera}")
+                
+                if room_id in rooms and user_id in rooms[room_id].users:
                     old_emotion = rooms[room_id].users[user_id].get('emotion')
                     rooms[room_id].users[user_id]['emotion'] = emotion
                     rooms[room_id].users[user_id]['lastSeen'] = datetime.now().timestamp()
@@ -190,8 +296,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                         "hostId": rooms[room_id].hostId
                     }, room_id)
 
-                    # AI Response Logic (Only if emotion changed and is not None)
-                    if emotion and old_emotion != emotion:
+                    # AI Response Logic (Only if emotion changed, is not None, and NOT from camera)
+                    # 相機偵測的情緒不觸發 AI 回應
+                    if emotion and old_emotion != emotion and not from_camera:
+                        print(f"🤖 Emotion changed and not from camera, AI may respond")
                         ai_companions = [(uid, u) for uid, u in rooms[room_id].users.items() if u.get('isAi')]
                         if ai_companions:
                             # 隨機選擇一個 AI 影伴回復
@@ -279,7 +387,10 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                 print(f"Failed to generate AI response: {e}")
                                 # 即使失敗也要清除準備發言狀態
                                 rooms[room_id].users[ai_uid]['emotion'] = None
-
+                    elif from_camera:
+                        print(f"📸 Emotion from camera, AI will NOT respond")
+                    else:
+                        print(f"ℹ️ No AI response triggered (emotion unchanged or None)")
 
             elif event_type == "chat":
                 content = data.get("content")
@@ -287,6 +398,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                 
                 room = rooms[room_id]
                 video_title = room.currentVideo.title if room.currentVideo else None
+                video_id = room.currentVideo.id if room.currentVideo else None
+                current_played = room.videoState.played
                 
                 # Get AI companions
                 ai_users = {uid: u for uid, u in room.users.items() if u.get('isAi')}
@@ -304,11 +417,11 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                         pass
 
                 # Analyze message
-                analysis_result = await analyze_message(content, video_title, ai_companions)
+                analysis_result = await analyze_message_and_select_companions(content, video_title, ai_companions)
                 
                 is_spoiler = analysis_result.get("is_spoiler", False)
                 spoiler_reason = analysis_result.get("reason")
-                selected_companion_name = analysis_result.get("selected_companion")
+                selected_names = analysis_result.get("selected_companions", [])
                 
                 message = Message(
                     id=str(uuid.uuid4()),
@@ -329,21 +442,21 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                     "message": message.dict()
                 }, room_id)
 
-                # Trigger AI response if selected
-                if selected_companion_name:
-                    target_uid = None
-                    target_info = None
-                    for uid, u in ai_users.items():
-                        if u.get('username') == selected_companion_name:
-                            target_uid = uid
-                            target_info = u
-                            break
+                # Trigger AI responses
+                if selected_names:
+                    selected_uids = []
+                    for name in selected_names:
+                        for uid, u in ai_users.items():
+                            if u.get('username') == name:
+                                selected_uids.append((uid, u))
+                                break
                     
-                    if target_uid and target_info:
+                    if selected_uids:
                         import asyncio
-                        asyncio.create_task(handle_ai_response(
-                            room_id, target_uid, target_info, username, content, video_title
+                        asyncio.create_task(handle_group_ai_response(
+                            room_id, selected_uids, username, content, video_id, video_title, current_played
                         ))
+
 
             elif event_type == "video_state":
                 # 只有房主才能控制視頻進度
@@ -353,6 +466,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                     
                 state = data.get("state")
                 current_state = rooms[room_id].videoState
+                previous_played = current_state.played
                 is_seek = data.get("isSeek", False)  # 標記是否為跳轉操作
                 
                 # 檢測是否為跳轉（played 變化超過 2 秒）
@@ -377,6 +491,29 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                 if state.get("playbackRate") is not None:
                     current_state.playbackRate = state["playbackRate"]
                 
+                # Check for script triggers
+                # Only trigger if playing, and played time advanced forward by a reasonable amount (e.g. < 5s)
+                # This prevents triggering all events when seeking forward
+                
+                # Check for script triggers
+                # Only trigger if playing, and played time advanced forward by a reasonable amount (e.g. < 5s)
+                # This prevents triggering all events when seeking forward
+                if (current_state.playing and 
+                    state.get("played") is not None and 
+                    rooms[room_id].currentVideo and 
+                    previous_played < current_state.played and 
+                    (current_state.played - previous_played) < 5.0):
+                    
+                    events = script_manager.get_triggered_events(
+                        rooms[room_id].currentVideo.videoId, 
+                        previous_played, 
+                        current_state.played
+                    )
+                    
+                    if events:
+                        print(f"Found {len(events)} triggered events for video {rooms[room_id].currentVideo.videoId}")
+                        await script_manager.handle_triggered_events(room_id, rooms[room_id], events)
+
                 # 更新時間戳記
                 current_state.lastUpdated = datetime.now().timestamp()
                 current_state.lastUpdatedBy = user_id
