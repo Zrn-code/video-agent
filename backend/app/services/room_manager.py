@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Dict, List
 from app.models.room import RoomInternal, VideoState, CurrentVideo, User, Room
 from app.services.script_manager import script_manager
+from app.services.ai_generator import TRANSCRIPT_DIR, SUMMARY_DIR
 
 # In-memory storage
 rooms: Dict[str, RoomInternal] = {}
@@ -251,6 +252,15 @@ def get_room_response(room: RoomInternal) -> Room:
             isAi=info.get('isAi', False),
             hasScript=has_script
         ))
+    
+    # Update queue items with transcript/summary status
+    for video in room.queue:
+        video.hasTranscript = (TRANSCRIPT_DIR / f"{video.videoId}.json").exists()
+        video.hasSummary = (SUMMARY_DIR / f"{video.videoId}.json").exists()
+
+    if room.currentVideo:
+        room.currentVideo.hasTranscript = (TRANSCRIPT_DIR / f"{room.currentVideo.videoId}.json").exists()
+        room.currentVideo.hasSummary = (SUMMARY_DIR / f"{room.currentVideo.videoId}.json").exists()
     
     return Room(
         id=room.id,

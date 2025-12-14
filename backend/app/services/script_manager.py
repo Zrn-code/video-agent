@@ -188,6 +188,7 @@ class ScriptManager:
             user_info["emotion"] = None
             
         user_info["lastSeen"] = datetime.now().timestamp()
+        user_info["lastSpokenAt"] = datetime.now().timestamp()
         
         # Broadcast emotion update
         await manager.broadcast({

@@ -3,11 +3,16 @@ from google.genai import types
 import json
 import random
 import os
+import math
+import isodate
+import requests
+from youtube_transcript_api import YouTubeTranscriptApi
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 from app.core.config import (
     GOOGLE_API_KEY, 
+    YOUTUBE_API_KEY,
     GEMINI_MODEL_CHARACTER_CREATE,
     GEMINI_MODEL_ANALYSIS,
     GEMINI_MODEL_SITUATION,
@@ -68,6 +73,232 @@ def to_seconds(time_str: str) -> float:
         return 0.0
     except:
         return 0.0
+
+def get_video_length(yt_id: str) -> float:
+    try:
+        url = f"https://www.googleapis.com/youtube/v3/videos?id={yt_id}&part=contentDetails&key={YOUTUBE_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        if 'items' in data and len(data['items']) > 0:
+            duration = data['items'][0]['contentDetails']['duration']
+            return isodate.parse_duration(duration).total_seconds()
+        return 0.0
+    except Exception as e:
+        print(f"Error getting video length: {e}")
+        return 0.0
+
+def get_base_transcript(yt_id: str):
+    print(f"Attempt to fetch base transcript for {yt_id}...")
+    try:
+        transcript_list = YouTubeTranscriptApi.list_transcripts(yt_id)
+        # Try to find Chinese or English transcript
+        try:
+            transcript = transcript_list.find_transcript(['zh-TW', 'zh-CN', 'zh', 'en'])
+        except:
+            # If specific languages not found, try any manually created
+            try:
+                transcript = transcript_list.find_manually_created_transcript()
+            except:
+                # Fallback to any available
+                transcript = next(iter(transcript_list))
+                
+        return transcript.fetch()
+    except Exception as e:
+        print(f"Error fetching base transcript: {e}")
+        return None
+
+def generate_transcript(yt_id: str) -> Optional[TranscriptDoc]:
+    path = TRANSCRIPT_DIR / f"{yt_id}.json"
+    if path.exists():
+        return get_video_transcript(yt_id)
+
+    base_transcript = get_base_transcript(yt_id)
+    prompt = f"[Base Transcript]\n{json.dumps(base_transcript)}" if base_transcript else ""
+
+    print(f"Generating video transcript for {yt_id}...")
+    try:
+        result = client.models.generate_content(
+            model=GEMINI_MODEL_ANALYSIS,
+            contents=[
+                types.Content(
+                    parts=[
+                        types.Part(
+                            file_data=types.FileData(
+                                file_uri=f'https://www.youtube.com/watch?v={yt_id}'
+                            )
+                        ),
+                        types.Part(
+                            text=f"""
+                            You are a professional Transcriber.
+                            Process the audio file and generate a detailed transcription. {"Use the provided base transcript to help you." if base_transcript else ""}
+                            
+                            Requirements:
+                            1. Identify distinct speakers (e.g., Speaker 1, Speaker 2, or names if context allows).
+                            2. Provide accurate timestamps for each segment (Format: MM:SS).
+                            3. Identify the primary emotion of the speaker in this segment.
+                            4. Ignore screaming or noises.
+                            
+                            {prompt}
+                            """
+                        )
+                    ]
+                )
+            ],
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=TranscriptDoc,
+                safety_settings=[
+                    types.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_HARASSMENT", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold="BLOCK_NONE"),
+                ]
+            ),
+        )
+        
+        transcript = TranscriptDoc.model_validate_json(result.text)
+        
+        # Ensure directory exists
+        TRANSCRIPT_DIR.mkdir(parents=True, exist_ok=True)
+        
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(transcript.model_dump(), f, ensure_ascii=False, indent=2)
+            
+        return transcript
+    except Exception as e:
+        print(f"Error generating transcript: {e}")
+        return None
+
+def generate_summary(yt_id: str) -> Optional[VideoLog]:
+    path = SUMMARY_DIR / f"{yt_id}.json"
+    if path.exists():
+        return get_video_summary(yt_id)
+
+    transcript_doc = generate_transcript(yt_id)
+    if not transcript_doc:
+        print("Cannot generate summary without transcript")
+        return None
+        
+    transcript_list = transcript_doc.lines
+    video_length = get_video_length(yt_id)
+    chunk_size = 300
+    chunks = math.ceil(video_length / chunk_size) if video_length > 0 else 1
+    
+    print(f"Splitting video {yt_id} into {chunks} chunks. (Total = {video_length}s)")
+    summary_chunk: list[SceneLog] = []
+    
+    for n in range(chunks):
+        start_time = n * chunk_size
+        end_time = min((n + 1) * chunk_size, video_length)
+        
+        # Filter transcript for this chunk
+        chunk_transcript = []
+        for line in transcript_list:
+            line_seconds = to_seconds(line.timestamp)
+            if start_time <= line_seconds < end_time:
+                chunk_transcript.append(line)
+                
+        transcript_text = json.dumps([line.model_dump() for line in chunk_transcript], ensure_ascii=False)
+        
+        try:
+            result = client.models.generate_content(
+                model=GEMINI_MODEL_ANALYSIS,
+                contents=types.Content(parts=[
+                    types.Part(
+                        file_data=types.FileData(file_uri=f'https://www.youtube.com/watch?v={yt_id}'),
+                        video_metadata=types.VideoMetadata(
+                            start_offset=f"{int(start_time)}s",
+                            end_offset=f"{int(end_time)}s"
+                        )
+                    ),
+                    types.Part(text=f"""
+                        You are a professional Continuity Supervisor for film. 
+                        Your job is to create a frame-accurate LOG of the provided video clip and transcript.
+                        
+                        [Segment Transcript]
+                        {transcript_text}
+                        
+                        **RULES:**
+                        1. **Granularity:** Create a new entry every time the visual scene changes or the topic of conversation shifts (roughly every 10-20 seconds).
+                        2. **Visuals:** Describe physical actions, colors, lighting, and background objects. Be specific.
+                        3. **Audio:** Summarize the dialogue, but perform a "Grounding Check": Include a short direct quote for every entry.
+                        4. **Vibe:** Analyze the mood.
+                        5. **Trivia/Hooks:** Identify 1 specific detail a viewer might comment on.
+                        
+                        Return a list of SceneLog items.
+                        """)
+                ]),
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=List[SceneLog],
+                    temperature=0.0,
+                    safety_settings=[
+                        types.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold="BLOCK_NONE"),
+                        types.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="BLOCK_NONE"),
+                        types.SafetySetting(category="HARM_CATEGORY_HARASSMENT", threshold="BLOCK_NONE"),
+                        types.SafetySetting(category="HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold="BLOCK_NONE"),
+                    ]
+                )
+            )
+            
+            chunk_scenes = [SceneLog(**item) for item in json.loads(result.text)]
+            summary_chunk.extend(chunk_scenes)
+            
+        except Exception as e:
+            print(f"Error processing chunk {n}: {e}")
+
+    print("Finished processing video chunks. Generating global summary...")
+    try:
+        result = client.models.generate_content(
+            model=GEMINI_MODEL_ANALYSIS,
+            contents=types.Content(parts=[
+                types.Part(
+                    text=f"""
+                    [Summary]
+                    {json.dumps([scene.model_dump() for scene in summary_chunk], ensure_ascii=False)}
+                    [Transcript]
+                    {json.dumps([line.model_dump() for line in transcript_list], ensure_ascii=False)}
+                    """
+                )
+            ]),
+            config=types.GenerateContentConfig(
+                system_instruction="""
+                You are a Video Content Summarizer. Synthesize the given scene summary and transcript into a coherent global summary.
+                1. Summary: Write a 2-3 sentence 'Netflix-style' description.
+                2. Themes: Extract key topics.
+                3. Mood: Identify the overall vibe.
+                """,
+                temperature=0.0,
+                response_mime_type="application/json",
+                response_schema=GlobalSummary,
+                safety_settings=[
+                    types.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_HARASSMENT", threshold="BLOCK_NONE"),
+                    types.SafetySetting(category="HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold="BLOCK_NONE"),
+                ]
+            )
+        )
+
+        summary_global = GlobalSummary.model_validate_json(result.text)
+        summary = VideoLog(global_summary=summary_global, segments=summary_chunk)
+        
+        # Ensure directory exists
+        SUMMARY_DIR.mkdir(parents=True, exist_ok=True)
+        
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(summary.model_dump(), f, ensure_ascii=False, indent=2)
+            
+        return summary
+    except Exception as e:
+        print(f"Error generating global summary: {e}")
+        return None
+
+async def process_video(yt_id: str):
+    print(f"Starting processing for video {yt_id}")
+    generate_transcript(yt_id)
+    generate_summary(yt_id)
+    print(f"Finished processing for video {yt_id}")
 
 def get_video_transcript(yt_id: str) -> Optional[TranscriptDoc]:
     path = TRANSCRIPT_DIR / f"{yt_id}.json"

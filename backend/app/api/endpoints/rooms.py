@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from typing import List
 import uuid
 from datetime import datetime
@@ -10,7 +10,7 @@ from app.models.room import (
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
-from app.services.ai_generator import generate_character_response, get_neutral_reply
+from app.services.ai_generator import generate_character_response, get_neutral_reply, process_video
 from app.services.script_manager import script_manager
 
 router = APIRouter()
@@ -115,16 +115,25 @@ async def create_forum_thread(room_id: str, request: CreateThreadRequest):
     
     now = datetime.now().timestamp()
     thread_id = str(uuid.uuid4())
+    
+    # 檢查作者是否為AI
+    room = rooms[room_id]
+    author = room.users.get(request.authorId)
+    is_author_ai = author.get('isAi', False) if author else False
+    
     new_thread = ForumThread(
         id=thread_id,
         title=request.title,
         content=request.content,
         authorId=request.authorId,
         authorName=request.authorName,
+        authorIsAi=is_author_ai,
+        authorAvatar=author.get('avatar') if author else None,
         createdAt=now,
         updatedAt=now,
         status="open",
-        comments=[]
+        comments=[],
+        isAutoCreated=False
     )
     
     rooms[room_id].forumThreads.append(new_thread)
@@ -156,12 +165,19 @@ async def create_forum_comment(room_id: str, thread_id: str, request: CreateComm
         
     now = datetime.now().timestamp()
     comment_id = str(uuid.uuid4())
+    
+    # 檢查用戶是否為AI
+    user = room.users.get(request.userId)
+    is_user_ai = user.get('isAi', False) if user else False
+    
     new_comment = ForumComment(
         id=comment_id,
         userId=request.userId,
         username=request.username,
         content=request.content,
-        timestamp=now
+        timestamp=now,
+        isAi=is_user_ai,
+        avatar=user.get('avatar') if user else None
     )
     
     thread.comments.append(new_comment)
@@ -173,6 +189,74 @@ async def create_forum_comment(room_id: str, thread_id: str, request: CreateComm
         "threadId": thread_id,
         "comment": new_comment.dict()
     }, room_id)
+    
+    # 如果是真人發言且討論串狀態不是 completed，觸發 AI 自動回覆（只有一個 AI 回覆）
+    if not is_user_ai and thread.status != "completed":
+        ai_companions = [(uid, u) for uid, u in room.users.items() if u.get('isAi')]
+        
+        if ai_companions:
+            # 選擇一個AI進行回覆（隨機選擇或選擇最近沒說話的）
+            import random
+            selected_ai = random.choice(ai_companions)
+            ai_uid, ai_info = selected_ai
+            
+            try:
+                # 構建討論串上下文
+                thread_context = f"討論串標題: {thread.title}\n原始內容: {thread.content}\n"
+                if thread.comments:
+                    recent_comments = thread.comments[-3:]  # 最近3條評論
+                    for c in recent_comments:
+                        thread_context += f"{c.username}: {c.content}\n"
+                
+                # 使用AI生成回應（針對討論串的對話）
+                video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
+                
+                # 簡化版的情境報告（因為是討論串，不需要視頻時間戳）
+                from app.services.ai_generator import generate_character_response, SituationReport
+                
+                situation = SituationReport(
+                    event_trigger=f"用戶在討論串中回應: {request.content}",
+                    user_intent="參與討論串對話",
+                    neutral_reply_draft=f"關於 {request.content}",
+                    suggested_angle="以角色風格參與討論"
+                )
+                
+                video_context_str = f"討論串上下文: {thread_context}"
+                
+                ai_response_text = await generate_character_response(
+                    ch_name=ai_info['username'],
+                    ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
+                    ch_style=ai_info.get('style', '友善的角色'),
+                    user_name=request.username,
+                    user_input=request.content,
+                    situation=situation,
+                    video_context_str=video_context_str
+                )
+                
+                # 創建AI評論
+                ai_comment_id = str(uuid.uuid4())
+                ai_comment = ForumComment(
+                    id=ai_comment_id,
+                    userId=ai_uid,
+                    username=ai_info['username'],
+                    content=ai_response_text,
+                    timestamp=datetime.now().timestamp(),
+                    isAi=True,
+                    avatar=ai_info.get('avatar')
+                )
+                
+                thread.comments.append(ai_comment)
+                thread.updatedAt = ai_comment.timestamp
+                save_rooms()
+                
+                await manager.broadcast({
+                    "type": "forum_comment_created",
+                    "threadId": thread_id,
+                    "comment": ai_comment.dict()
+                }, room_id)
+                
+            except Exception as e:
+                print(f"Failed to generate AI comment in forum: {e}")
     
     return new_comment
 
@@ -280,43 +364,113 @@ async def send_chat(room_id: str, request: ChatRequest):
     # AI Companion Response
     ai_companions = [(uid, u) for uid, u in room.users.items() if u.get('isAi')]
     if ai_companions:
-        # Pick the first one only
-        ai_uid, ai_info = ai_companions[0]
+        # Filter companions based on lastSpokenAt
+        now_ts = datetime.now().timestamp()
+        candidates = []
+        for uid, info in ai_companions:
+            last_spoken = info.get('lastSpokenAt', 0)
+            if now_ts - last_spoken > 10:
+                candidates.append((uid, info))
         
-        try:
-            video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
-            situation = await get_neutral_reply(video_id, request.content, current_played)
-            video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+        selected_ai = None
+        if candidates:
+            import random
+            selected_ai = random.choice(candidates)
+        elif len(ai_companions) == 1:
+            # Exception: if only one companion, allow it even if recently spoken
+            selected_ai = ai_companions[0]
+            
+        if selected_ai:
+            ai_uid, ai_info = selected_ai
+        
+            try:
+                video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
+                situation = await get_neutral_reply(video_id, request.content, current_played)
+                video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
 
-            response_text = await generate_character_response(
-                ch_name=ai_info['username'],
-                ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
-                ch_style=ai_info.get('style', '友善的角色'),
-                user_name=request.username,
-                user_input=request.content,
-                situation=situation,
-                video_context_str=video_context_str
-            )
-            
-            ai_message = Message(
-                id=str(uuid.uuid4()),
-                userId=ai_uid,
-                username=ai_info['username'],
-                content=response_text,
-                timestamp=datetime.now().timestamp(),
-                videoTitle=video_title,
-                videoTimestamp=current_played
-            )
-            
-            rooms[room_id].messages.append(ai_message)
-            save_rooms()
-            
-            await manager.broadcast({
-                "type": "new_message",
-                "message": ai_message.dict()
-            }, room_id)
-        except Exception as e:
-            print(f"Failed to generate AI response: {e}")
+                response_text = await generate_character_response(
+                    ch_name=ai_info['username'],
+                    ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
+                    ch_style=ai_info.get('style', '友善的角色'),
+                    user_name=request.username,
+                    user_input=request.content,
+                    situation=situation,
+                    video_context_str=video_context_str
+                )
+                
+                # 判斷回應是否較長（超過100字或2句以上）
+                is_long_response = len(response_text) > 100 or response_text.count('。') > 1 or response_text.count('！') > 1 or response_text.count('？') > 1
+                
+                if is_long_response:
+                    # 創建討論串並發送提示訊息
+                    thread_id = str(uuid.uuid4())
+                    new_thread = ForumThread(
+                        id=thread_id,
+                        title=f"關於: {request.content[:30]}{'...' if len(request.content) > 30 else ''}",
+                        content=response_text,
+                        authorId=ai_uid,
+                        authorName=ai_info['username'],
+                        authorIsAi=True,
+                        authorAvatar=ai_info.get('avatar'),
+                        createdAt=now_ts,
+                        updatedAt=now_ts,
+                        status="open",
+                        comments=[],
+                        isAutoCreated=True,
+                        originalMessageId=message.id
+                    )
+                    
+                    room.forumThreads.append(new_thread)
+                    
+                    # 發送提示訊息到聊天室
+                    hint_message = Message(
+                        id=str(uuid.uuid4()),
+                        userId=ai_uid,
+                        username=ai_info['username'],
+                        content=f"我的回應比較詳細，已經貼到討論串了喔！請到討論區查看～",
+                        timestamp=now_ts,
+                        videoTitle=video_title,
+                        videoTimestamp=current_played
+                    )
+                    
+                    room.users[ai_uid]['lastSpokenAt'] = now_ts
+                    rooms[room_id].messages.append(hint_message)
+                    save_rooms()
+                    
+                    # 廣播討論串創建和提示訊息
+                    await manager.broadcast({
+                        "type": "forum_thread_created",
+                        "thread": new_thread.dict()
+                    }, room_id)
+                    
+                    await manager.broadcast({
+                        "type": "new_message",
+                        "message": hint_message.dict()
+                    }, room_id)
+                else:
+                    # 正常發送到聊天室
+                    ai_message = Message(
+                        id=str(uuid.uuid4()),
+                        userId=ai_uid,
+                        username=ai_info['username'],
+                        content=response_text,
+                        timestamp=now_ts,
+                        videoTitle=video_title,
+                        videoTimestamp=current_played
+                    )
+                    
+                    # Update lastSpokenAt
+                    room.users[ai_uid]['lastSpokenAt'] = ai_message.timestamp
+                    
+                    rooms[room_id].messages.append(ai_message)
+                    save_rooms()
+                    
+                    await manager.broadcast({
+                        "type": "new_message",
+                        "message": ai_message.dict()
+                    }, room_id)
+            except Exception as e:
+                print(f"Failed to generate AI response: {e}")
 
     return message
 
@@ -421,11 +575,15 @@ async def update_room_state(room_id: str, state: UpdateStateRequest):
     return current_state
 
 @router.post("/rooms/{room_id}/queue")
-async def add_to_queue(room_id: str, video: VideoItem):
+async def add_to_queue(room_id: str, video: VideoItem, background_tasks: BackgroundTasks):
     if room_id not in rooms:
         raise HTTPException(status_code=404, detail="Room not found")
     rooms[room_id].queue.append(video)
     save_rooms()
+    
+    # Trigger background processing
+    background_tasks.add_task(process_video, video.videoId)
+    
     return rooms[room_id].queue
 
 @router.delete("/rooms/{room_id}/queue/{index}")

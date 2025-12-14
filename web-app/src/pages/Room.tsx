@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
+import { getWsBaseUrl } from '../utils/env';
 
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
@@ -41,6 +42,8 @@ const Room = () => {
   const historyRef = useRef<VideoItem[]>([]); // 儲存最新的歷史記錄
   const messagesRef = useRef<Message[]>([]); // 儲存最新的消息列表
   const serverVideoStateRef = useRef<{played: number; lastUpdated: number; playing: boolean; playbackRate: number; lastUpdatedBy?: string} | undefined>(undefined);
+  const [currentVideo, setCurrentVideo] = useState<VideoItem | undefined>(undefined);
+  const currentVideoRef = useRef<VideoItem | undefined>(undefined);
 
   const setPlayerRef = useCallback((player: HTMLVideoElement) => {
     if (!player) return;
@@ -297,7 +300,7 @@ const Room = () => {
         }
         
         // Connect to camera websocket
-        const wsBaseUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+        const wsBaseUrl = getWsBaseUrl();
         const wsUrl = `${wsBaseUrl}/api/ws/camera/${roomId}/${userId}`;
         console.log('🔌 Connecting to camera WebSocket:', wsUrl);
         const ws = new WebSocket(wsUrl);
@@ -795,7 +798,7 @@ const Room = () => {
   useEffect(() => {
     if (!roomId || !userId) return;
 
-    const wsUrl = `${import.meta.env.VITE_API_URL.replace('http', 'ws')}/api/ws/${roomId}/${userId}`;
+    const wsUrl = `${getWsBaseUrl()}/api/ws/${roomId}/${userId}`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
@@ -998,6 +1001,13 @@ const Room = () => {
           const serverState = data.videoState;
           
           updateQueue(data.queue || []);
+          
+          // Update current video
+          if (JSON.stringify(currentVideoRef.current) !== JSON.stringify(data.currentVideo)) {
+             currentVideoRef.current = data.currentVideo;
+             setCurrentVideo(data.currentVideo);
+          }
+          
           updateHistory(data.history || []);
           updateMessages(data.messages || []);
           setForumThreads(data.forumThreads || []);
@@ -1921,6 +1931,7 @@ const Room = () => {
                    roomUsers={roomUsers}
                    messages={messages}
                    queue={queue}
+                   currentVideo={currentVideo}
                    history={history}
                    searchResults={searchResults.map(video => ({
                      videoId: video.id.videoId,

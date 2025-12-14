@@ -16,6 +16,8 @@ class CurrentVideo(BaseModel):
     title: str
     channelTitle: str
     thumbnailUrl: str
+    hasTranscript: bool = False
+    hasSummary: bool = False
 
 class VideoItem(BaseModel):
     videoId: str
@@ -23,6 +25,8 @@ class VideoItem(BaseModel):
     channelTitle: str
     thumbnailUrl: str
     addedBy: Optional[str] = None
+    hasTranscript: bool = False
+    hasSummary: bool = False
 
 class AICompanion(BaseModel):
     id: Optional[str] = None
@@ -54,17 +58,23 @@ class ForumComment(BaseModel):
     username: str
     content: str
     timestamp: float
+    isAi: bool = False  # 標記是否為 AI 的留言
+    avatar: Optional[str] = None  # 發言者的頭像
 
 class ForumThread(BaseModel):
     id: str
     title: str
-    content: str
+    content: str = ""  # 設為默認空字符串，不再強制輸入
     authorId: str
     authorName: str
     createdAt: float
     updatedAt: float
     status: str = "open" # open, closed, completed
     comments: List[ForumComment] = []
+    isAutoCreated: bool = False  # 標記是否為 AI 自動創建的討論串
+    originalMessageId: Optional[str] = None  # 原始訊息的 ID（如果是從聊天自動創建）
+    authorIsAi: bool = False  # 標記創建者是否為 AI
+    authorAvatar: Optional[str] = None  # 創建者的頭像
 
 class User(BaseModel):
     id: str

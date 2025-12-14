@@ -18,6 +18,7 @@ interface SidebarProps {
   roomUsers: User[];
   messages: Message[];
   queue: VideoItem[];
+  currentVideo?: VideoItem;
   history: VideoItem[];
   searchResults: VideoItem[];
   activeTab: 'chat' | 'playlist' | 'forum';
@@ -43,6 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   roomUsers, 
   messages, 
   queue,
+  currentVideo,
   history,
   searchResults,
   activeTab,
@@ -187,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 className={`flex-1 py-3 text-xs font-medium transition-colors ${playlistView === 'queue' ? 'text-purple-400 bg-white/5 border-b-2 border-purple-500' : 'text-gray-500 hover:text-gray-300'}`}
                 onClick={() => setPlaylistView('queue')}
               >
-                待播清單 ({queue.length})
+                播放清單 ({queue.length + (currentVideo ? 1 : 0)})
               </button>
               <button
                 className={`flex-1 py-3 text-xs font-medium transition-colors ${playlistView === 'add' ? 'text-purple-400 bg-white/5 border-b-2 border-purple-500' : 'text-gray-500 hover:text-gray-300'}`}
@@ -311,7 +313,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 )
               ) : (
                 // Queue View
-                queue.length === 0 ? (
+                (queue.length === 0 && !currentVideo) ? (
                   <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 opacity-50">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
@@ -321,6 +323,31 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    {/* Current Video */}
+                    {currentVideo && (
+                      <div className="group flex gap-3 p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                         <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black">
+                            <img src={currentVideo.thumbnailUrl} alt={currentVideo.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+                            </div>
+                         </div>
+                         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                            <div>
+                              <h4 className="text-xs font-medium text-purple-300 line-clamp-2 leading-tight mb-0.5" title={currentVideo.title}>{currentVideo.title}</h4>
+                              <p className="text-[10px] text-purple-400/70 truncate">{currentVideo.channelTitle}</p>
+                            </div>
+                            <div className="flex items-center justify-between mt-1">
+                              <span className="text-[10px] text-purple-400/70">正在播放</span>
+                              <div className="flex gap-1">
+                                {currentVideo.hasTranscript && <span className="text-[8px] px-1 rounded bg-green-500/20 text-green-400 border border-green-500/30" title="Transcript Ready">T</span>}
+                                {currentVideo.hasSummary && <span className="text-[8px] px-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30" title="Summary Ready">S</span>}
+                              </div>
+                            </div>
+                         </div>
+                      </div>
+                    )}
+
                     {queue.map((item, index) => (
                       <div key={`${item.videoId}-${index}`} className="group flex gap-3 p-2 rounded-lg hover:bg-[#2b2d31] transition-colors border border-transparent hover:border-white/5">
                          <div className="relative w-24 aspect-video rounded overflow-hidden flex-shrink-0 cursor-pointer bg-black" onClick={() => onPlay(item)}>
@@ -336,18 +363,24 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                             <div className="flex items-center justify-between mt-1">
                               <span className="text-[10px] text-gray-600">By {item.addedBy || 'User'}</span>
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onRemoveFromQueue(index);
-                                }}
-                                className="text-gray-600 hover:text-error opacity-0 group-hover:opacity-100 transition-opacity p-1"
-                                title="Remove"
-                              >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
-                                  <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                                </svg>
-                              </button>
+                              <div className="flex items-center gap-2">
+                                <div className="flex gap-1">
+                                    {item.hasTranscript && <span className="text-[8px] px-1 rounded bg-green-500/20 text-green-400 border border-green-500/30" title="Transcript Ready">T</span>}
+                                    {item.hasSummary && <span className="text-[8px] px-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30" title="Summary Ready">S</span>}
+                                </div>
+                                <button 
+                                    onClick={(e) => {
+                                    e.stopPropagation();
+                                    onRemoveFromQueue(index);
+                                    }}
+                                    className="text-gray-600 hover:text-error opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                                    title="Remove"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+                                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                    </svg>
+                                </button>
+                              </div>
                             </div>
                          </div>
                       </div>

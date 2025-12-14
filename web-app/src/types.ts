@@ -18,6 +18,8 @@ export interface VideoItem {
   channelTitle: string;
   thumbnailUrl: string;
   addedBy?: string;
+  hasTranscript?: boolean;
+  hasSummary?: boolean;
 }
 
 export interface Message {
@@ -56,6 +58,8 @@ export interface ForumComment {
   username: string;
   content: string;
   timestamp: number;
+  isAi?: boolean;
+  avatar?: string;
 }
 
 export interface ForumThread {
@@ -68,6 +72,10 @@ export interface ForumThread {
   updatedAt: number;
   status: 'open' | 'closed' | 'completed';
   comments: ForumComment[];
+  isAutoCreated?: boolean;
+  originalMessageId?: string;
+  authorIsAi?: boolean;
+  authorAvatar?: string;
 }
 
 export interface AICompanion {
