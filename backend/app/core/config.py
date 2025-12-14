@@ -5,11 +5,11 @@ load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-HUME_API_KEY = os.getenv("HUME_API_KEY", "eZvL7EC04lAggjcXKHzdEStuFFwPkaUGa7F0ONgNcLP57fc6")
+HUME_API_KEY = os.getenv("HUME_API_KEY")
 
 # Model Configuration
 # Default model if not specified
-GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
+GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
 
 # Specific function models (default to GEMINI_MODEL_DEFAULT if not set)
 GEMINI_MODEL_CHARACTER_CREATE = os.getenv("GEMINI_MODEL_CHARACTER_CREATE", GEMINI_MODEL_DEFAULT)

@@ -93,14 +93,24 @@ class ScriptManager:
                 
         return triggered
 
-    async def handle_triggered_events(self, room_id: str, room: RoomInternal, events: List[Dict]):
+    async def handle_triggered_events(self, room_id: str, room: RoomInternal, events: List[Dict], save_callback=None):
         if not events:
             return
 
         print(f"Handling {len(events)} events for room {room_id}")
-
-        # Group events by companion to handle potential multiple events (though unlikely in short window)
-        # But here we just process each event
+        
+        now = datetime.now().timestamp()
+        
+        # Initialize lastScriptTime if not present
+        if not hasattr(room, 'lastScriptTime'):
+            room.lastScriptTime = 0.0
+            
+        # Determine the start time for this batch of events
+        # We want to ensure at least 1.0s gap from the LAST scheduled message
+        # If the last message was long ago, we can start immediately (delay=0)
+        next_slot = max(now, room.lastScriptTime + 1.0)
+        
+        triggered_count = 0
         
         for event in events:
             companion_id = event["companion_id"]
@@ -109,7 +119,6 @@ class ScriptManager:
             # Check if companion is in the room
             companion_user = None
             for uid, user_info in room.users.items():
-                # print(f"    - Checking user {uid}: isAi={user_info.get('isAi')}, id={user_info.get('id')}")
                 if user_info.get("isAi") and user_info.get("id") == companion_id:
                     companion_user = (uid, user_info)
                     break
@@ -117,12 +126,25 @@ class ScriptManager:
             if companion_user:
                 print(f"    -> Found companion {companion_id} in room")
                 uid, user_info = companion_user
+                
+                # Calculate start delay
+                start_delay = max(0.0, next_slot - now)
+                
                 # Schedule the message with delay
-                asyncio.create_task(self.send_scripted_message(room_id, uid, user_info, event, room))
+                asyncio.create_task(self.send_scripted_message(room_id, uid, user_info, event, room, save_callback, start_delay=start_delay))
+                
+                # Update next slot for subsequent messages
+                room.lastScriptTime = next_slot
+                next_slot += 1.0
+                
+                triggered_count += 1
             else:
                 print(f"    -> Companion {companion_id} NOT found in room")
 
-    async def send_scripted_message(self, room_id: str, user_id: str, user_info: Dict, event: Dict, room: RoomInternal):
+    async def send_scripted_message(self, room_id: str, user_id: str, user_info: Dict, event: Dict, room: RoomInternal, save_callback=None, start_delay: float = 0.0):
+        if start_delay > 0:
+            await asyncio.sleep(start_delay)
+
         print(f"🎬 Script triggered for {user_info['username']} in room {room_id} at {event['time']}s")
         
         # Set emotion to '💬' to indicate typing/thinking and prevent random emoji override
@@ -147,8 +169,8 @@ class ScriptManager:
             ]
         }, room_id)
 
-        # Delay 3 seconds
-        await asyncio.sleep(3)
+        # Delay 1.5 seconds (reduced from 3)
+        await asyncio.sleep(1.5)
         
         # Re-check if user is still in room? Maybe not strictly necessary for this feature but good practice.
         # Also check if video is still playing? The user said "when video plays to corresponding time", 
@@ -210,6 +232,30 @@ class ScriptManager:
             "message": message.dict()
         }, room_id)
         
-        # Clear emotion after some time? The existing logic does that.
+        if save_callback:
+            save_callback()
+        
+        # Clear emotion after 3 seconds
+        if event.get("emoji"):
+            await asyncio.sleep(3)
+            if user_info.get("emotion") == event["emoji"]:
+                user_info["emotion"] = None
+                await manager.broadcast({
+                    "type": "users_update",
+                    "users": [
+                        {
+                            "id": u_id,
+                            "username": u_info['username'],
+                            "avatar": u_info['avatar'],
+                            "lastSeen": u_info['lastSeen'],
+                            "emotion": u_info.get('emotion'),
+                            "isAi": u_info.get('isAi', False),
+                            "addedBy": u_info.get('addedBy'),
+                            "addedByUsername": u_info.get('addedByUsername'),
+                            "hasScript": u_info.get('hasScript', False)
+                        }
+                        for u_id, u_info in room.users.items()
+                    ]
+                }, room_id)
 
 script_manager = ScriptManager()

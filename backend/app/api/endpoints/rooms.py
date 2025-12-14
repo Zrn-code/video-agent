@@ -10,7 +10,7 @@ from app.models.room import (
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
-from app.services.ai_generator import generate_companion_response
+from app.services.ai_generator import generate_character_response, get_neutral_reply
 from app.services.script_manager import script_manager
 
 router = APIRouter()
@@ -36,6 +36,12 @@ async def create_room(request: CreateRoomRequest):
     
     if request.aiCompanions:
         for companion in request.aiCompanions:
+            # Check if script exists for this companion and the initial video
+            has_script = False
+            if request.initialPlaylist and len(request.initialPlaylist) > 0:
+                first_video_id = request.initialPlaylist[0].videoId
+                has_script = script_manager.has_script(first_video_id, companion.id)
+
             # Add AI companion as a user
             ai_user_id = f"ai-companion-{uuid.uuid4()}"
             new_room.users[ai_user_id] = {
@@ -46,9 +52,12 @@ async def create_room(request: CreateRoomRequest):
                 "emotion": "neutral",
                 "isAi": True,
                 "style": companion.style,
+                "personalities": companion.personalities,
+                "language": companion.language,
                 "catchphrase_1": companion.catchphrase_1,
                 "catchphrase_2": companion.catchphrase_2,
-                "joinedAt": now
+                "joinedAt": now,
+                "hasScript": has_script
             }
     
     if request.initialPlaylist:
@@ -275,13 +284,18 @@ async def send_chat(room_id: str, request: ChatRequest):
         ai_uid, ai_info = ai_companions[0]
         
         try:
-            response_text = await generate_companion_response(
-                companion_name=ai_info['username'],
-                companion_style=ai_info.get('style', '友善的角色'),
+            video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
+            situation = await get_neutral_reply(video_id, request.content, current_played)
+            video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+
+            response_text = await generate_character_response(
+                ch_name=ai_info['username'],
+                ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
+                ch_style=ai_info.get('style', '友善的角色'),
                 user_name=request.username,
                 user_input=request.content,
-                context_type="chat",
-                video_context=f"{video_title} @ {int(current_played)}s" if video_title else None
+                situation=situation,
+                video_context_str=video_context_str
             )
             
             ai_message = Message(
@@ -467,6 +481,11 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
         if u.get('isAi') and u.get('username') == companion.name:
              raise HTTPException(status_code=400, detail="Companion already exists in the room")
 
+    # Check if script exists for this companion and the current video
+    has_script = False
+    if room.currentVideo:
+        has_script = script_manager.has_script(room.currentVideo.videoId, companion.id)
+
     # Add AI companion as a user
     ai_user_id = f"ai-companion-{uuid.uuid4()}"
     room.users[ai_user_id] = {
@@ -477,10 +496,13 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
         "emotion": "neutral",
         "isAi": True,
         "style": companion.style,
+        "personalities": companion.personalities,
+        "language": companion.language,
         "catchphrase_1": companion.catchphrase_1,
         "catchphrase_2": companion.catchphrase_2,
         "addedBy": companion.addedBy,
-        "addedByUsername": companion.addedByUsername
+        "addedByUsername": companion.addedByUsername,
+        "hasScript": has_script
     }
     
     # Update room's aiCompanions field
@@ -502,7 +524,8 @@ async def add_ai_companion(room_id: str, companion: AICompanion):
                 "emotion": info.get('emotion'),
                 "isAi": info.get('isAi', False),
                 "addedBy": info.get('addedBy'),
-                "addedByUsername": info.get('addedByUsername')
+                "addedByUsername": info.get('addedByUsername'),
+                "hasScript": info.get('hasScript', False)
             }
             for uid, info in room.users.items()
         ],
@@ -556,7 +579,8 @@ async def remove_ai_companion(room_id: str, companion_name: str, userId: str):
                 "emotion": info.get('emotion'),
                 "isAi": info.get('isAi', False),
                 "addedBy": info.get('addedBy'),
-                "addedByUsername": info.get('addedByUsername')
+                "addedByUsername": info.get('addedByUsername'),
+                "hasScript": info.get('hasScript', False)
             }
             for uid, info in room.users.items()
         ],

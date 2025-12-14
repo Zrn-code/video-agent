@@ -6,7 +6,7 @@ from app.services.connection_manager import manager
 from app.services.room_manager import rooms, save_rooms, assign_new_host
 from app.services.script_manager import script_manager
 from app.models.room import Message, CurrentVideo, VideoItem, AICompanion
-from app.services.ai_generator import generate_companion_response, analyze_message, analyze_message_and_select_companions, get_neutral_reply, generate_character_response
+from app.services.ai_generator import analyze_message, analyze_message_and_select_companions, get_neutral_reply, generate_character_response
 
 router = APIRouter()
 
@@ -27,23 +27,35 @@ async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name
                     "emotion": info.get('emotion'),
                     "isAi": info.get('isAi', False),
                     "addedBy": info.get('addedBy'),
-                    "addedByUsername": info.get('addedByUsername')
+                    "addedByUsername": info.get('addedByUsername'),
+                    "hasScript": info.get('hasScript', False)
                 }
                 for uid, info in rooms[room_id].users.items()
             ],
             "hostId": rooms[room_id].hostId
         }, room_id)
 
-    await asyncio.sleep(1.0) # Slightly longer delay for chat
+    await asyncio.sleep(0.5) # Reduced delay for chat
 
     try:
-        response_text = await generate_companion_response(
-            companion_name=ai_info['username'],
-            companion_style=ai_info.get('style', '友善的角色'),
+        video_id = "unknown"
+        current_played = 0.0
+        if room_id in rooms:
+             if rooms[room_id].currentVideo:
+                 video_id = rooms[room_id].currentVideo.videoId
+             current_played = rooms[room_id].videoState.played
+
+        situation = await get_neutral_reply(video_id, user_content, current_played)
+        video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+
+        response_text = await generate_character_response(
+            ch_name=ai_info['username'],
+            ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
+            ch_style=ai_info.get('style', '友善的角色'),
             user_name=user_name,
             user_input=user_content,
-            context_type=context_type,
-            video_context=video_title
+            situation=situation,
+            video_context_str=video_context_str
         )
         
         if room_id in rooms:
@@ -87,7 +99,8 @@ async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name
                         "emotion": info.get('emotion'),
                         "isAi": info.get('isAi', False),
                         "addedBy": info.get('addedBy'),
-                        "addedByUsername": info.get('addedByUsername')
+                        "addedByUsername": info.get('addedByUsername'),
+                        "hasScript": info.get('hasScript', False)
                     }
                     for uid, info in rooms[room_id].users.items()
                 ],
@@ -119,7 +132,8 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
                     "emotion": info.get('emotion'),
                     "isAi": info.get('isAi', False),
                     "addedBy": info.get('addedBy'),
-                    "addedByUsername": info.get('addedByUsername')
+                    "addedByUsername": info.get('addedByUsername'),
+                    "hasScript": info.get('hasScript', False)
                 }
                 for uid, info in rooms[room_id].users.items()
             ],
@@ -137,7 +151,7 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
             # Generate for each
             response_text = await generate_character_response(
                 ch_name=info['username'],
-                ch_personality=info.get('style', '友善的角色'),
+                ch_personality=info.get('personalities') or info.get('style', '友善的角色'),
                 ch_style=info.get('style', '友善的角色'),
                 user_name=user_name,
                 user_input=user_content,
@@ -171,7 +185,7 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
                     "message": ai_message.dict()
                 }, room_id)
                 
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.2)
 
         # Final user update to clear emotions
         if room_id in rooms:
@@ -186,7 +200,8 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
                         "emotion": info.get('emotion'),
                         "isAi": info.get('isAi', False),
                         "addedBy": info.get('addedBy'),
-                        "addedByUsername": info.get('addedByUsername')
+                        "addedByUsername": info.get('addedByUsername'),
+                        "hasScript": info.get('hasScript', False)
                     }
                     for uid, info in rooms[room_id].users.items()
                 ],
@@ -259,7 +274,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                             "spoilerPreference": info.get('spoilerPreference', 'show_all'),
                             "isAi": info.get('isAi', False),
                             "addedBy": info.get('addedBy'),
-                            "addedByUsername": info.get('addedByUsername')
+                            "addedByUsername": info.get('addedByUsername'),
+                            "hasScript": info.get('hasScript', False)
                         }
                         for uid, info in rooms[room_id].users.items()
                     ],
@@ -289,7 +305,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                 "emotion": info.get('emotion'),
                                 "isAi": info.get('isAi', False),
                                 "addedBy": info.get('addedBy'),
-                                "addedByUsername": info.get('addedByUsername')
+                                "addedByUsername": info.get('addedByUsername'),
+                                "hasScript": info.get('hasScript', False)
                             }
                             for uid, info in rooms[room_id].users.items()
                         ],
@@ -326,7 +343,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                         "emotion": info.get('emotion'),
                                         "isAi": info.get('isAi', False),
                                         "addedBy": info.get('addedBy'),
-                                        "addedByUsername": info.get('addedByUsername')
+                                        "addedByUsername": info.get('addedByUsername'),
+                                        "hasScript": info.get('hasScript', False)
                                     }
                                     for uid, info in rooms[room_id].users.items()
                                 ],
@@ -337,13 +355,18 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                             await asyncio.sleep(0.5)
                             
                             try:
-                                response_text = await generate_companion_response(
-                                    companion_name=ai_info['username'],
-                                    companion_style=ai_info.get('style', '友善的角色'),
+                                video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
+                                situation = await get_neutral_reply(video_id, f"(User emotion: {emotion})", current_played)
+                                video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+
+                                response_text = await generate_character_response(
+                                    ch_name=ai_info['username'],
+                                    ch_personality=ai_info.get('personalities') or ai_info.get('style', '友善的角色'),
+                                    ch_style=ai_info.get('style', '友善的角色'),
                                     user_name=user_info['username'],
-                                    user_input=emotion,
-                                    context_type="emotion",
-                                    video_context=f"{video_title}" if video_title else None
+                                    user_input=f"(展現情緒: {emotion})",
+                                    situation=situation,
+                                    video_context_str=video_context_str
                                 )
                                 
                                 ai_message = Message(
@@ -377,7 +400,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                             "emotion": info.get('emotion'),
                                             "isAi": info.get('isAi', False),
                                             "addedBy": info.get('addedBy'),
-                                            "addedByUsername": info.get('addedByUsername')
+                                            "addedByUsername": info.get('addedByUsername'),
+                                            "hasScript": info.get('hasScript', False)
                                         }
                                         for uid, info in rooms[room_id].users.items()
                                     ],
@@ -512,7 +536,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                     
                     if events:
                         print(f"Found {len(events)} triggered events for video {rooms[room_id].currentVideo.videoId}")
-                        await script_manager.handle_triggered_events(room_id, rooms[room_id], events)
+                        await script_manager.handle_triggered_events(room_id, rooms[room_id], events, save_callback=save_rooms)
 
                 # 更新時間戳記
                 current_state.lastUpdated = datetime.now().timestamp()
@@ -595,11 +619,38 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                 if len(room.history) > 50:
                     room.history.pop()
 
+                # Update hasScript for AI companions
+                for uid, u_info in room.users.items():
+                    if u_info.get('isAi'):
+                        companion_id = u_info.get('id')
+                        has_script = script_manager.has_script(video['videoId'], companion_id)
+                        u_info['hasScript'] = has_script
+
                 await manager.broadcast({
                     "type": "play_video_update",
                     "videoState": room.videoState.dict(),
                     "currentVideo": room.currentVideo.dict(),
                     "history": [v.dict() for v in room.history]
+                }, room_id)
+                
+                # Broadcast user update to reflect hasScript change
+                await manager.broadcast({
+                    "type": "users_update",
+                    "users": [
+                        {
+                            "id": uid,
+                            "username": info['username'],
+                            "avatar": info['avatar'],
+                            "lastSeen": info['lastSeen'],
+                            "emotion": info.get('emotion'),
+                            "isAi": info.get('isAi', False),
+                            "addedBy": info.get('addedBy'),
+                            "addedByUsername": info.get('addedByUsername'),
+                            "hasScript": info.get('hasScript', False)
+                        }
+                        for uid, info in room.users.items()
+                    ],
+                    "hostId": room.hostId
                 }, room_id)
 
             elif event_type == "queue_add":

@@ -27,7 +27,9 @@ class VideoItem(BaseModel):
 class AICompanion(BaseModel):
     id: Optional[str] = None
     name: str
+    personalities: Optional[str] = None
     style: str
+    language: Optional[str] = "Traditional Chinese"
     catchphrase_1: Optional[str] = None
     catchphrase_2: Optional[str] = None
     avatar: str
@@ -98,6 +100,7 @@ class RoomInternal:
         self.isPrivate = isPrivate
         self.videoState = videoState
         self.currentVideo: Optional[CurrentVideo] = None
+        self.lastScriptTime: float = 0.0
         self.users: Dict[str, Dict] = {} # user_id -> {username, avatar, last_heartbeat_timestamp, emotion, isAi, joinedAt}
         self.queue: List[VideoItem] = []
         self.history: List[VideoItem] = []

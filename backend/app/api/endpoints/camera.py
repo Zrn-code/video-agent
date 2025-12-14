@@ -123,29 +123,40 @@ async def camera_websocket_endpoint(websocket: WebSocket, room_id: str, user_id:
                 if "face" in hume_data and hume_data["face"].get("predictions"):
                     emotions = hume_data["face"]["predictions"][0].get("emotions", [])
                     if emotions:
-                        # 取得分數最高的情緒
-                        top_emotion = max(emotions, key=lambda x: x["score"])
-                        emotion_name = top_emotion["name"]
-                        emoji = emotion_to_emoji(emotion_name)
-                        
-                        emotion_result = {
-                            "emotion": emotion_name,
-                            "emoji": emoji,
-                            "score": top_emotion["score"]
-                        }
-                        
-                        # 取前三高情緒
-                        top3 = sorted(emotions, key=lambda x: x["score"], reverse=True)[:3]
-                        emotion_result["top3"] = [
-                            {
-                                "emotion": e["name"],
-                                "emoji": emotion_to_emoji(e["name"]),
-                                "score": e["score"]
-                            }
-                            for e in top3
+                        # Filter emotions: exclude Calmness and require score > 0.55
+                        valid_emotions = [
+                            e for e in emotions 
+                            if e["name"] != "Calmness" and e["score"] > 0.55
                         ]
                         
-                        print(f"Frame {frame_count}: {emotion_name} {emoji} ({top_emotion['score']:.3f})")
+                        if valid_emotions:
+                            # 取得分數最高的情緒
+                            top_emotion = max(valid_emotions, key=lambda x: x["score"])
+                            emotion_name = top_emotion["name"]
+                            emoji = emotion_to_emoji(emotion_name)
+                            
+                            emotion_result = {
+                                "emotion": emotion_name,
+                                "emoji": emoji,
+                                "score": top_emotion["score"]
+                            }
+                            
+                            print(f"Frame {frame_count}: {emotion_name} {emoji} ({top_emotion['score']:.3f})")
+                        else:
+                            print(f"Frame {frame_count}: No valid emotions (filtered)")
+
+                        # 取前三高情緒 (for debugging/logging, maybe keep all or just valid?)
+                        # Let's keep showing top 3 raw emotions for debug, but result is filtered
+                        top3 = sorted(emotions, key=lambda x: x["score"], reverse=True)[:3]
+                        if emotion_result:
+                            emotion_result["top3"] = [
+                                {
+                                    "emotion": e["name"],
+                                    "emoji": emotion_to_emoji(e["name"]),
+                                    "score": e["score"]
+                                }
+                                for e in top3
+                            ]
                     else:
                         print(f"Frame {frame_count}: No emotions detected")
                 else:

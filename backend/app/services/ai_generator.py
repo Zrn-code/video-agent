@@ -112,15 +112,17 @@ def load_presets():
 
 async def generate_character_card(prompt: str) -> AICompanion:
     full_prompt = f"""
-    你是一個充滿創意的角色生成器。請根據以下描述創建一個虛構的角色檔案："{prompt}"。
+    You are a creative character generator. Please create a fictional character profile based on the following description: "{prompt}".
     
-    請「僅」返回一個有效的 JSON 物件，包含以下欄位：
-    - name: 角色名稱 (字串)
-    - style: 角色在「陪看影片時」的行為風格描述 (字串)，使用繁體中文，30-50字。
-    - catchphrase_1: 角色的第一句口頭禪或經典語錄 (字串，可選)，使用繁體中文。
-    - catchphrase_2: 角色的第二句口頭禪或經典語錄 (字串，可選)，使用繁體中文。
+    Please return ONLY a valid JSON object with the following fields:
+    - name: Character name, please use string. The name must use the same language as the prompt.
+    - personalities: Character personalities. Please describe with less than 6 adjectives.
+    - style: Describe character's speech habits. Please describe with less than 5 sentences.
+    - language: Character's respond language, set to the main language used in user prompt.
+    - catchphrase_1: Generate a phrase that the character might say when joyful using character's respond language. Generate within 2 sentences.
+    - catchphrase_2: Generate a phrase that the character might say when sad using character's respond language. Generate within 2 sentences.
     
-    請勿包含任何 markdown 格式或解釋文字，只返回 JSON。
+    Do not include any markdown formatting or explanatory text, just return the JSON.
     """
     
     try:
@@ -143,9 +145,15 @@ async def generate_character_card(prompt: str) -> AICompanion:
         seed = data.get("name", "random") + str(random.randint(0, 1000))
         avatar = f"https://api.dicebear.com/9.x/bottts/svg?seed={seed}"
         
+        personalities = data.get("personalities")
+        if isinstance(personalities, list):
+            personalities = ", ".join(personalities)
+        
         return AICompanion(
             name=data.get("name", "Unknown"),
+            personalities=personalities,
             style=data.get("style", "神秘的角色。"),
+            language=data.get("language", "Traditional Chinese"),
             catchphrase_1=data.get("catchphrase_1"),
             catchphrase_2=data.get("catchphrase_2"),
             avatar=avatar
@@ -352,7 +360,7 @@ async def process_user_message_flow(
     for companion in selected_companions:
         reply = await generate_character_response(
             ch_name=companion.name,
-            ch_personality=companion.style,
+            ch_personality=companion.personalities or companion.style,
             ch_style=companion.style,
             user_name=user_name,
             user_input=user_content,
@@ -381,31 +389,4 @@ async def analyze_message(content: str, video_title: str = None, companions: lis
         "selection_reason": result.get("selection_reason")
     }
 
-async def generate_companion_response(companion_name: str, companion_style: str, user_name: str, user_input: str, context_type: str = "chat", video_context: str = None) -> str:
-    # Fallback for legacy calls without video_id/timestamp
-    prompt = f"""
-    你是 {companion_name}。
-    風格：{companion_style}
-    
-    當前情境：
-    影片：{video_context or "目前沒有播放影片"}
-    使用者：{user_name}
-    
-    事件：
-    { "使用者傳送了訊息：" + user_input if context_type == "chat" else "使用者的情緒變成了：" + user_input }
-    
-    任務：
-    回覆使用者或評論當前狀況。
-    保持簡短（1-2 句話）。
-    反應要即時且符合角色設定。
-    請使用繁體中文。
-    """
-    try:
-        response = await client.aio.models.generate_content(
-            model=GEMINI_MODEL_CHAT,
-            contents=prompt
-        )
-        return response.text.strip()
-    except Exception as e:
-        print(f"Error generating response: {e}")
-        return "..."
+

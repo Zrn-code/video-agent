@@ -16,6 +16,9 @@ interface User {
   emotion?: string;
   isFocused?: boolean;
   isAi?: boolean;
+  addedBy?: string;
+  addedByUsername?: string;
+  hasScript?: boolean;
 }
 
 const Room = () => {
@@ -90,6 +93,7 @@ const Room = () => {
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const cameraWsRef = useRef<WebSocket | null>(null);
   const cameraIntervalRef = useRef<number | null>(null);
+  const lastEmotionUpdateRef = useRef<number>(0);
   
   // Debug camera emotion changes
   useEffect(() => {
@@ -355,6 +359,13 @@ const Room = () => {
           if (data.type === 'emotion_result') {
             console.log('🎭 Emotion result:', data.result);
             
+            const now = Date.now();
+            // Check cooldown: if an emotion was set less than 2 seconds ago, ignore updates
+            if (now - lastEmotionUpdateRef.current < 2000) {
+               console.log('⏳ Emotion update ignored due to cooldown');
+               return;
+            }
+
             if (data.result) {
               const emotionData = {
                 emotion: data.result.emotion,
@@ -368,6 +379,9 @@ const Room = () => {
               setEmotion(data.result.emoji);
               emotionRef.current = data.result.emoji;
               
+              // Update timestamp only when setting a valid emotion
+              lastEmotionUpdateRef.current = now;
+              
               // 將情緒透過 WebSocket 廣播給其他使用者
               // 標記為 from_camera，讓 AI 不要回應
               if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -380,8 +394,19 @@ const Room = () => {
               }
             } else {
               console.log('⚠️ No emotion detected (no face or low confidence)');
-              // 如果沒有偵測到臉部，也更新狀態（可以選擇清除或保持上一個情緒）
-              // setCameraEmotion(undefined); // 取消註解如果想在沒偵測到時清除
+              // 如果沒有偵測到臉部或情緒被過濾，清除狀態
+              setCameraEmotion(undefined);
+              setEmotion(undefined);
+              emotionRef.current = undefined;
+              
+              // 廣播清除情緒
+              if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                wsRef.current.send(JSON.stringify({
+                  type: 'emotion',
+                  emotion: null,
+                  from_camera: true
+                }));
+              }
             }
           }
         };

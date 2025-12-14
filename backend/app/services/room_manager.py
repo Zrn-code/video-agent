@@ -327,6 +327,9 @@ async def update_mock_emotions():
 
 async def update_ai_random_emotions():
     """每10-15秒為所有AI影伴隨機更新emoji狀態，顯示3秒後清除"""
+    # Disable random emotions as per user request
+    return
+
     ai_emotions = ['😊', '😎', '🤔', '😴', '🎵', '👀', '💭', '✨']
     
     while True:
