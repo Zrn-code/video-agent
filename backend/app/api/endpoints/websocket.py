@@ -6,7 +6,7 @@ from app.services.connection_manager import manager
 from app.services.room_manager import rooms, save_rooms, assign_new_host
 from app.services.script_manager import script_manager
 from app.models.room import Message, CurrentVideo, VideoItem, AICompanion
-from app.services.ai_generator import analyze_message, analyze_message_and_select_companions, get_neutral_reply, generate_character_response
+from app.services.ai_generator import analyze_message, analyze_message_and_select_companions, get_video_context_str, generate_character_response
 
 router = APIRouter()
 
@@ -45,8 +45,7 @@ async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name
                  video_id = rooms[room_id].currentVideo.videoId
              current_played = rooms[room_id].videoState.played
 
-        situation = await get_neutral_reply(video_id, user_content, current_played)
-        video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+        video_context_str = get_video_context_str(video_id, current_played)
 
         response_text = await generate_character_response(
             ch_name=ai_info['username'],
@@ -54,7 +53,6 @@ async def handle_ai_response(room_id: str, ai_uid: str, ai_info: dict, user_name
             ch_style=ai_info.get('style', '友善的角色'),
             user_name=user_name,
             user_input=user_content,
-            situation=situation,
             video_context_str=video_context_str
         )
         
@@ -141,12 +139,10 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
         }, room_id)
 
     try:
-        # Step 2: General Reply
-        situation = await get_neutral_reply(video_id, user_content, video_timestamp)
+        # Step 2: Get video context
+        video_context_str = get_video_context_str(video_id, video_timestamp)
         
         # Step 3: Generate responses
-        video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
-        
         for uid, info in selected_ais:
             # Generate for each
             response_text = await generate_character_response(
@@ -155,7 +151,6 @@ async def handle_group_ai_response(room_id: str, selected_ais: list, user_name: 
                 ch_style=info.get('style', '友善的角色'),
                 user_name=user_name,
                 user_input=user_content,
-                situation=situation,
                 video_context_str=video_context_str
             )
             
@@ -356,8 +351,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                             
                             try:
                                 video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
-                                situation = await get_neutral_reply(video_id, f"(User emotion: {emotion})", current_played)
-                                video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+                                video_context_str = get_video_context_str(video_id, current_played)
 
                                 response_text = await generate_character_response(
                                     ch_name=ai_info['username'],
@@ -365,7 +359,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_id: str):
                                     ch_style=ai_info.get('style', '友善的角色'),
                                     user_name=user_info['username'],
                                     user_input=f"(展現情緒: {emotion})",
-                                    situation=situation,
                                     video_context_str=video_context_str
                                 )
                                 

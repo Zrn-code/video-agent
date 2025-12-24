@@ -330,6 +330,40 @@ def get_current_context(timestamp: float, all_contexts: List[SceneLog]) -> Optio
             return scene
     return None
 
+def get_video_context_str(yt_id: str, timestamp: float) -> str:
+    """
+    Get video context string for a specific timestamp.
+    Returns formatted context including current scene and recent transcript.
+    """
+    transcript_doc = get_video_transcript(yt_id)
+    video_log = get_video_summary(yt_id)
+    
+    current_scene = None
+    recent_transcript = []
+    
+    if video_log:
+        current_scene = get_current_context(timestamp, video_log.segments)
+    
+    if transcript_doc:
+        # Get lines around timestamp (e.g., -30s to +5s)
+        for line in transcript_doc.lines:
+            t = to_seconds(line.timestamp)
+            if timestamp - 30 <= t <= timestamp + 5:
+                recent_transcript.append(line)
+
+    # Construct context string
+    context_str = ""
+    if current_scene:
+        context_str += f"[Current Scene]\nVisual: {current_scene.visual_action}\nDialogue: {current_scene.dialogue_summary}\nMood: {current_scene.mood}\n"
+    
+    if recent_transcript:
+        context_str += "[Recent Transcript]\n" + "\n".join([f"{l.timestamp} {l.speaker}: {l.text} ({l.tone})" for l in recent_transcript])
+
+    if not context_str:
+        context_str = "No specific video context available."
+    
+    return context_str
+
 def load_presets():
     if not COMPANIONS_DB_PATH.exists():
         return []
@@ -408,115 +442,88 @@ async def analyze_message_and_select_companions(
     video_title: str = None, 
     companions: list[AICompanion] = []
 ) -> dict:
-    companions_text = ""
-    if companions:
-        companions_text = "可用角色列表：\n" + "\n".join([f"- {c.name}: {c.style}" for c in companions])
-    else:
-        companions_text = "可用角色列表：無"
+    # 如果沒有可用角色，直接返回空結果
+    if not companions:
+        print("No companions available for selection")
+        return {
+            "is_spoiler": False,
+            "reason": None,
+            "selected_companions": [],
+            "selection_reason": "No companions available"
+        }
+    
+    companions_text = "可用角色列表：\n" + "\n".join([f"- {c.name}: {c.style}" for c in companions])
 
-    prompt = f"""
-    你是一個專業的劇情暴雷偵測員，同時也是一個對話分配系統。
-    
-    影片標題：{video_title or "無"}
-    使用者訊息：{content}
-    
-    {companions_text}
-    
-    任務 1：判斷使用者的訊息是否包含該影片的關鍵劇情透漏（暴雷）。(如果沒有影片標題，則為 false)
-    任務 2：根據使用者的訊息內容與語氣，從可用角色列表中選擇「一位或多位」適合回應的角色。
-           請考慮角色的性格（style）與名字。
-           如果沒有特別適合的角色，請隨機選擇一位。
-           如果沒有可用角色，selected_companions 為空陣列。
-    
-    請「僅」返回一個有效的 JSON 物件，包含以下欄位：
-    - is_spoiler: boolean (true/false)
-    - reason: string (如果是暴雷，請說明原因，否則為 null)
-    - selected_companions: list[string] (被選中的角色名稱列表)
-    - selection_reason: string (選擇這些角色的原因)
-    
-    請勿包含任何 markdown 格式或解釋文字，只返回 JSON。
-    """
+    prompt = f"""你是一個專業的劇情暴雷偵測員，同時也是一個對話分配系統。
+
+影片標題：{video_title or "無"}
+使用者訊息：{content}
+
+{companions_text}
+
+任務 1：判斷使用者的訊息是否包含該影片的關鍵劇情透漏（暴雷）。(如果沒有影片標題，則為 false)
+任務 2：根據使用者的訊息內容與語氣，從可用角色列表中選擇「一位或至多三位」適合回應的角色。
+       請考慮角色的性格（style）與名字。
+       如果沒有特別適合的角色，請選擇一位相對合適的。
+       選擇的角色名稱必須完全符合角色列表中的名字。
+
+請返回一個 JSON 物件，包含以下欄位：
+- is_spoiler: boolean (true/false)
+- reason: string (如果是暴雷，請說明原因，否則為 null)
+- selected_companions: list[string] (被選中的角色名稱列表，最多三位，名稱必須與列表完全一致)
+- selection_reason: string (選擇這些角色的原因)
+
+請勿包含任何 markdown 格式或解釋文字，只返回 JSON。"""
     
     try:
         response = await client.aio.models.generate_content(
             model=GEMINI_MODEL_ANALYSIS,
-            contents=prompt
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.3,  # 降低隨機性
+                response_mime_type="application/json"
+            )
         )
         text = response.text.strip()
-        if text.startswith("```json"): text = text[7:]
-        if text.startswith("```"): text = text[3:]
-        if text.endswith("```"): text = text[:-3]
+        print(f"AI Selection Response: {text[:200]}...")  # 記錄回應
         
-        return json.loads(text)
+        # 清理 markdown 格式
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.startswith("```"):
+            text = text[3:]
+        if text.endswith("```"):
+            text = text[:-3]
+        text = text.strip()
+        
+        result = json.loads(text)
+        
+        # 驗證選中的角色名稱是否在可用列表中
+        valid_names = {c.name for c in companions}
+        selected = result.get("selected_companions", [])
+        validated_selected = [name for name in selected if name in valid_names]
+        
+        if selected and not validated_selected:
+            print(f"Warning: None of the selected companions {selected} match available companions {valid_names}")
+            # 如果沒有匹配的，隨機選一個
+            validated_selected = [random.choice(companions).name]
+            result["selection_reason"] = "AI選擇的角色不在列表中，已自動選擇一位"
+        
+        result["selected_companions"] = validated_selected
+        print(f"Selected companions: {validated_selected}, Reason: {result.get('selection_reason')}")
+        
+        return result
     except Exception as e:
         print(f"Error analyzing message: {e}")
+        print(f"Full error traceback:", exc_info=True)
+        # Fallback: 選擇一個隨機角色
         selected = [random.choice(companions).name] if companions else []
         return {
             "is_spoiler": False,
             "reason": None,
             "selected_companions": selected,
-            "selection_reason": "Fallback due to error"
+            "selection_reason": f"Error occurred, randomly selected: {e}"
         }
-
-async def get_neutral_reply(yt_id: str, user_msg: str, timestamp: float) -> SituationReport:
-    transcript_doc = get_video_transcript(yt_id)
-    video_log = get_video_summary(yt_id)
-    
-    current_scene = None
-    recent_transcript = []
-    
-    if video_log:
-        current_scene = get_current_context(timestamp, video_log.segments)
-    
-    if transcript_doc:
-        # Get lines around timestamp (e.g., -10s to +5s)
-        for line in transcript_doc.lines:
-            t = to_seconds(line.timestamp)
-            if timestamp - 30 <= t <= timestamp + 5:
-                recent_transcript.append(line)
-
-    # Construct context string
-    context_str = ""
-    if current_scene:
-        context_str += f"[Current Scene]\nVisual: {current_scene.visual_action}\nDialogue: {current_scene.dialogue_summary}\nMood: {current_scene.mood}\n"
-    
-    if recent_transcript:
-        context_str += "[Recent Transcript]\n" + "\n".join([f"{l.timestamp} {l.speaker}: {l.text} ({l.tone})" for l in recent_transcript])
-
-    if not context_str:
-        context_str = "No specific video context available."
-
-    prompt = f"""
-    You are a Video Companion Director.
-    
-    [Video Context at {timestamp}s]
-    {context_str}
-    
-    [User Message]
-    "{user_msg}"
-    
-    Analyze the user's comment against the video context.
-    Generate a SituationReport in JSON format.
-    """
-    
-    try:
-        response = await client.aio.models.generate_content(
-            model=GEMINI_MODEL_SITUATION,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=SituationReport
-            )
-        )
-        return SituationReport.model_validate_json(response.text)
-    except Exception as e:
-        print(f"Error generating neutral reply: {e}")
-        return SituationReport(
-            event_trigger="Unknown",
-            user_intent="Unknown",
-            neutral_reply_draft="I see.",
-            suggested_angle="Be polite."
-        )
 
 async def generate_character_response(
     ch_name: str, 
@@ -524,7 +531,6 @@ async def generate_character_response(
     ch_style: str, 
     user_name: str, 
     user_input: str, 
-    situation: SituationReport,
     video_context_str: str
 ) -> str:
     prompt = f"""
@@ -536,17 +542,14 @@ async def generate_character_response(
     當下情境：
     使用者名字是{user_name}
     你正在與使用者一同觀看影片
-    影片此時的內容摘要：{video_context_str}
-    
+    影片此時的內容：{video_context_str}
     使用者說：{user_input}
-    
-    分析報告：
-    使用者意圖：{situation.user_intent}
-    建議切入點：{situation.suggested_angle}
-    參考中立回應：{situation.neutral_reply_draft}
 
     目標：
-    請依照角色的人格特質對當下情境給出一段回應，回應時需考慮角色的說話習慣，使用繁體中文，不超過3句話。
+    請依照角色的人格特質對當下情境給出一段回應，回應時需考慮角色的說話習慣，使用繁體中文。
+    請確保回應內容與使用者的評論相關，並且反映出角色的個性。
+    回答請設法控制在20字以內，並且避免使用過於正式或書面的語氣。
+    請直接給出回應內容，勿包含任何多餘的說明文字。最多回覆兩句話。
     """
 
     try:
@@ -570,11 +573,11 @@ async def process_user_message_flow(
     """
     Orchestrates the full flow:
     1. Analyze message (Spoiler & Selection)
-    2. Generate neutral reply (Situation Report)
+    2. Get video context
     3. Generate character responses
     """
     
-    # Step 1
+    # Step 1: Analyze message and select companions
     analysis = await analyze_message_and_select_companions(user_content, video_title, available_companions)
     
     selected_names = analysis.get("selected_companions", [])
@@ -582,12 +585,10 @@ async def process_user_message_flow(
     
     responses = []
     
-    # Step 2
-    situation = await get_neutral_reply(video_id, user_content, video_timestamp)
+    # Step 2: Get video context
+    video_context_str = get_video_context_str(video_id, video_timestamp)
     
-    # Step 3
-    video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
-
+    # Step 3: Generate character responses
     for companion in selected_companions:
         reply = await generate_character_response(
             ch_name=companion.name,
@@ -595,7 +596,6 @@ async def process_user_message_flow(
             ch_style=companion.style,
             user_name=user_name,
             user_input=user_content,
-            situation=situation,
             video_context_str=video_context_str
         )
         responses.append({
@@ -605,7 +605,6 @@ async def process_user_message_flow(
         
     return {
         "analysis": analysis,
-        "situation": situation.dict(),
         "responses": responses
     }
 

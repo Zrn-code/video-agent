@@ -123,10 +123,10 @@ async def camera_websocket_endpoint(websocket: WebSocket, room_id: str, user_id:
                 if "face" in hume_data and hume_data["face"].get("predictions"):
                     emotions = hume_data["face"]["predictions"][0].get("emotions", [])
                     if emotions:
-                        # Filter emotions: exclude Calmness and require score > 0.55
+                        # Filter emotions: exclude Calmness and require score > 0.5
                         valid_emotions = [
                             e for e in emotions 
-                            if e["name"] != "Calmness" and e["score"] > 0.55
+                            if e["name"] != "Calmness" and e["score"] > 0.5
                         ]
                         
                         if valid_emotions:

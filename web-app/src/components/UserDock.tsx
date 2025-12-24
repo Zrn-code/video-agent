@@ -78,13 +78,23 @@ const UserSeat: React.FC<{
     ? (activeMessage ? '...' : null) 
     : (activeMessage || (showHistory ? lastMessage : null));
 
+  // 處理點擊對話框關閉
+  const handleBubbleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 防止事件冒泡
+    setShowHistory(false); // 關閉歷史訊息顯示
+  };
+
   return (
     <div className="relative flex flex-col items-center group pointer-events-auto transition-all duration-300 ease-out">
       
       {/* Chat Bubble - Positioned higher */}
       {messageToDisplay && (
         <div className="absolute bottom-[105%] mb-2 animate-in fade-in slide-in-from-bottom-2 duration-300 z-30 w-64 flex justify-center">
-          <div className={`relative ${isMuted ? 'bg-gray-700/80' : 'bg-[#2b2d31]'} text-gray-100 px-3 py-2 rounded-2xl shadow-xl border border-white/10`}>
+          <div 
+            onClick={handleBubbleClick}
+            className={`relative ${isMuted ? 'bg-gray-700/80' : 'bg-[#2b2d31]'} text-gray-100 px-3 py-2 rounded-2xl shadow-xl border border-white/10 cursor-pointer hover:bg-[#313338] transition-colors`}
+            title="點擊關閉"
+          >
             <p className={`text-xs font-medium leading-snug break-words text-center ${isMuted ? 'text-gray-400 italic tracking-widest' : ''}`}>
               {messageToDisplay}
             </p>

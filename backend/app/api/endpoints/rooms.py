@@ -10,7 +10,7 @@ from app.models.room import (
 )
 from app.services.room_manager import rooms, get_room_response, cleanup_users, save_rooms
 from app.services.connection_manager import manager
-from app.services.ai_generator import generate_character_response, get_neutral_reply, process_video
+from app.services.ai_generator import generate_character_response, get_video_context_str, process_video
 from app.services.script_manager import script_manager
 
 router = APIRouter()
@@ -208,20 +208,8 @@ async def create_forum_comment(room_id: str, thread_id: str, request: CreateComm
                     for c in recent_comments:
                         thread_context += f"{c.username}: {c.content}\n"
                 
-                # 使用AI生成回應（針對討論串的對話）
-                video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
-                
-                # 簡化版的情境報告（因為是討論串，不需要視頻時間戳）
-                from app.services.ai_generator import generate_character_response, SituationReport
-                
-                situation = SituationReport(
-                    event_trigger=f"用戶在討論串中回應: {request.content}",
-                    user_intent="參與討論串對話",
-                    neutral_reply_draft=f"關於 {request.content}",
-                    suggested_angle="以角色風格參與討論"
-                )
-                
-                video_context_str = f"討論串上下文: {thread_context}"
+                # 使用討論串上下文作為 video_context_str
+                video_context_str = f"討論串上下文:\n{thread_context}"
                 
                 ai_response_text = await generate_character_response(
                     ch_name=ai_info['username'],
@@ -229,7 +217,6 @@ async def create_forum_comment(room_id: str, thread_id: str, request: CreateComm
                     ch_style=ai_info.get('style', '友善的角色'),
                     user_name=request.username,
                     user_input=request.content,
-                    situation=situation,
                     video_context_str=video_context_str
                 )
                 
@@ -385,8 +372,7 @@ async def send_chat(room_id: str, request: ChatRequest):
         
             try:
                 video_id = room.currentVideo.videoId if room.currentVideo else "unknown"
-                situation = await get_neutral_reply(video_id, request.content, current_played)
-                video_context_str = f"Event: {situation.event_trigger}. Neutral observation: {situation.neutral_reply_draft}"
+                video_context_str = get_video_context_str(video_id, current_played)
 
                 response_text = await generate_character_response(
                     ch_name=ai_info['username'],
@@ -394,12 +380,11 @@ async def send_chat(room_id: str, request: ChatRequest):
                     ch_style=ai_info.get('style', '友善的角色'),
                     user_name=request.username,
                     user_input=request.content,
-                    situation=situation,
                     video_context_str=video_context_str
                 )
                 
                 # 判斷回應是否較長（超過100字或2句以上）
-                is_long_response = len(response_text) > 100 or response_text.count('。') > 1 or response_text.count('！') > 1 or response_text.count('？') > 1
+                is_long_response = len(response_text) > 50 
                 
                 if is_long_response:
                     # 創建討論串並發送提示訊息
